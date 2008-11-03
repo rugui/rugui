@@ -9,6 +9,8 @@ module RuGUI
 
     # The configuration for this application.
     attr_reader :configuration
+    
+    @@processed = false
 
     # Runs the initializer.
     #
@@ -21,6 +23,7 @@ module RuGUI
       initializer = new configuration
       RuGUI.configuration = configuration
       initializer.send(command)
+      @@processed = (command == :process) ? true : false
       initializer
     end
 
@@ -33,15 +36,18 @@ module RuGUI
     # Sequentially step through all of the available initialization routines,
     # in order (view execution order in source).
     def process
+      load_environment
+      load_logger
+      
+      start_initialization_process_log
+      
       set_load_path
       set_autoload_paths
       set_styles_paths
       load_environment
 
-      initialize_logger('RuGUI::Initializer', configuration.logger[:output], configuration.logger[:level], configuration.logger[:format])
-      logger.info "Starting RuGUI application with #{@configuration.environment} environment..."
-      logger.info "RuGUI application loaded."
-    end
+      finish_initialization_process_log
+     end
 
     # Set the <tt>$LOAD_PATH</tt> based on the value of
     # Configuration#load_paths. Duplicates are removed.
@@ -74,14 +80,28 @@ module RuGUI
       return if @environment_loaded
       @environment_loaded = true
 
-      config = configuration
-      constants = self.class.constants
-
-      eval(IO.read(configuration.environment_path), binding, configuration.environment_path)
-
-      (self.class.constants - constants).each do |const|
-        Object.const_set(const, self.class.const_get(const))
+      if File.exist?(configuration.environment_path)
+        config = configuration
+        constants = self.class.constants
+        
+        eval(IO.read(configuration.environment_path), binding, configuration.environment_path)
+ 
+        (self.class.constants - constants).each do |const|
+          Object.const_set(const, self.class.const_get(const))
+        end
       end
+    end
+    
+    def load_logger
+      initialize_logger(self.class.name, configuration.logger[:output], configuration.logger[:level], configuration.logger[:format]) unless @@processed
+    end
+    
+    def start_initialization_process_log
+      logger.info "Starting RuGUI application with #{configuration.environment} environment..." unless @@processed
+    end
+    
+    def finish_initialization_process_log
+      logger.info "RuGUI application configurations loaded." unless @@processed
     end
 
     private

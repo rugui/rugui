@@ -9,7 +9,7 @@ module RuGUI
     # Allows initialize the log support, setting up the class name that invokes the logger,
     # output, level and the format of the message.
     #
-    def initialize_logger(classname = nil, output = nil, level = nil, format = nil)
+    def initialize_logger(classname = nil, output = RuGUI.configuration.logger[:output], level = RuGUI.configuration.logger[:level], format = RuGUI.configuration.logger[:format])
       @logger = setup_logger(classname, output, level, format)
     end
 
@@ -30,12 +30,12 @@ module RuGUI
           logr = Logger.new(defined_output(output))
           logr.level = defined_level(level)
           logr.classname = defined_classname(classname)
-
         rescue StandardError => e
           logr = Logger.new(OUTPUTS[:stderr])
           logr.level = LEVELS[:warn]
           logr.datetime_format = defined_format(format)
           logr.warn "Log support problems: The log level has been raised to WARN and the output directed to STDERR until the problem is fixed."
+          logr.error e.backtrace.join("\n")
         end
         logr
       end
@@ -46,10 +46,9 @@ module RuGUI
       #
       def defined_output(output)
         unless output
-          setted = RuGUI.configuration.logger[:output]
-          output = setted ? OUTPUTS[setted] : DEFAULT_OUTPUT
+          output = DEFAULT_OUTPUT
         else
-          output = output.is_a?(String) ? File.join('log', output) : OUTPUTS[output]
+          output = output.is_a?(String) ? File.join(RuGUI.root, 'log', output) : OUTPUTS[output]
         end
         output
       end
@@ -60,8 +59,7 @@ module RuGUI
       #
       def defined_level(level)
         unless level
-          setted = RuGUI.configuration.logger[:level]
-          level = setted ? LEVELS[setted] : DEFAULT_LEVEL
+          level = DEFAULT_LEVEL
         else
           level = LEVELS[level]
         end
@@ -73,9 +71,7 @@ module RuGUI
       # the configuration file, or default values.
       #
       def defined_format(format)
-        unless format
-          format = (RuGUI.configuration.logger[:format] || DEFAULT_FORMAT)
-        end
+        format = DEFAULT_FORMAT unless format
         format
       end
 

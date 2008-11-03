@@ -1,3 +1,6 @@
+# Defines the environment to be used by the application.
+RUGUI_ENV = (ENV['RUGUI_ENV'] || 'development').dup unless defined?(RUGUI_ENV)
+
 module RuGUI
   # Defines configurations for a RuGUI application.
   class Configuration
@@ -70,7 +73,7 @@ module RuGUI
 
     private
       def default_environment
-        'development'
+        ::RUGUI_ENV
       end
 
       def default_load_paths

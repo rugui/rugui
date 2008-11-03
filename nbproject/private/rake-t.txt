@@ -1,0 +1,3 @@
+(in /home/INTELITIVA/vicente.mundim/Projects/rugui)
+rake test       # Run all tests
+rake test:test  # Run tests / Run the tests in test
