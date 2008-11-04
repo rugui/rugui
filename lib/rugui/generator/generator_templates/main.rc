@@ -1,0 +1,23 @@
+# This is a sample gtkrc file used to add application specific styles to the
+# application. Styles defined here will override any theme style defined by the
+# GTK theme machinery.
+#
+# The root path of the application can be obtained by using '{ROOT_PATH}'. So,
+# to set the pixmap path, for example, one would write this in the head of this
+# file:
+#
+# pixmap_path "{ROOT_PATH}/app/resources/styles/images"
+#
+
+# Just a sample style setting:
+#
+#style "message_label"
+#{
+#    fg[NORMAL] = "#5a0000"
+#    fg[ACTIVE] = "#5a0000"
+#    fg[PRELIGHT] = "#5a0000"
+#    fg[SELECTED] = "#5a0000"
+#    fg[INSENSITIVE] = "#5a0000"
+#    font_name = "Arial Bold 18px"
+#}
+#widget "*message_label" style "message_label"
