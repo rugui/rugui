@@ -5,6 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/ruby-project/1">
             <name>RuGUI</name>
             <source-roots>
+                <root id="src.bin.dir" name="Binary Files"/>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>

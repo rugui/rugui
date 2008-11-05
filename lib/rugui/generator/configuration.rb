@@ -27,16 +27,36 @@ module RuGUI
           # log directory contains default log files for the application.
           'log',
 
-          # test directory contains tests for controllers, models, and libs. Test
-          # files should be named as <test_class>_test.rb in order to be
-          # automatically recognized.
-          'test',
-          'test/controllers',
-          'test/libs',
-          'test/models',
-
           # vendor directory contains third-party software.
           'vendor',
+        ]
+      end
+      
+      def self.default_test_directory_structure
+        [
+          # test directory contains tests for controllers, models, views,
+          # view_helpers, and libs. Test files should be named as
+          # <test_class>_test.rb in order to be automatically recognized.
+          'test',
+          'test/controllers',
+          'test/lib',
+          'test/models',
+          'test/views',
+          'test/view_helpers',
+        ]
+      end
+      
+      def self.default_spec_directory_structure
+        [
+          # spec directory contains specs for controllers, models, views,
+          # view_helpers, and libs. Spec files should be named as
+          # <test_class>_spec.rb in order to be automatically recognized.
+          'spec',
+          'spec/controllers',
+          'spec/lib',
+          'spec/models',
+          'spec/views',
+          'spec/view_helpers',
         ]
       end
       
@@ -60,9 +80,22 @@ module RuGUI
           file_mapping('config/environments', 'development.rb.sample'),
           file_mapping('config/environments', 'test.rb.sample'),
           file_mapping('config/environments', 'production.rb.sample'),
-          file_mapping('test', 'test_helper.rb'),
           file_mapping('', 'README'),
           file_mapping('', 'Rakefile'),
+        ]
+      end
+      
+      def self.default_test_files_mapping
+        [
+          file_mapping('test', 'test_helper.rb'),
+        ]
+      end
+      
+      def self.default_spec_files_mapping
+        [
+          file_mapping('spec', 'spec_helper.rb'),
+          file_mapping('spec', 'rcov.opts'),
+          file_mapping('spec', 'spec.opts'),
         ]
       end
       

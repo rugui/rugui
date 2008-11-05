@@ -12,14 +12,14 @@ module RuGUI
         }
       end
       
-      def self.generate(generator)
-        self.new.run(generator)
+      def self.generate(generator, options = {})
+        self.new.run(generator, options)
       rescue Exception => exception
         print_exception_trace(exception)
       end
       
-      def run(generator)
-        @generators[generator].new.run
+      def run(generator, options = {})
+        @generators[generator].new.run(options)
       end
       
       private

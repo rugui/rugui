@@ -3,7 +3,8 @@ require 'fileutils'
 module RuGUI
   module Generator
     class Application
-      def run
+      def run(options = {})
+        parse_options(options)
         get_application_name_and_path_from_argv
         check_valid_application_name_and_path
         
@@ -16,6 +17,10 @@ module RuGUI
       end
       
       private
+        def parse_options(options)
+          @use_spec = options[:use_spec]
+        end
+      
         def get_application_name_and_path_from_argv
           @application_name = nil
           @application_path = nil
@@ -42,6 +47,8 @@ module RuGUI
           FileUtils.mkdir(application_root_path)
           
           directory_structure = RuGUI::Generator::Configuration.default_application_directory_structure
+          directory_structure.concat(RuGUI::Generator::Configuration.default_test_directory_structure)
+          directory_structure.concat(RuGUI::Generator::Configuration.default_spec_directory_structure) if @use_spec
           directory_structure.each do |dir|
             FileUtils.mkdir(File.join(application_root_path, dir))
           end
@@ -50,6 +57,8 @@ module RuGUI
         def generate_default_files_from_templates
           templates_path = RuGUI::Generator::Configuration.templates_path
           files_mapping = RuGUI::Generator::Configuration.default_files_mapping
+          files_mapping.concat(RuGUI::Generator::Configuration.default_test_files_mapping)
+          files_mapping.concat(RuGUI::Generator::Configuration.default_spec_files_mapping) if @use_spec
           files_mapping.each do |file_mapping|
             source_file = File.join(templates_path, file_mapping[:filename])
             destination_file = File.join(application_root_path, file_mapping[:destination], file_mapping[:filename])
@@ -60,6 +69,8 @@ module RuGUI
         
         def display_generate_app_init_message
           puts "Generating application #{@application_name} on #{File.expand_path(@application_path)}"
+          puts "Using RSpec for generated application" if @use_spec
+          puts "Using TestUnit for generated application" unless @use_spec
         end
         
         def display_generate_app_finish_message
