@@ -1,6 +1,6 @@
 module RuGUI
   class << self
-    # The Configuration instance used to configure the Rails environment
+    # The Configuration instance used to configure the RuGUI environment
     def configuration
       @@configuration
     end
