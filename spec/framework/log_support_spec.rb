@@ -1,0 +1,24 @@
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
+
+class MyObjectWithLogSupport
+  include RuGUI::LogSupport
+end
+
+describe RuGUI::LogSupport do
+  before(:each) do
+    @my_object_with_log_support = MyObjectWithLogSupport.new
+  end
+  
+  it "should have a default logger if it is not initialized" do
+    @my_object_with_log_support.respond_to?(:logger).should be_true
+    @my_object_with_log_support.logger.should be_an_instance_of(Logger)
+    @my_object_with_log_support.logger.classname.should == 'MyObjectWithLogSupport'
+  end
+  
+  it "should set logger properties if it is initialized" do
+    @my_object_with_log_support.initialize_logger("MyDifferentClassName", :stdout, :debug, "%Y-%M-%D %H:%I:%S")
+    @my_object_with_log_support.respond_to?(:logger).should be_true
+    @my_object_with_log_support.logger.should be_an_instance_of(Logger)
+    @my_object_with_log_support.logger.classname.should == 'MyDifferentClassName'
+  end
+end

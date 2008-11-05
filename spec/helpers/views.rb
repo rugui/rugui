@@ -1,9 +1,5 @@
 # Defines some views used in specs.
 
-class MyViewHelper < RuGUI::BaseViewHelper
-  observable_property :message, :initial_value => "Some label in the middle"
-end
-
 class MyView < RuGUI::BaseView
   use_glade
   builder_file File.join(File.dirname(__FILE__), '..', 'resource_files', 'my_view.glade')
@@ -42,7 +38,7 @@ end
 
 class MyOtherView < RuGUI::BaseView
   use_glade
-  builder_file File.join(File.dirname(__FILE__),'resource_files', 'my_other_view.glade')
+  builder_file File.join(File.dirname(__FILE__), '..', 'resource_files', 'my_other_view.glade')
   root :top_window
   
   attr_accessor :message
