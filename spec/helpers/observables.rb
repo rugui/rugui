@@ -74,14 +74,28 @@ class FakeObservableForPropertyObserverTest
   end
 end
 
+class FakeNamedObservableTest
+  include RuGUI::ObservablePropertySupport
+  
+  observable_property :my_observable_property
+  
+  def to_s
+    self.class.name
+  end
+end
+
 class FakeObserverForPropertyObserverTest
   include RuGUI::PropertyObserver
   
   attr_accessor :property_updated_message
   attr_accessor :class_specific_method_called_message
   attr_accessor :instance_specific_method_called_message
+  attr_accessor :instance_specific_method_called_counter
   attr_accessor :observable
   attr_accessor :named_observable
+  attr_accessor :fake_named_observable_test
+  
+  attr_accessor :property_changed_counter
   
   def initialize
     @observable = FakeObservableForPropertyObserverTest.new
@@ -89,6 +103,11 @@ class FakeObserverForPropertyObserverTest
     
     @named_observable = FakeObservableForPropertyObserverTest.new
     @named_observable.register_observer(self, 'named_observable')
+    
+    @fake_named_observable_test = FakeNamedObservableTest.new
+    @fake_named_observable_test.register_observer(self, 'fake_named_observable_test')
+    
+    @property_changed_counter = 0
   end
   
   def value_to_s(value)
@@ -109,6 +128,10 @@ class FakeObserverForPropertyObserverTest
   
   def property_named_observable_my_observable_property_changed(observable, new_value, old_value)
     @instance_specific_method_called_message = "Property my_observable_property changed, called from named instance specific method"
+  end
+  
+  def property_fake_named_observable_test_my_observable_property_changed(observable, new_value, old_value)
+    @property_changed_counter += 1
   end
 end
 

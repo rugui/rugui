@@ -39,7 +39,7 @@ module RuGUI
     end
     
     def named_observable_property_updated(observable_name, observable, property, new_value, old_value)
-      queue_method_call_if_exists("property_#{observable_name}_#{property}_changed", observable, new_value, old_value)
+      queue_method_call_if_exists("property_#{observable_name}_#{property}_changed", observable, new_value, old_value) unless named_observable_collides_with_class_name?(observable_name, observable)
     end
     
     private
@@ -49,6 +49,10 @@ module RuGUI
             send(method_name, *args)
           end
         end
+      end
+      
+      def named_observable_collides_with_class_name?(observable_name, observable)
+        observable_name == observable.class.name.underscore
       end
   end
 end

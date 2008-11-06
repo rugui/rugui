@@ -78,5 +78,11 @@ describe RuGUI::PropertyObserver do
       @observer.named_observable.my_observable_property << "something"
       @observer.instance_specific_method_called_message.should == "Property my_observable_property changed, called from named instance specific method"
     end
+    
+    it "should not be called when the instance name collides with the class name" do
+      lambda {
+        @observer.fake_named_observable_test.my_observable_property = "something"
+      }.should change(@observer, :property_changed_counter).by(1) # Should call only the class method
+    end
   end
 end
