@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = %q{A simple MVC framework for RubyGTK.}
   spec.files = FileList['bin/*','lib/**/*', "README", "Changelog", "LICENSE"].to_a
   spec.executables = ['rugui']
-  spec.test_files = Dir.glob('test/*.rb') 
+  spec.test_files = Dir.glob('test/*.rb')
   spec.add_dependency(%q<activesupport>, ["= 2.1.1"])
-end 
+  spec.rubyforge_project = 'rugui'
+end
