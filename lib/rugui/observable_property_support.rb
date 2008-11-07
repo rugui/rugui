@@ -63,9 +63,7 @@ module RuGUI
       self.class.observable_properties_options.each do |property, options|
         property_value = send(property)
         if options[:reset_value].nil? and property_value.respond_to?(:reset!)
-          self.instance_eval <<-instance_eval
-            self.#{property}.reset!
-          instance_eval
+          property_value.reset!
         else
           send("#{property}=", clone_if_possible(options[:reset_value]))
         end
