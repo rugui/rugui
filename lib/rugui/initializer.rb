@@ -2,6 +2,7 @@ require 'activesupport'
 require 'gtk2'
 require 'rugui/configuration'
 require 'rugui/log_support'
+require 'rugui/plugin/loader'
 
 module RuGUI
   class Initializer
@@ -9,7 +10,7 @@ module RuGUI
 
     # The configuration for this application.
     attr_reader :configuration
-    
+
     @@processed = false
 
     # Runs the initializer.
@@ -38,13 +39,15 @@ module RuGUI
     def process
       load_environment
       load_logger
-      
+
       start_initialization_process_log
-      
+
       set_load_path
       set_autoload_paths
       set_styles_paths
       load_environment
+
+      load_plugins
 
       finish_initialization_process_log
      end
@@ -83,25 +86,33 @@ module RuGUI
       if File.exist?(configuration.environment_path)
         config = configuration
         constants = self.class.constants
-        
+
         eval(IO.read(configuration.environment_path), binding, configuration.environment_path)
- 
+
         (self.class.constants - constants).each do |const|
           Object.const_set(const, self.class.const_get(const))
         end
       end
     end
-    
+
+    def load_plugins
+      plugin_loader.load_plugins
+    end
+
     def load_logger
       initialize_logger(self.class.name, configuration.logger[:output], configuration.logger[:level], configuration.logger[:format]) unless @@processed
     end
-    
+
     def start_initialization_process_log
       logger.info "Starting RuGUI application with #{configuration.environment} environment..." unless @@processed
     end
-    
+
     def finish_initialization_process_log
       logger.info "RuGUI application configurations loaded." unless @@processed
+    end
+
+    def plugin_loader
+      @plugin_loader || RuGUI::Plugin::Loader.new(self, configuration)
     end
 
     private
