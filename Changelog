@@ -1,4 +1,5 @@
 0.4.0
+- Using class_inheritable_accessor instead of using class variables for observable properties options in ObservablePropertySupport
 - Using class_inheritable_accessor instead of creating fake class attributes in BaseView
 - Added method setup_view_helpers in BaseView, so that one can register more helpers if needed.
 - Fixed a bug where named observable property change methods were not being called when an observable property was changed.

@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'activesupport'
 require 'rugui/observable_property_proxy'
 
 module RuGUI
@@ -86,6 +88,13 @@ module RuGUI
     end
 
     module ClassMethods
+      # Creates the necessary class inheritable attributes an initializes them.
+      def create_class_inheritable_attributes
+        self.class_inheritable_accessor :observable_properties_options
+        
+        self.observable_properties_options = {}
+      end
+      
       # Register one or more observable properties for this model.
       # 
       # Properties may be given as symbols, or strings. You can pass some
@@ -113,7 +122,6 @@ module RuGUI
       #     # And so on...
       #   end
       def observable_property(property, options = {})
-        initialize_observable_properties_if_needed
         create_observable_property_options(property, options)
         create_observable_property_accessors(property)
       end
@@ -126,25 +134,10 @@ module RuGUI
         end
         core_observable_properties
       end
-
-      # Returns a hash, keyed by the property name, with the options of
-      # observable properties for this class.
-      def observable_properties_options
-        klass_observable_properties = {}
-        if defined?(@@observable_properties_options) and not @@observable_properties_options.nil?
-          klass_observable_properties = @@observable_properties_options[self.name.to_sym] if @@observable_properties_options.include?(self.name.to_sym)
-        end
-        klass_observable_properties
-      end
       
       private
-        def initialize_observable_properties_if_needed
-          @@observable_properties_options = {} if not defined?(@@observable_properties_options) or @@observable_properties_options.nil?
-          @@observable_properties_options[self.name.to_sym] = {} unless @@observable_properties_options.include?(self.name.to_sym)
-        end
-        
         def create_observable_property_options(property, options = {})
-          @@observable_properties_options[self.name.to_sym][property.to_sym] = prepare_options(options)
+          self.observable_properties_options[property.to_sym] = prepare_options(options)
         end
       
         def create_observable_property_accessors(property)
@@ -180,6 +173,7 @@ module RuGUI
 
     def self.included(base)
       base.extend(ClassMethods)
+      base.create_class_inheritable_attributes
     end
 
     private
