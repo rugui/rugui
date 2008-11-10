@@ -44,7 +44,7 @@ module RuGUI
     def register_model(model, name = nil)
       model = create_instance(model) if model.is_a?(String) or model.is_a?(Symbol)
       name ||= model.class.to_s.underscore
-      model.register_observer(self)
+      model.register_observer(self, name)
       @models[name.to_sym] = model
       create_model_attribute_reader(name)
 

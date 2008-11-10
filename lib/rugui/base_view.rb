@@ -51,12 +51,17 @@ module RuGUI
       @widgets = {}
 
       register_default_helper
+      setup_view_helpers
       build_from_glade if use_glade
       setup_widgets
     end
 
     # Reimplement this method to create widgets by hand.
     def setup_widgets
+    end
+    
+    # Reimplement this method to setup view helpers.
+    def setup_view_helpers
     end
 
     # Includes a view root widget inside the given container widget.
@@ -90,7 +95,7 @@ module RuGUI
       helper = create_instance_if_possible(helper) if helper.is_a?(String) or helper.is_a?(Symbol)
       unless helper.nil?()
         name ||= helper.class.to_s.underscore
-        helper.register_observer(self)
+        helper.register_observer(self, name)
         @helpers[name.to_sym] = helper
         create_attribute_reader(:helpers, name)
         helper.post_registration(self)

@@ -23,6 +23,11 @@ describe RuGUI::BaseController do
       @controller.my_model.should be_an_instance_of(MyModel)
       @controller.models[:my_model].should == @controller.my_model
     end
+    
+    it "should be notified using named observable property change calls" do
+      @controller.my_other_model_instance.my_property = 1
+      @controller.message.should == "Property my_property of named observable my_other_model_instance changed from  to 1."
+    end
   end
   
   describe "with controller registering" do
