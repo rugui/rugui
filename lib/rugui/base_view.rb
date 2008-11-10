@@ -36,6 +36,10 @@ module RuGUI
 
     attr_accessor :controllers
     attr_reader :unnamed_widgets
+    
+    class_inheritable_accessor :configured_builder_file
+    class_inheritable_accessor :configured_root
+    class_inheritable_accessor :configured_glade_usage
 
     def initialize
       disable_inspect
@@ -110,7 +114,7 @@ module RuGUI
 
     # Returns the root widget if one is set.
     def root_widget
-      send(root.to_sym) if self.respond_to?(:root) && !root.nil?
+      send(root.to_sym) if not root.nil?
     end
 
     # Changes the widget style to use the given widget style.
@@ -141,11 +145,25 @@ module RuGUI
       style = Gtk::RC.get_style_by_paths(Gtk::Settings.default, widget_path_style.to_s, nil, nil)
       widget.style = style
     end
+      
+    def builder_file
+      self.configured_builder_file
+    end
+
+    # Returns the name of the root widget for this view.
+    def root
+      self.configured_root.to_s unless self.configured_root.nil?
+    end
+    
+    # Returns true if glade is being used, false otherwise.
+    def use_glade
+      self.configured_glade_usage
+    end
 
     protected
       # Sets the builder file to use when creating this view.
       def self.builder_file(file)
-        create_fake_class_read_only_attribute(:builder_file, file)
+        self.configured_builder_file = file
       end
 
       # Sets the name of the root widget for this view.
@@ -159,22 +177,18 @@ module RuGUI
       # file is used to insert the contents of the vertical box inside another
       # vertical box in other glade file.
       def self.root(root_widget_name)
-        create_fake_class_read_only_attribute(:root, root_widget_name)
-      end
-
-      # Returns the name of the root widget for this view.
-      def root
+        self.configured_root = root_widget_name
       end
 
       # Call this method at class level if the view should be built from a glade
       # file.
       def self.use_glade
-        create_fake_class_read_only_attribute(:use_glade, true)
+        self.configured_glade_usage = true
       end
 
       # This turns of the use of glade for this view class.
       def self.dont_use_glade
-        create_fake_class_read_only_attribute(:use_glade, false)
+        self.configured_glade_usage = false
       end
 
       # Builds a widget of the given type, possibly adding it to a parent
@@ -239,7 +253,7 @@ module RuGUI
       end
 
       def get_builder_file
-        filename = respond_to?(:builder_file) ? builder_file : "#{self.class.to_s.underscore}.glade"
+        filename = (not self.builder_file.nil?) ? self.builder_file : "#{self.class.to_s.underscore}.glade"
 
         # The builder file given may already contain a full path to a glade file.
         return filename if File.file?(filename)
@@ -274,20 +288,6 @@ module RuGUI
           target ||= other_target
           @glade.connect(source, target, signal_name, handler_name, signal_data) if target.respond_to?(handler_name)
         end
-      end
-
-      def self.create_fake_class_read_only_attribute(attribute_getter, attribute_value)
-        unless attribute_value.is_a?(String) || attribute_value.is_a?(Symbol)
-          attribute_value = attribute_value.to_s
-        else
-          attribute_value = "'#{attribute_value}'"
-        end
-
-        self.class_eval <<-class_eval
-          def #{attribute_getter}
-            #{attribute_value}
-          end
-        class_eval
       end
 
       def create_attribute_for_widget(widget_name)
