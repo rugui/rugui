@@ -39,6 +39,7 @@ module RuGUI
 
     # This class is a representation of RuGUI plugins.
     class Location
+      attr_accessor :plugin_name
       attr_accessor :dir
       attr_accessor :loaded
 
@@ -46,6 +47,7 @@ module RuGUI
 
       def initialize(dir)
         self.dir = dir
+        self.plugin_name = dir.split(File::SEPARATOR).last
       end
 
       # Load plugins.
@@ -55,10 +57,16 @@ module RuGUI
 
         init_file = File.expand_path(File.join(self.dir, "init.rb"))
         if File.exist?(init_file)
-          require init_file
+          require_for init_file
         else
-          logger.warn "The init.rb of plugin (#{self.dir}) was not found."
+          logger.warn "The init file for (#{self.plugin_name}) was not found."
         end
+      end
+
+      def require_for(init_file)
+        require init_file
+      rescue Exception
+        logger.error "An error occurred while loading #{self.plugin_name}. Checks its init file: #{$!}"
       end
 
       def loaded?
