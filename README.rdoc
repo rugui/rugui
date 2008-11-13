@@ -1,0 +1,68 @@
+= RuGUI
+
+RuGUI is a framework which aims to help building desktop applications using the
+great Ruby/GTK API. RuGUI was mostly inspired by the *Ruby on Rails* framework,
+taking most of its features from it.
+
+RuGUI approach is to provide a MVC design for the application, separating
+business logic from application presentation, making it easy to maintain and
+evolve the application.
+
+Also, a Observer/Observable pattern is implemented so that you can define
+observable properties in your model which are observed by controllers that
+should react to changes in the model. This makes the application code even more
+clean when dealing with applications that have multiple data entry points. For
+example, when receiving data from a network one may update a value in a model,
+and the controller will update all needed widgets (progress bars, labels, status
+bar, etc).
+
+== Instalation
+
+Download the source from:
+
+    http://github.com/intelitiva/rugui/tree/master
+
+Next, build and install the gem:
+
+    gem build rugui.gemspec
+    gem install rugui-X.X.X.gem
+
+To check if the installation was successful type in a console:
+
+    rugui -v
+
+== Dependencies
+
+RuGUI depends, of course, on Ruby/GTK. It is known to work on Linux and Windows
+plataforms. It also depends on the ActiveSupport gem, which can be installed by:
+
+    gem install activesupport
+
+== Generating an Application
+
+To generate an application, go to the directory where you want to create the
+application and type:
+
+    rugui <app_name>
+
+You can get help by typing:
+
+    rugui -h
+
+If you want your application to support RSpec you may add '-s' or '--use-spec'
+option, when generating the application:
+
+    rugui -s <app_name>
+
+or
+
+    rugui --use-spec <app_name>
+
+Finally, if you want to create the application in a different directory, pass it
+as a last argument:
+
+    rugui <app_name> <dest_dir>
+
+== More info
+
+http://github.com/intelitiva/rugui
