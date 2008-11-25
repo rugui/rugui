@@ -69,7 +69,7 @@ namespace :test do
 
   Rake::TestTask.new(:libs) do |t|
     t.libs << "test"
-    t.pattern = 'test/libs/**/*_test.rb'
+    t.pattern = 'test/lib/**/*_test.rb'
     t.verbose = true
   end
   Rake::Task['test:libs'].comment = "Run the libs tests in test/unit"

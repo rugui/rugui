@@ -19,7 +19,7 @@ module RuGUI
     def logger
       @logger || setup_logger
     end
-
+    
     protected
       #
       # Setup a new log support object. If a problem occurs a logger is setted up
@@ -28,14 +28,14 @@ module RuGUI
       def setup_logger(classname = nil, output = nil, level = nil, format = nil)
         begin
           logr = Logger.new(defined_output(output))
+          logr.formatter = RuGUI::LogSupport::Formatter.new(defined_classname(classname))
           logr.level = defined_level(level)
-          logr.classname = defined_classname(classname)
         rescue StandardError => e
           logr = Logger.new(OUTPUTS[:stderr])
           logr.level = LEVELS[:warn]
           logr.datetime_format = defined_format(format)
           logr.warn "Log support problems: The log level has been raised to WARN and the output directed to STDERR until the problem is fixed."
-          logr.error e.backtrace.join("\n")
+          logr.error "#{e} #{e.backtrace.join("\n")}"
         end
         logr
       end
@@ -106,17 +106,16 @@ module RuGUI
       DEFAULT_OUTPUT = OUTPUTS[:stdout]
       DEFAULT_LEVEL = LEVELS[:debug]
       DEFAULT_FORMAT = "%Y-%m-%d %H:%M:%S"
-  end
-end
+      
+      class Formatter
+        def initialize(classname = nil)
+          @classname = classname
+        end
 
-class Logger
-  attr_accessor :classname
-
-  #
-  # Hack Hack Hack
-  #
-  def format_message(severity, timestamp, progname, msg)
-    timestamp = timestamp.strftime(RuGUI.configuration.logger[:format] || "%Y-%m-%d %H:%M:%S")
-    "#{timestamp} (#{severity}) (#{classname}) #{msg}\n"
+        def call(severity, timestamp, progname, msg)
+          timestamp = timestamp.strftime(RuGUI.configuration.logger[:format] || "%Y-%m-%d %H:%M:%S")
+          "#{timestamp} (#{severity}) (#{@classname}) #{msg}\n"
+        end
+      end
   end
 end
