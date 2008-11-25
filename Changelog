@@ -4,6 +4,7 @@
 - Added method setup_view_helpers in BaseView, so that one can register more helpers if needed.
 - Fixed a bug where named observable property change methods were not being called when an observable property was changed.
 - Added plugins support
+- Added :prevent_reset option to observable properties.
 
 0.3.0
 - PropertyObserver was receiving notifications from named observables even when the name of the observer was the same as the class name.

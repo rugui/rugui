@@ -128,7 +128,21 @@ describe RuGUI::ObservablePropertySupport do
 
       @observable.my_hash_observable_property[:foo] = 'bar'
       AnotherFakeObservable.observable_properties_options[:my_hash_observable_property][:initial_value].should == {}
-     AnotherFakeObservable.observable_properties_options[:my_hash_observable_property][:reset_value].should == {}
+      AnotherFakeObservable.observable_properties_options[:my_hash_observable_property][:reset_value].should == {}
+    end
+    
+    it "should prevent properties from being reset if configured" do
+      observable = ResetPreventedFakeObservable.new
+      observable.reset_prevented_observable_property = 'bar'
+      observable.reset!
+      observable.reset_prevented_observable_property.should == 'bar'
+    end
+    
+    it "should prevent properties from being reset even if a :reset_value was configured" do
+      observable = ResetPreventedFakeObservable.new
+      observable.reset_prevented_with_reset_value_observable_property = 'bar'
+      observable.reset!
+      observable.reset_prevented_with_reset_value_observable_property.should == 'bar'
     end
   end
   

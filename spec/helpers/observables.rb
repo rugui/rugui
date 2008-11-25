@@ -63,6 +63,16 @@ class CustomTypeFakeObservable
   end
 end
 
+class ResetPreventedFakeObservable
+  include RuGUI::ObservablePropertySupport
+  
+  observable_property :reset_prevented_observable_property, :prevent_reset => true
+  observable_property :reset_prevented_with_reset_value_observable_property, :reset_value => 'foo', :prevent_reset => true
+  
+  def to_s
+    self.class.name
+  end
+end
 
 class FakeObservableForPropertyObserverTest
   include RuGUI::ObservablePropertySupport

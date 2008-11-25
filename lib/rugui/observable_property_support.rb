@@ -59,15 +59,18 @@ module RuGUI
     # 
     # By calling <code>reset!</code> all observable properties are reset to the
     # values specified when creating it. Also if the property respond to reset
-    # the method will be called, unless the *reset_value*, specified when
-    # declaring the observable property, is not <code>nil</code>.
+    # the method will be called, unless a *reset_value* is configured, i.e., it
+    # is not <code>nil</code>. Also, if *prevent_reset* is true, that property
+    # will not be reseted, even if it has a *reset_value* configured.
     def reset!
       self.class.observable_properties_options.each do |property, options|
-        property_value = send(property)
-        if options[:reset_value].nil? and property_value.respond_to?(:reset!)
-          property_value.reset!
-        else
-          send("#{property}=", clone_if_possible(options[:reset_value]))
+        unless options[:prevent_reset]
+          property_value = send(property)
+          if options[:reset_value].nil? and property_value.respond_to?(:reset!)
+            property_value.reset!
+          else
+            send("#{property}=", clone_if_possible(options[:reset_value]))
+          end
         end
       end
     end
@@ -109,6 +112,8 @@ module RuGUI
       # <code>initial_value</code> will be used instead.
       # - *core*: Defines whether the property should be used when comparing two
       # observables. Defaults to <code>false</code>.
+      # - *prevent_reset*: If this is <code>true</code> the property will not be
+      # reseted. Defaults to false.
       # 
       # Examples:
       # 
@@ -118,6 +123,7 @@ module RuGUI
       #     observable_property :foo, :initial_value => "bar"
       #     observable_property :bar, :initial_value => "foo", :reset_value => "bar"
       #     observable_property :core_property, :core => true
+      #     observable_property :non_resetable_property, :prevent_reset => true
       #     
       #     # And so on...
       #   end
