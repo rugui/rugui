@@ -141,6 +141,11 @@ module RuGUI
         core_observable_properties
       end
       
+      # Returns the names of all observable properties for this class.
+      def observable_properties
+        observable_properties_options.keys
+      end
+      
       private
         def create_observable_property_options(property, options = {})
           self.observable_properties_options[property.to_sym] = prepare_options(options)
