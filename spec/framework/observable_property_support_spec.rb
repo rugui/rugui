@@ -144,6 +144,19 @@ describe RuGUI::ObservablePropertySupport do
       observable.reset!
       observable.reset_prevented_with_reset_value_observable_property.should == 'bar'
     end
+    
+    it "should create 'question' methods for configured boolean properties" do
+      observable = BooleanPropertiesFakeObservable.new
+      observable.boolean_observable_property = true
+      observable.respond_to?(:boolean_observable_property?).should be_true
+      observable.boolean_observable_property?.should be_true
+    end
+    
+    it "should not create 'question' methods for non boolean properties" do
+      observable = BooleanPropertiesFakeObservable.new
+      observable.non_boolean_observable_property = "any other value"
+      observable.respond_to?(:non_boolean_observable_property?).should be_false
+    end
   end
   
   describe "with two instances comparison" do

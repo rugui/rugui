@@ -74,6 +74,17 @@ class ResetPreventedFakeObservable
   end
 end
 
+class BooleanPropertiesFakeObservable
+  include RuGUI::ObservablePropertySupport
+  
+  observable_property :boolean_observable_property, :boolean => true
+  observable_property :non_boolean_observable_property
+  
+  def to_s
+    self.class.name
+  end
+end
+
 class FakeObservableForPropertyObserverTest
   include RuGUI::ObservablePropertySupport
   

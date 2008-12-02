@@ -114,6 +114,9 @@ module RuGUI
       # observables. Defaults to <code>false</code>.
       # - *prevent_reset*: If this is <code>true</code> the property will not be
       # reseted. Defaults to false.
+      # - *boolean*: If this is <code>true</code> a "question" method will be
+      # created for the property (i.e., for a property named <code>foo</code>
+      # a method named <code>foo?</code> will be created).
       # 
       # Examples:
       # 
@@ -130,6 +133,7 @@ module RuGUI
       def observable_property(property, options = {})
         create_observable_property_options(property, options)
         create_observable_property_accessors(property)
+        create_observable_property_boolean_readers(property, options)
       end
       
       # Returns the names of core observable properties for this class.
@@ -165,6 +169,16 @@ module RuGUI
               end
             end
           class_eval
+        end
+        
+        def create_observable_property_boolean_readers(property, options)
+          if options[:boolean]
+            self.class_eval <<-class_eval
+              def #{property}?
+                self.#{property}
+              end
+            class_eval
+          end
         end
         
         def prepare_options(options)
