@@ -177,4 +177,38 @@ describe RuGUI::ObservablePropertySupport do
       some_other_observable1.should_not == some_other_observable2
     end
   end
+  
+  describe "with observable properties copy" do
+    before(:each) do
+      @parent = ParentFakeObservable.new
+      @child = ChildFakeObservable.new
+      @parent.child_observable_property = @child
+      
+      @parent.my_own_observable_property = "parent"
+      @child.my_observable_property = "child"
+      
+      @another_parent = ParentFakeObservable.new
+      @another_child = ChildFakeObservable.new
+      @another_parent.child_observable_property = @another_child
+      
+      @another_parent.my_own_observable_property = "another_parent"
+      @another_child.my_observable_property = "another child"
+    end
+    
+    it "should copy all observable properties from observables which have common properties" do
+      @parent.copy_observable_properties_from(@another_parent)
+      @parent.my_own_observable_property.should == @another_parent.my_own_observable_property
+    end
+    
+    it "should perform deep copy of observable properties which holds observables" do
+      @parent.copy_observable_properties_from(@another_parent)
+      @parent.child_observable_property.should == @another_parent.child_observable_property
+    end
+    
+    it "should not perform deep copy if 'deep' parameter is false" do
+      @parent.copy_observable_properties_from(@another_parent, false)
+      @parent.my_own_observable_property.should == @another_parent.my_own_observable_property
+      @parent.child_observable_property.should_not == @another_parent.child_observable_property
+    end
+  end
 end

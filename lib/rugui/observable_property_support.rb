@@ -89,6 +89,20 @@ module RuGUI
         return true
       end
     end
+    
+    # Copies all observable properties from _other_observable_ to _self_
+    def copy_observable_properties_from(other_observable, deep = true)
+      self.class.observable_properties.each do |property|
+        if other_observable.respond_to?(property)
+          other_property_value = other_observable.send(property)
+          if other_property_value.class.include?(ObservablePropertySupport)
+            send(property).copy_observable_properties_from(other_property_value) if deep
+          else
+            send("#{property}=", other_property_value)
+          end
+        end
+      end
+    end
 
     module ClassMethods
       # Creates the necessary class inheritable attributes an initializes them.

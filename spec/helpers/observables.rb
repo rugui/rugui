@@ -85,6 +85,27 @@ class BooleanPropertiesFakeObservable
   end
 end
 
+class ParentFakeObservable
+  include RuGUI::ObservablePropertySupport
+  
+  observable_property :my_own_observable_property
+  observable_property :child_observable_property
+  
+  def to_s
+    self.class.name
+  end
+end
+
+class ChildFakeObservable
+  include RuGUI::ObservablePropertySupport
+  
+  observable_property :my_observable_property, :core => true
+  
+  def to_s
+    self.class.name
+  end
+end
+
 class FakeObservableForPropertyObserverTest
   include RuGUI::ObservablePropertySupport
   
