@@ -43,8 +43,7 @@ module RuGUI
 
     def initialize
       disable_inspect
-      initialize_logger self.class.to_s
-
+      
       @controllers = {}
       @helpers = {}
       @unnamed_widgets = []

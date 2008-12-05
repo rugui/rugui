@@ -13,10 +13,4 @@ describe RuGUI::LogSupport do
     @my_object_with_log_support.respond_to?(:logger).should be_true
     @my_object_with_log_support.logger.should be_an_instance_of(Logger)
   end
-  
-  it "should set logger properties if it is initialized" do
-    @my_object_with_log_support.initialize_logger("MyDifferentClassName", :stdout, :debug, "%Y-%M-%D %H:%I:%S")
-    @my_object_with_log_support.respond_to?(:logger).should be_true
-    @my_object_with_log_support.logger.should be_an_instance_of(Logger)
-  end
 end

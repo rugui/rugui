@@ -100,7 +100,7 @@ module RuGUI
     end
 
     def load_logger
-      initialize_logger(self.class.name, configuration.logger[:output], configuration.logger[:level], configuration.logger[:format]) unless @@processed
+      RuGUILogger.logger
     end
 
     def start_initialization_process_log

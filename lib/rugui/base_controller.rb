@@ -18,8 +18,7 @@ module RuGUI
 
     def initialize(parent_controller = nil)
       disable_inspect
-      initialize_logger self.class.to_s
-
+      
       @models = {}
       @views = {}
       @controllers = {}

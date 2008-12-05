@@ -7,7 +7,6 @@ module RuGUI
     
     def initialize
       disable_inspect
-      initialize_logger self.class.to_s
       initialize_observable_property_support
     end
     

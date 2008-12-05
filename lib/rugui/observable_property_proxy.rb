@@ -23,8 +23,7 @@ module RuGUI
 
     def initialize(context, observable, property)
       disable_inspect
-      initialize_logger self.class.to_s
-
+      
       @context = context
       @observable = observable
       @property = property
