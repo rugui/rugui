@@ -103,6 +103,11 @@ module RuGUI
         end
       end
     end
+    
+    # Returns a map of all observable properties with theirs values.
+    def observable_properties
+      self.class.observable_properties.inject({}) { |properties, property| properties.merge!({ property => send(property) }) }
+    end
 
     module ClassMethods
       # Creates the necessary class inheritable attributes an initializes them.

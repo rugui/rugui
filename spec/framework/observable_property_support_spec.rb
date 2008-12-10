@@ -211,4 +211,24 @@ describe RuGUI::ObservablePropertySupport do
       @parent.child_observable_property.should_not == @another_parent.child_observable_property
     end
   end
+  
+  describe "with observable properties mapped in an instance" do
+    before(:each) do
+      @observable = SomeOtherFakeObservable.new
+      @observable.first_core_observable_property = "first value"
+      @observable.second_core_observable_property = "second value"
+      @observable.another_observable_property = "another observable value"
+
+      @mock_observable_properties = { 
+        :first_core_observable_property => "first value", 
+        :second_core_observable_property => "second value", 
+        :another_observable_property => "another observable value"
+      }
+    end
+    
+    it "should return a map of all observable properties with theirs values" do
+      @observable.observable_properties.should == @mock_observable_properties
+    end
+  end
+  
 end
