@@ -249,5 +249,13 @@ describe RuGUI::ObservablePropertySupport do
         observable.observable_properties.should == @another_mock_observable_properties 
       end
     end
+    
+    describe "updating observable properties values" do
+      it "should update values" do
+        observable = SomeOtherFakeObservable.new :another_observable_property => "fake data"
+        observable.update_observable_properties({ :another_observable_property => "another" })
+        observable.observable_properties.should == @another_mock_observable_properties
+      end
+    end
   end  
 end

@@ -109,6 +109,11 @@ module RuGUI
     def observable_properties
       self.class.observable_properties.inject({}) { |properties, property| properties.merge!({ property => send(property) }) }
     end
+    
+    # Update observable properties values given a map of values
+    def update_observable_properties(values = {})
+      values.each { |property, value| send("#{property}=", value) if self.respond_to?(property) }
+    end
 
     module ClassMethods
       # Creates the necessary class inheritable attributes an initializes them.
