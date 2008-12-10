@@ -6,8 +6,8 @@ module RuGUI
   # Adds support to observable properties.
   module ObservablePropertySupport
     # Initializes the observable properties. If you override this method, make
-    # sure to call the <code>initialize_observable_property_support</code>
-    # method, so that observable properties gets initialized.
+    # sure that you call the <code>initialize_observable_property_support</code>
+    # method, so that the observable properties are initialized.
     def initialize(observable_properties_values = {})
       initialize_observable_property_support(observable_properties_values)
     end
@@ -118,7 +118,7 @@ module RuGUI
         self.observable_properties_options = {}
       end
       
-      # Register one or more observable properties for this model.
+      # Register a observable properties for this model.
       # 
       # Properties may be given as symbols, or strings. You can pass some
       # options, in a hash, which will be used when the observable is created:
@@ -128,7 +128,7 @@ module RuGUI
       # <code>initialize</code> method is called). Defaults to <code>nil</code>.
       # - *reset_value*: The reset value for the property. This value will be
       # set when the observable instance is reset (i.e., when the
-      # <code>reset</code> method is called). If this is not given the
+      # <code>reset!</code> method is called). If this is not given, the
       # <code>initial_value</code> will be used instead.
       # - *core*: Defines whether the property should be used when comparing two
       # observables. Defaults to <code>false</code>.
