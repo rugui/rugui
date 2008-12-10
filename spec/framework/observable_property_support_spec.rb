@@ -212,7 +212,7 @@ describe RuGUI::ObservablePropertySupport do
     end
   end
   
-  describe "with observable properties mapped in an instance" do
+  describe "with observable properties mapped for an instance" do
     before(:each) do
       @observable = SomeOtherFakeObservable.new
       @observable.first_core_observable_property = "first value"
@@ -224,11 +224,30 @@ describe RuGUI::ObservablePropertySupport do
         :second_core_observable_property => "second value", 
         :another_observable_property => "another observable value"
       }
+      
+      @another_mock_observable_properties = {
+        :another_observable_property => "another", 
+        :first_core_observable_property => "first", 
+        :second_core_observable_property => "second"      
+      }
     end
     
     it "should return a map of all observable properties with theirs values" do
       @observable.observable_properties.should == @mock_observable_properties
     end
-  end
-  
+
+    describe "with initial value in initialization method" do
+      it "should set observable properties values" do
+        observable = SomeOtherFakeObservable.new(@mock_observable_properties)
+        observable.observable_properties.should == @mock_observable_properties
+      end
+    end
+    
+    describe "without initial value in initialization method" do
+      it "should use :initial_value for observable properties values" do
+        observable = SomeOtherFakeObservable.new :another_observable_property => "another"
+        observable.observable_properties.should == @another_mock_observable_properties 
+      end
+    end
+  end  
 end

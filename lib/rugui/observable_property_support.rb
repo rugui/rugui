@@ -8,14 +8,15 @@ module RuGUI
     # Initializes the observable properties. If you override this method, make
     # sure to call the <code>initialize_observable_property_support</code>
     # method, so that observable properties gets initialized.
-    def initialize
-      initialize_observable_property_support
+    def initialize(observable_properties_values = {})
+      initialize_observable_property_support(observable_properties_values)
     end
     
     # Initializes observable properties, setting their initial value.
-    def initialize_observable_property_support
+    def initialize_observable_property_support(observable_properties_values = {})
       self.class.observable_properties_options.each do |property, options|
-        send("#{property}=", clone_if_possible(options[:initial_value]))
+        value = (observable_properties_values[property] || clone_if_possible(options[:initial_value]))
+        send("#{property}=", value)
       end
     end
     

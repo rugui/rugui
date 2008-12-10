@@ -5,9 +5,9 @@ module RuGUI
     include RuGUI::Utils::InspectDisabler
     include RuGUI::LogSupport
     
-    def initialize
+    def initialize(observable_properties_values = {})
       disable_inspect
-      initialize_observable_property_support
+      initialize_observable_property_support(observable_properties_values)
     end
     
     # Called after the view helper is registered in a view.
