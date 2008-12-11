@@ -200,7 +200,7 @@ module RuGUI
           if options[:boolean]
             self.class_eval <<-class_eval
               def #{property}?
-                self.#{property}
+                self.#{property} == true
               end
             class_eval
           end

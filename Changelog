@@ -11,6 +11,7 @@
 - Added :boolean options to observable properties, which automatically creates 'question' methods for the properties.
 - Added a method to copy all observable properties from one observable to another.
 - Fixed an issue which caused observable properties not to be copied when a hash with string keys was given when creating an observable or when updating its observable properties
+- Boolean observable properties 'question' accessors now can be used directly in if's
 
 0.3.0
 - PropertyObserver was receiving notifications from named observables even when the name of the observer was the same as the class name.
