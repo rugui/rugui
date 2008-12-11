@@ -257,5 +257,19 @@ describe RuGUI::ObservablePropertySupport do
         observable.observable_properties.should == @another_mock_observable_properties
       end
     end
+    
+    describe "with indifferent hash access" do
+      it "should accept property names with both string or symbol keys" do
+        observable = SomeOtherFakeObservable.new :another_observable_property => "fake data"
+        observable.another_observable_property.should == "fake data"
+        observable.update_observable_properties({ :another_observable_property => "another" })
+        observable.another_observable_property.should == "another"
+        
+        observable = SomeOtherFakeObservable.new 'another_observable_property' => "fake data"
+        observable.another_observable_property.should == "fake data"
+        observable.update_observable_properties({ 'another_observable_property' => "another" })
+        observable.another_observable_property.should == "another"
+      end
+    end
   end  
 end

@@ -15,7 +15,7 @@ module RuGUI
     # Initializes observable properties, setting their initial value.
     def initialize_observable_property_support(observable_properties_values = {})
       self.class.observable_properties_options.each do |property, options|
-        value = (observable_properties_values[property] || clone_if_possible(options[:initial_value]))
+        value = (observable_properties_values.with_indifferent_access[property] || clone_if_possible(options[:initial_value]))
         send("#{property}=", value)
       end
     end
