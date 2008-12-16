@@ -1,7 +1,9 @@
+0.5.0
+
 0.4.0
 - Added a method to update observable properties values.
 - Added support to set initial values of observable properties while instancing an object, using a map (property + value).
-- Added a method to get all observable properties of an object with theirs values. 
+- Added a method to get all observable properties of an object with theirs values.
 - Using class_inheritable_accessor instead of using class variables for observable properties options in ObservablePropertySupport
 - Using class_inheritable_accessor instead of creating fake class attributes in BaseView
 - Added method setup_view_helpers in BaseView, so that one can register more helpers if needed.

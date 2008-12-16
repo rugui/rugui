@@ -2,7 +2,7 @@ require 'rake'
 
 Gem::Specification.new do |spec|
   spec.name = %q{rugui}
-  spec.version = "0.4.0"
+  spec.version = "0.5.0"
   spec.date = %q{2008-11-04}
   spec.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero"]
   spec.email = ["vicente.mundim@intelitiva.com", "felipe.mesquita@intelitiva.com", "claudio.escudero@intelitiva.com"]
