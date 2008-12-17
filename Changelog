@@ -1,5 +1,6 @@
 0.6.0
 - Added a method to quickly get the main controller from any BaseController.
+- Now the application generator creates a /bin directory with a bash and bat scripts to run the application
 
 0.5.0
 - Added a method to update observable properties values.

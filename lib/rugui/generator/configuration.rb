@@ -3,6 +3,8 @@ module RuGUI
     class Configuration
       def self.default_application_directory_structure
         [
+          # bin directory contains executables for the application.
+          'bin',
           # app directory contains the controllers, models, resources, and views.
           'app',
           'app/controllers',
@@ -66,6 +68,8 @@ module RuGUI
       
       def self.default_files_mapping
         [
+          file_mapping('bin', 'main_executable.erb', 0700, true),
+          file_mapping('bin', 'main_executable.bat.erb', 0700, true, '.bat'),
           file_mapping('app', 'main.rb', 0700),
           file_mapping('app/controllers', 'main_controller.rb'),
           file_mapping('app/controllers', 'application_controller.rb'),
@@ -100,8 +104,14 @@ module RuGUI
       end
       
       private
-        def self.file_mapping(destination, filename, mode = 0666)
-          { :destination => destination, :filename => filename, :mode => mode }
+        def self.file_mapping(destination, filename, mode = 0666, use_app_name_instead_of_filename = false, custom_extension = '')
+          return {
+            :destination => destination,
+            :filename => filename,
+            :mode => mode,
+            :use_app_name_instead_of_filename => use_app_name_instead_of_filename,
+            :custom_extension => custom_extension
+          }
         end
     end
   end
