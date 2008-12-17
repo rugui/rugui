@@ -8,7 +8,7 @@
 # config.logger[:output] = :stderr
 # config.logger[:output] = "development.log" # or the name of log file located at APPLICATION_ROOT/log.
 #
-config.logger[:output] = "production.log
+config.logger[:output] = "production.log"
 
 # The level for logging. You can use :debug, :info, :warn, :error or :fatal
 # That is the sequence of severity. Defaults to :info.
