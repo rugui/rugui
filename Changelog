@@ -2,8 +2,6 @@
 - Added a method to quickly get the main controller from any BaseController.
 
 0.5.0
-
-0.4.0
 - Added a method to update observable properties values.
 - Added support to set initial values of observable properties while instancing an object, using a map (property + value).
 - Added a method to get all observable properties of an object with theirs values.
@@ -11,12 +9,14 @@
 - Using class_inheritable_accessor instead of creating fake class attributes in BaseView
 - Added method setup_view_helpers in BaseView, so that one can register more helpers if needed.
 - Fixed a bug where named observable property change methods were not being called when an observable property was changed.
-- Added plugins support
 - Added :prevent_reset option to observable properties.
 - Added :boolean options to observable properties, which automatically creates 'question' methods for the properties.
 - Added a method to copy all observable properties from one observable to another.
 - Fixed an issue which caused observable properties not to be copied when a hash with string keys was given when creating an observable or when updating its observable properties
 - Boolean observable properties 'question' accessors now can be used directly in if's
+
+0.4.0
+- Added plugins support
 
 0.3.0
 - PropertyObserver was receiving notifications from named observables even when the name of the observer was the same as the class name.
