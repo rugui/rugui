@@ -88,6 +88,18 @@ module RuGUI
     def post_registration
     end
 
+    # Returns the main controller instance.
+    #
+    # This is an useful way to quickly access the main controller from any other
+    # controller. Since applications may have only one main controller and it is
+    # always the 'root' of the tree of controllers, this provides indirect
+    # access to any other controller in the application.
+    #
+    # NOTE: The main controller is cached, so that subsequent calls are faster.
+    def main_controller
+      @main_controller ||= find_main_controller
+    end
+
     protected
       #
       # Subclasses should reimplement this to register models.
@@ -134,6 +146,18 @@ module RuGUI
             @#{entity}[:#{name}]
           end
         class_eval
+      end
+      
+      # Navigates through the controllers hierarchy trying to find the main
+      # controller (i.e., a class that extends RuGUI::BaseMainController).
+      def find_main_controller
+        if self.parent_controller.is_a?(RuGUI::BaseMainController)
+          self.parent_controller
+        elsif self.parent_controller == self
+          return nil
+        else
+          self.parent_controller.main_controller
+        end
       end
   end
 

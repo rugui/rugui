@@ -1,3 +1,6 @@
+0.6.0
+- Added a method to quickly get the main controller from any BaseController.
+
 0.5.0
 
 0.4.0
