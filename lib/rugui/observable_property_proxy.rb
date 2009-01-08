@@ -4,7 +4,7 @@ module RuGUI
   # When creating an <code>ObservablePropertyProxy</code> you pass an
   # instance of any object to it (which will now be the context for this
   # proxy), the observable and the property name.
-  # 
+  #
   # The <code>ObservablePropertyProxy</code> instance will work as a
   # proxy for each method send to the context. If the context is changed,
   # it will notify any <code>PropertyObservers</code> registered for its
@@ -23,7 +23,7 @@ module RuGUI
 
     def initialize(context, observable, property)
       disable_inspect
-      
+
       @context = context
       @observable = observable
       @property = property
