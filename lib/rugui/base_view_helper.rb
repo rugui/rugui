@@ -9,7 +9,10 @@ module RuGUI
       disable_inspect
       initialize_observable_property_support(observable_properties_values)
     end
-    
+
+    # This is included here so that the initialize method is properly updated.
+    include RuGUI::InitializeHooks
+
     # Called after the view helper is registered in a view.
     def post_registration(view)
     end

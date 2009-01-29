@@ -1,6 +1,10 @@
 # Defines some controllers used in specs.
 
+require File.join(File.expand_path(File.dirname(__FILE__)), 'initialize_hooks_helper')
+
 class MyController < RuGUI::BaseController
+  include InitializeHooksHelper
+
   attr_accessor :message
   
   def setup_views

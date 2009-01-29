@@ -1,6 +1,10 @@
 # Defines some views used in specs.
 
+require File.join(File.expand_path(File.dirname(__FILE__)), 'initialize_hooks_helper')
+
 class MyView < RuGUI::BaseView
+  include InitializeHooksHelper
+
   use_glade
   builder_file File.join(File.dirname(__FILE__), '..', 'resource_files', 'my_view.glade')
   root :top_window

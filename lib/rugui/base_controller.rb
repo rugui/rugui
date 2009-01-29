@@ -34,6 +34,9 @@ module RuGUI
       setup_controllers
     end
 
+    # This is included here so that the initialize method is properly updated.
+    include RuGUI::InitializeHooks
+
     #
     # Registers a model for this controller.
     #

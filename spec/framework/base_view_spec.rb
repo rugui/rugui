@@ -73,4 +73,12 @@ describe RuGUI::BaseView do
       @my_view.message.should == "Property message of my_other_view_helper_instance changed from Some label in the middle to foo"
     end
   end
+
+  describe "with initialization hooks" do
+    it "should call before initialize and after initialize methods" do
+      view = MyView.new
+      view.before_initialize_called?.should be_true
+      view.after_initialize_called?.should be_true
+    end
+  end
 end

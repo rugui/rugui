@@ -37,4 +37,12 @@ describe RuGUI::BaseController do
       @controller.controllers[:my_child_controller].should == @controller.my_child_controller
     end
   end
+
+  describe "with initialization hooks" do
+    it "should call before initialize and after initialize methods" do
+      controller = MyController.new
+      controller.before_initialize_called?.should be_true
+      controller.after_initialize_called?.should be_true
+    end
+  end
 end

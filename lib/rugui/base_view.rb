@@ -55,6 +55,9 @@ module RuGUI
       setup_widgets
     end
 
+    # This is included here so that the initialize method is properly updated.
+    include RuGUI::InitializeHooks
+
     # Reimplement this method to create widgets by hand.
     def setup_widgets
     end
