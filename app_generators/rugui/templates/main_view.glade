@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Tue Nov  4 15:43:41 2008 -->
+<glade-interface>
+  <widget class="GtkWindow" id="main_window">
+    <property name="visible">True</property>
+    <property name="title" translatable="yes">Hello World!</property>
+    <signal name="delete_event" handler="on_main_window_delete_event"/>
+    <child>
+      <widget class="GtkVBox" id="main_container">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkLabel" id="message_label">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Just a simple label</property>
+          </widget>
+        </child>
+        <child>
+          <widget class="GtkButton" id="hello_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="label" translatable="yes">Click Me</property>
+            <property name="response_id">0</property>
+            <signal name="clicked" handler="on_hello_button_clicked"/>
+          </widget>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>
