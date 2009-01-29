@@ -1,19 +1,17 @@
 #!/usr/bin/env ruby
 
-require File.expand_path(File.dirname(__FILE__) + '/../lib/rugui/version')
-if %w(--version -v).include? ARGV.first
-  puts "RuGUI #{RuGUI::VERSION::STRING}"
+require 'rubygems'
+require 'rubigen'
+
+if %w(-v --version).include? ARGV.first
+  require 'rugui/version'
+  puts "#{File.basename($0)} #{Rugui::VERSION}"
   exit(0)
 end
 
-if %w(--help -h).include? ARGV.first
-  puts "A script to generate RuGUI applications."
-  puts ""
-  puts "USAGE: rugui [-h/--help] [-v/--version] [-s/--use-spec] <application_name> [<destination_directory>]"
-  exit(0)
-end
-
-use_spec = %w(--use-spec -s).include?(ARGV.first)
-
-require File.expand_path(File.dirname(__FILE__) + '/../lib/rugui/generator/base')
-RuGUI::Generator::Base.generate(:app, :use_spec => use_spec)
+require 'rubigen/scripts/generate'
+source = RubiGen::PathSource.new(:application, 
+  File.join(File.dirname(__FILE__), "../app_generators"))
+RubiGen::Base.reset_sources
+RubiGen::Base.append_sources source
+RubiGen::Scripts::Generate.new.run(ARGV, :generator => 'rugui')
