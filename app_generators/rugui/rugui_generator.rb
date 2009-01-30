@@ -49,6 +49,10 @@ class RuguiGenerator < RubiGen::Base
         m.file "#{file}.rb.sample", "config/environments/#{file}.rb.sample"
       end
 
+      # bin/
+      m.template "main_executable.bat.erb", "bin/#{@name}.bat", :assigns => { :application_root => @name }
+      m.file "main_executable.erb", "bin/#{@name}"
+
       # test/
       if @test_suite.include?("unit")
         TEST_DIRS.each { |path| m.directory path }
