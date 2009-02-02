@@ -1,3 +1,11 @@
 class <%= view_name %>View < ApplicationView
-  # Add your stuff here.
+  <%- if uses_glade -%>
+    use_glade
+    # Add your stuff here.
+  <%- else -%>
+  # Setup widgets for the view
+  def setup_widgets
+    # Add your stuff here.
+  end
+  <%- end -%>
 end
