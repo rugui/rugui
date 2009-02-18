@@ -17,13 +17,10 @@ module RuGUI
   # comparing keys, and for some unknown reason it is always returning false
   # when comparing observable string properties.
   #
-  class ObservablePropertyProxy
-    include RuGUI::Utils::InspectDisabler
+  class ObservablePropertyProxy < BaseObject
     include RuGUI::LogSupport
 
     def initialize(context, observable, property)
-      disable_inspect
-
       @context = context
       @observable = observable
       @property = property

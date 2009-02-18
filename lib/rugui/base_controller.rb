@@ -6,9 +6,8 @@ module RuGUI
   #
   # Base class for all controllers.
   #
-  class BaseController
+  class BaseController < BaseObject
     include RuGUI::PropertyObserver
-    include RuGUI::Utils::InspectDisabler
     include RuGUI::LogSupport
 
     attr_accessor :models
@@ -17,8 +16,6 @@ module RuGUI
     attr_accessor :parent_controller
 
     def initialize(parent_controller = nil)
-      disable_inspect
-      
       @models = {}
       @views = {}
       @controllers = {}

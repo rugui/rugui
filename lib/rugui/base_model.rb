@@ -1,13 +1,9 @@
-require 'rugui/utils'
-
 module RuGUI
-  class BaseModel
+  class BaseModel < BaseObject
     include RuGUI::ObservablePropertySupport
-    include RuGUI::Utils::InspectDisabler
     include RuGUI::LogSupport
     
     def initialize(observable_properties_values = {})
-      disable_inspect
       initialize_observable_property_support(observable_properties_values)
     end
 

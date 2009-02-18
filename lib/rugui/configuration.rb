@@ -40,11 +40,6 @@ module RuGUI
     # A hash of application specific configurations.
     attr_accessor :application
     
-    # When debugging applications that have a lot of models it is recommended to
-    # disable inspect method in models, views, and controllers. By default it is
-    # enabled.
-    attr_accessor :disable_inspect
-
     def initialize
       set_root_path!
 
@@ -53,7 +48,6 @@ module RuGUI
       self.glade_files_paths = default_glade_files_paths
       self.styles_paths = default_styles_paths
       self.queue_timeout = default_queue_timeout
-      self.disable_inspect = default_disable_inspect
       self.logger = {}
       self.application = {}
     end
@@ -100,10 +94,6 @@ module RuGUI
 
       def default_queue_timeout
         50
-      end
-      
-      def default_disable_inspect
-        false
       end
   end
 end

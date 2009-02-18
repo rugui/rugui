@@ -29,8 +29,7 @@ module RuGUI
   #       # do your hand-made code here...
   #     end
   #   end
-  class BaseView
-    include RuGUI::Utils::InspectDisabler
+  class BaseView < BaseObject
     include RuGUI::LogSupport
     include RuGUI::PropertyObserver
 
@@ -42,8 +41,6 @@ module RuGUI
     class_inheritable_accessor :configured_glade_usage
 
     def initialize
-      disable_inspect
-      
       @controllers = {}
       @helpers = {}
       @unnamed_widgets = []

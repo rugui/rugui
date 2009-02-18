@@ -1,4 +1,5 @@
 1.0.0
+- Created a RuGUI::BaseObject which implements the inspect method for RuGUI related objects.
 - Added some generators (for models, controllers and views with its resources).
 - Added support for before/after initialize hooks for Controller, View, ViewHelper and Model base classes.
 

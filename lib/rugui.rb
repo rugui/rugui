@@ -20,8 +20,8 @@ module RuGUI
 end
 
 require 'rugui/configuration'
-require 'rugui/utils'
 require 'rugui/log_support'
+require 'rugui/base_object'
 require 'rugui/observable_property_support'
 require 'rugui/property_observer'
 require 'rugui/initialize_hooks'
