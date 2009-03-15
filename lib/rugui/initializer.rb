@@ -1,8 +1,4 @@
-require 'activesupport'
-require 'gtk2'
-require 'rugui/configuration'
-require 'rugui/log_support'
-require 'rugui/plugin/loader'
+require 'rugui'
 
 module RuGUI
   class Initializer
@@ -44,10 +40,11 @@ module RuGUI
 
       set_load_path
       set_autoload_paths
-      set_styles_paths
       load_environment
 
       load_plugins
+
+      load_framework_adapter
 
       finish_initialization_process_log
      end
@@ -63,18 +60,6 @@ module RuGUI
     # Set the paths from which RuGUI will automatically load source files.
     def set_autoload_paths
       ActiveSupport::Dependencies.load_paths = configuration.load_paths.uniq
-    end
-
-    # Set the paths from which RuGUI will automatically load styles files,
-    # i.e., gtkrc files.
-    def set_styles_paths
-      styles_paths = configuration.styles_paths.select { |path| File.directory?(path) }
-      styles_paths.each do |path|
-        styles_dir = Dir.new(path)
-        styles_dir.each do |entry|
-          Gtk::RC.parse_string(get_style_file_contents(path, entry)) if is_style_file?(path, entry)
-        end
-      end
     end
 
     # Loads the environment specified by Configuration#environment_path, which
@@ -115,15 +100,8 @@ module RuGUI
       @plugin_loader || RuGUI::Plugin::Loader.new(self, configuration)
     end
 
-    private
-      def is_style_file?(path, filename)
-        if File.file?(File.join(path, filename))
-          File.extname(filename) == '.rc' or /gtkrc/.match(filename)
-        end
-      end
-
-      def get_style_file_contents(path, filename)
-        IO.read(File.join(path, filename)).sub('{ROOT_PATH}', configuration.root_path)
-      end
+    def load_framework_adapter
+      require "rugui/framework_adapters/#{RuGUI.configuration.framework_adapter}"
+    end
   end
 end

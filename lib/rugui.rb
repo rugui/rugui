@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'activesupport'
+
 module RuGUI
   class << self
     # The Configuration instance used to configure the RuGUI environment
@@ -21,6 +24,7 @@ end
 
 require 'rugui/configuration'
 require 'rugui/log_support'
+require 'rugui/plugin/loader'
 require 'rugui/framework_adapters/framework_adapter_support'
 require 'rugui/base_object'
 require 'rugui/observable_property_support'

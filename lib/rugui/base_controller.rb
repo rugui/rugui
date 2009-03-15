@@ -1,7 +1,3 @@
-require 'rubygems'
-require 'active_support'
-require 'gtk2'
-
 module RuGUI
   #
   # Base class for all controllers.

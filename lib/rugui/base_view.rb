@@ -1,14 +1,12 @@
-require 'rubygems'
-require 'active_support'
-require 'gtk2'
-require 'libglade2'
-
 module RuGUI
   # A base class for views.
   #
   # To use this class create a subclass, and reimplement #setup_widgets, if you
-  # want to create your interface by hand, or call #builder_file and #use_glade,
-  # if you want to have your interface created in a glade file.
+  # want to create your interface by hand.
+  # 
+  # If you are using GTK framework adapter (the default) you may call
+  # #builder_file and #use_glade, case you want to have your interface created
+  # by a glade file.
   #
   # The view may have ViewHelpers, which works as 'models' for views, i.e., they
   # have observable properties that can be observed by the view. A default
@@ -17,7 +15,7 @@ module RuGUI
   # named *MyViewHelper*. This helper can be accessed as a <code>helper</code>
   # attribute. Other helpers may be registered if needed.
   #
-  # Example:
+  # Example (using GTK framework adapter):
   #   class MyGladeView < RuGUI::BaseView
   #     builder_file 'my_file.glade'
   #     root :top_window
@@ -37,8 +35,8 @@ module RuGUI
     attr_reader :unnamed_widgets
     
     class_inheritable_accessor :configured_builder_file
+    class_inheritable_accessor :configured_builder_file_extension
     class_inheritable_accessor :configured_root
-    class_inheritable_accessor :configured_glade_usage
 
     def initialize
       @controllers = {}
@@ -48,7 +46,7 @@ module RuGUI
 
       register_default_helper
       setup_view_helpers
-      build_from_glade if use_glade
+      build_from_builder_file
       setup_widgets
     end
 
@@ -68,23 +66,31 @@ module RuGUI
     def setup_view_helpers
     end
 
+    # Adds the given widget to a container widget.
+    def add_widget_to_container(widget, container_widget_or_name)
+      self.framework_adapter.add_widget_to_container(widget, from_widget_or_name(container_widget_or_name))
+    end
+
+    # Adds the given widget to a container widget.
+    def remove_widget_from_container(widget, container_widget_or_name)
+      self.framework_adapter.remove_widget_from_container(widget, from_widget_or_name(container_widget_or_name))
+    end
+
     # Includes a view root widget inside the given container widget.
-    def include_view(container_widget, view)
-      raise RootWidgetNotSetForIncludedView, "You must set a root for included views." if view.root_widget.nil?
-      send(container_widget.to_s).add(view.root_widget)
+    def include_view(container_widget_name, view)
+      raise RootWidgetNotSetForIncludedView, "You must set a root for views to be included." if view.root_widget.nil?
+      add_widget_to_container(view.root_widget, container_widget_name)
     end
 
     # Removes a view root widget from the given container widget.
-    def remove_view(container_widget, view)
-      raise RootWidgetNotSetForIncludedView, "You must set a root for removed views." if view.root_widget.nil?
-      send(container_widget.to_s).remove(view.root_widget)
+    def remove_view(container_widget_name, view)
+      raise RootWidgetNotSetForIncludedView, "You must set a root for views to be removed." if view.root_widget.nil?
+      remove_widget_from_container(view.root_widget, container_widget_name)
     end
 
     # Removes all children from the given container widget
     def remove_all_children(container_widget)
-      container_widget.children.each do |child|
-        container_widget.remove(child)
-      end
+      self.framework_adapter.remove_all_children(container_widget)
     end
 
     # Registers a controller as receiver of signals from the view widgets.
@@ -110,71 +116,31 @@ module RuGUI
     def post_registration(controller)
     end
 
-    # Adds a signal handler for all widgets of the given type.
-    def add_signal_handler_for_widget_type(widget_type, signal, &block)
-      widgets = []
-      widgets.concat(@widgets.values.select { |widget| widget.kind_of?(widget_type) }) unless @widgets.empty?
-      widgets.concat(@unnamed_widgets.select { |widget| widget.kind_of?(widget_type) }) unless @unnamed_widgets.empty?
-
-      widgets.each do |widget|
-        widget.signal_connect(signal, &block)
-      end
-    end
-
     # Returns the root widget if one is set.
     def root_widget
       send(root.to_sym) if not root.nil?
     end
 
-    # Changes the widget style to use the given widget style.
-    #
-    # This widget style should be declared in a gtkrc file, by specifying a
-    # style using a widget path, such as:
-    #
-    #   widget "main_window" style "main_window_style"
-    #   widget "main_window_other" style "main_window_other_style"
-    #
-    # In this example, if you called this method like this:
-    #
-    #   change_widget_style(:main_window, 'main_window_other')
-    #   change_widget_style(self.main_window, 'main_window_other')     # or, passing the widget instance directly
-    #
-    # The widget style would be set to "main_window_other_style".
-    #
-    # NOTE: Unfortunately, gtk doesn't offer an API to get declared styles, so
-    # you must set a style to a widget. Since the widget name set in the style
-    # definition doesn't need to point to an existing widget we can use this
-    # to simplify the widget styling here.
-    def change_widget_style(widget_or_name, widget_path_style)
-      if widget_or_name.is_a?(Gtk::Widget)
-        widget = widget_or_name
-      else
-        widget = @glade[widget_or_name.to_s]
-      end
-      style = Gtk::RC.get_style_by_paths(Gtk::Settings.default, widget_path_style.to_s, nil, nil)
-      widget.style = style
-    end
-      
+    # Returns the builder file.
     def builder_file
       self.configured_builder_file
+    end
+
+    # Returns the builder file extension.
+    def builder_file_extension
+      self.configured_builder_file_extension
     end
 
     # Returns the name of the root widget for this view.
     def root
       self.configured_root.to_s unless self.configured_root.nil?
     end
-    
-    # Returns true if glade is being used, false otherwise.
-    def use_glade
-      self.configured_glade_usage
+
+    # Framework adapters should implement this if they support builder files.
+    def build_from_builder_file
     end
 
-    protected
-      # Sets the builder file to use when creating this view.
-      def self.builder_file(file)
-        self.configured_builder_file = file
-      end
-
+    class << self
       # Sets the name of the root widget for this view.
       #
       # This is specially useful when more than one view uses the same glade
@@ -185,42 +151,22 @@ module RuGUI
       # box, and then place elements inside this vertical box. Later, this glade
       # file is used to insert the contents of the vertical box inside another
       # vertical box in other glade file.
-      def self.root(root_widget_name)
+      def root(root_widget_name)
         self.configured_root = root_widget_name
       end
+    end
 
-      # Call this method at class level if the view should be built from a glade
-      # file.
-      def self.use_glade
-        self.configured_glade_usage = true
-      end
-
-      # This turns of the use of glade for this view class.
-      def self.dont_use_glade
-        self.configured_glade_usage = false
-      end
-
+    protected
       # Builds a widget of the given type, possibly adding it to a parent
       # widget, and display it.
       #
       # The *args are passed to the widget constructor.
       def build_widget(widget_type, widget_name = nil, parent = nil, *args)
         widget = widget_type.new(*args)
-        widget.name = widget_name.to_s unless widget_name.nil?
+        self.framework_adapter.set_widget_name(widget, widget_name)
         add_widget(widget, widget_name)
-        add_to_container(widget, parent) unless parent.nil?
+        add_widget_to_container(widget, parent) unless parent.nil?
         widget.show
-      end
-
-      # Adds the given widget to a container widget.
-      def add_to_container(widget, parent)
-        if parent.is_a?(String) || parent.is_a?(Symbol)
-          parent_widget = send(parent)
-        else
-          parent_widget = parent
-        end
-
-        parent_widget.add(widget)
       end
 
       # Adds the widget to the view.
@@ -241,62 +187,32 @@ module RuGUI
         end
       end
 
-    private
-      # Builds widgets from the specified glade file.
-      def build_from_glade
-        file = get_builder_file
-
-        if file.nil?
-          raise BuilderFileNotFoundError,
-            "Could not find builder file for view #{self.class}. Glade file paths: #{RuGUI.configuration.glade_files_paths.join(', ')}."
+      def from_widget_or_name(widget_or_name)
+        if widget_or_name.is_a?(String) || widget_or_name.is_a?(Symbol)
+          send(widget_or_name)
+        else
+          widget_or_name
         end
-
-        @glade = GladeXML.new(file, root, nil, nil, GladeXML::FILE)
-
-        @glade.widget_names.each do |widget_name|
-          create_attribute_for_widget(widget_name) unless @glade[widget_name].nil?
-        end
-
-        register_widgets
-        autoconnect_signals(self)
       end
 
+    private
       def get_builder_file
-        filename = (not self.builder_file.nil?) ? self.builder_file : "#{self.class.to_s.underscore}.glade"
+        filename = (not self.builder_file.nil?) ? self.builder_file : "#{self.class.to_s.underscore}.#{builder_file_extension}"
 
         # The builder file given may already contain a full path to a glade file.
         return filename if File.file?(filename)
 
-        filename = "#{filename}.glade" unless File.extname(filename) == ".glade"
+        filename = "#{filename}.#{builder_file_extension}" unless File.extname(filename) == ".#{builder_file_extension}"
 
-        paths = RuGUI.configuration.glade_files_paths.select do |path|
+        paths = RuGUI.configuration.builder_files_paths.select do |path|
           File.file?(File.join(path, filename))
         end
         File.join(paths.first, filename) unless paths.empty?
       end
 
-      # Registers widgets as attributes of the view class.
-      def register_widgets
-        @glade.widget_names.each do |widget_name|
-          unless @glade[widget_name].nil?
-            self.send("#{widget_name}=".to_sym, @glade[widget_name])
-            @widgets[widget_name] = @glade[widget_name]
-          end
-        end
-      end
-
       # Attempts to register the default helper for the view
       def register_default_helper
         register_helper("#{self.class.name}Helper", :helper)
-      end
-
-      # Auto connects the signals from the glade file with the signal handlers
-      # present in the given target.
-      def autoconnect_signals(other_target = nil)
-        @glade.signal_autoconnect_full do |source, target, signal_name, handler_name, signal_data, after|
-          target ||= other_target
-          @glade.connect(source, target, signal_name, handler_name, signal_data) if target.respond_to?(handler_name)
-        end
       end
 
       def create_attribute_for_widget(widget_name)
@@ -326,9 +242,6 @@ module RuGUI
       rescue NameError
         # Couldn't create instance.
       end
-
-      # By default we don't use glade.
-      dont_use_glade
   end
 
   # Exception thrown when the builder file for this view could not be found.

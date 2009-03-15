@@ -1,5 +1,6 @@
 nbproject
 nbproject/*
+log/**/*
 rugui-*.gem
 .loadpath
 .project

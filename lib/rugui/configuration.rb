@@ -20,8 +20,8 @@ module RuGUI
     # used directly.
     attr_accessor :logger
 
-    # An array of paths for glade files.
-    attr_accessor :glade_files_paths
+    # An array of paths for builder files.
+    attr_accessor :builder_files_paths
 
     # An array of paths which should be automaticaly loaded.
     attr_accessor :load_paths
@@ -50,7 +50,7 @@ module RuGUI
       self.environment = default_environment
       self.framework_adapter = default_framework_adapter
       self.load_paths = default_load_paths
-      self.glade_files_paths = default_glade_files_paths
+      self.builder_files_paths = default_builder_files_paths
       self.styles_paths = default_styles_paths
       self.queue_timeout = default_queue_timeout
       self.logger = {}
@@ -93,8 +93,8 @@ module RuGUI
         ).map { |dir| root_path.join(dir) }.select { |dir| File.directory?(dir) }
       end
 
-      def default_glade_files_paths
-        [root_path.join('app', 'resources', 'glade')]
+      def default_builder_files_paths
+        []
       end
 
       def default_styles_paths

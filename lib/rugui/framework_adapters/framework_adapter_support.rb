@@ -10,12 +10,7 @@ module RuGUI
       end
 
       def load_framework_adapter(class_name)
-        require adapter_module_file_path
         @framework_adapter[class_name] = class_adapter_for(class_name).new
-      end
-
-      def adapter_module_file_path(framework_adapter = RuGUI.configuration.framework_adapter)
-        "rugui/framework_adapters/#{framework_adapter}"
       end
 
       def adapter_module_name(framework_adapter = RuGUI.configuration.framework_adapter)
