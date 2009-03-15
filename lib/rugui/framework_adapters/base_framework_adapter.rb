@@ -25,14 +25,29 @@ module RuGUI
 
       # Adapts the BaseView methods specific for the framework
       class BaseView
-        
+        # Queues the block call, so that it is only gets executed in the main thread.
+        def queue(&block)
+        end
+
+        # Adds a widget to the given container widget.
+        def add_widget_to_container(widget, container_widget)
+        end
+
+        # Removes a widget from the given container widget.
+        def remove_widget_from_container(widget, container_widget)
+        end
+
+        # Removes all children from the given container widget.
+        def remove_all_children(container_widget)
+        end
+
+        # Sets the widget name for the given widget if given.
+        def set_widget_name(widget, widget_name)
+        end
       end
 
       # Adapts the BaseViewHelper methods specific for the framework
       class BaseViewHelper
-        # Queues the block call, so that it is only gets executed in the main thread.
-        def queue(&block)
-        end
       end
     end
   end
