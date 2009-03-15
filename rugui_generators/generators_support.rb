@@ -2,18 +2,18 @@ module GeneratorsSupport
   protected
     # Build controller templates.
     def build_controller_templates(m)
-      m.template "../../controller/templates/controller.erb", "app/controllers/#{@name.downcase}_controller.rb", :assigns => { :controller_name => @name.capitalize }
+      m.template "../../controller/templates/controller.erb", "app/controllers/#{@name.underscore}_controller.rb", :assigns => { :controller_name => @name.camelize }
     end
 
     # Build view templates.
     def build_view_templates(m)
       # app/views
-      m.template "../../view/templates/view.erb", "app/views/#{@name.downcase}_view.rb", :assigns => { :view_name => @name.capitalize, :uses_glade => uses_glade? }
+      m.template "../../view/templates/view.erb", "app/views/#{@name.underscore}_view.rb", :assigns => { :view_name => @name.camelize, :uses_glade => uses_glade? }
       # app/views/helpers
-      m.template "../../view/templates/view_helper.erb", "app/views/helpers/#{@name.downcase}_view_helper.rb", :assigns => { :view_name => @name.capitalize }
+      m.template "../../view/templates/view_helper.erb", "app/views/helpers/#{@name.underscore}_view_helper.rb", :assigns => { :view_name => @name.camelize }
       # app/resources/glade
       if uses_glade?
-        m.file glade_template, "app/resources/glade/#{@name.downcase}_view.glade"
+        m.file glade_template, "app/resources/glade/#{@name.underscore}_view.glade"
       end
     end
 

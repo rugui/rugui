@@ -13,7 +13,7 @@ class ModelGenerator < RubiGen::Base
 
   def manifest
     record do |m|
-      m.template "model.erb", "app/models/#{@name.downcase}.rb", :assigns => { :model_name => @name.capitalize }
+      m.template "model.erb", "app/models/#{@name.underscore}.rb", :assigns => { :model_name => @name.camelize }
     end
   end
 
