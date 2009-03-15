@@ -9,7 +9,12 @@ module RuGUI
 
     # This is included here so that the initialize method is properly updated.
     include RuGUI::InitializeHooks
-    
+
+    # Returns the framework_adapter for this class.
+    def framework_adapter
+      framework_adapter_for('BaseModel')
+    end
+
     # Called after the model is registered in a controller.
     def post_registration(controller)
     end

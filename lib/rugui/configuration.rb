@@ -10,6 +10,10 @@ module RuGUI
     # The environment for this application.
     attr_accessor :environment
 
+    # The framework adapter to be used for this application. Defaults to GTK.
+    # For now it can only be GTK.
+    attr_accessor :framework_adapter
+
     # The specific logger to use. By default, a logger will be created and
     # initialized using #log_path and #log_level, but a programmer may
     # specifically set the logger to use via this accessor and it will be
@@ -44,6 +48,7 @@ module RuGUI
       set_root_path!
 
       self.environment = default_environment
+      self.framework_adapter = default_framework_adapter
       self.load_paths = default_load_paths
       self.glade_files_paths = default_glade_files_paths
       self.styles_paths = default_styles_paths
@@ -68,6 +73,10 @@ module RuGUI
     private
       def default_environment
         ::RUGUI_ENV
+      end
+
+      def default_framework_adapter
+        'GTK'
       end
 
       def default_load_paths

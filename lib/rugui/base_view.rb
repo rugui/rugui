@@ -55,6 +55,11 @@ module RuGUI
     # This is included here so that the initialize method is properly updated.
     include RuGUI::InitializeHooks
 
+    # Returns the framework_adapter for this class.
+    def framework_adapter
+      framework_adapter_for('BaseView')
+    end
+
     # Reimplement this method to create widgets by hand.
     def setup_widgets
     end

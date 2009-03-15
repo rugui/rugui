@@ -34,6 +34,11 @@ module RuGUI
     # This is included here so that the initialize method is properly updated.
     include RuGUI::InitializeHooks
 
+    # Returns the framework_adapter for this class.
+    def framework_adapter
+      framework_adapter_for('BaseController')
+    end
+
     #
     # Registers a model for this controller.
     #
@@ -167,12 +172,17 @@ module RuGUI
   # Provides a method for running the application as well as a method to quit.
   #
   class BaseMainController < BaseController
+    # Returns the framework_adapter for this class.
+    def framework_adapter
+      framework_adapter_for('BaseMainController')
+    end
+
     #
     # Runs the application.
     #
     def run
       logger.info "Starting the application through #{self.class.name}."
-      Gtk.main_with_queue
+      self.framework_adapter.run
     end
 
     #
@@ -180,7 +190,7 @@ module RuGUI
     #
     def quit
       logger.info "Exiting the application through #{self.class.name}."
-      Gtk.main_quit
+      self.framework_adapter.quit
       logger.info "Application finished."
     end
   end

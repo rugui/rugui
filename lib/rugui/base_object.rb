@@ -4,6 +4,9 @@ module RuGUI
   # It mainly defines customized inspect which will display only some of the
   # instance variables, avoiding excessive overhead when generating tracebacks.
   class BaseObject
+    # All RuGUI objects can have access to framework adapters.
+    include RuGUI::FrameworkAdapters::FrameworkAdapterSupport
+
     # Returns a string containing a human-readable representation of obj.
     #
     # It will display each instance variable value unless it is also a

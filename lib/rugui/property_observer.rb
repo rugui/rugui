@@ -1,5 +1,3 @@
-require 'rugui/threading'
-
 module RuGUI
   # Adds observer functionality for any class which has support for observable
   # properties.
@@ -33,6 +31,8 @@ module RuGUI
   # ObservablePropertySupport#register_observer method.
   #
   module PropertyObserver
+    include RuGUI::FrameworkAdapters::FrameworkAdapterSupport
+
     def property_updated(observable, property, new_value, old_value)
       queue_method_call_if_exists("property_#{property}_changed", observable, new_value, old_value)
       queue_method_call_if_exists("property_#{observable.class.name.underscore}_#{property}_changed", observable, new_value, old_value)
@@ -45,7 +45,7 @@ module RuGUI
     private
       def queue_method_call_if_exists(method_name, *args)
         if respond_to?(method_name)
-          Gtk.queue do
+          self.framework_adapter.queue do
             send(method_name, *args)
           end
         end

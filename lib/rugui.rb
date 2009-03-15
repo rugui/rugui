@@ -21,6 +21,7 @@ end
 
 require 'rugui/configuration'
 require 'rugui/log_support'
+require 'rugui/framework_adapters/framework_adapter_support'
 require 'rugui/base_object'
 require 'rugui/observable_property_support'
 require 'rugui/property_observer'
@@ -29,4 +30,3 @@ require 'rugui/base_controller'
 require 'rugui/base_model'
 require 'rugui/base_view_helper'
 require 'rugui/base_view'
-
