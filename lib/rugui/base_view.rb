@@ -96,7 +96,7 @@ module RuGUI
     # Registers a controller as receiver of signals from the view widgets.
     def register_controller(controller, name = nil)
       name ||= controller.class.to_s.underscore
-      autoconnect_signals(controller) if use_glade
+      autoconnect_signals(controller)
       @controllers[name.to_sym] = controller
     end
 
@@ -193,6 +193,10 @@ module RuGUI
         else
           widget_or_name
         end
+      end
+
+      def autoconnect_signals(controller)
+        self.framework_adapter.autoconnect_signals(self, controller)
       end
 
     private

@@ -95,6 +95,17 @@ module RuGUI
         def set_widget_name(widget, widget_name)
           widget.name = widget_name.to_s unless widget_name.nil?
         end
+
+        # Autoconnects signals handlers for the view. If +other_target+ is given
+        # it is used instead of the view itself.
+        def autoconnect_signals(view, other_target = nil)
+          if view.use_glade
+            view.glade.signal_autoconnect_full do |source, target, signal_name, handler_name, signal_data, after|
+              target ||= other_target
+              view.glade.connect(source, target, signal_name, handler_name, signal_data) if target.respond_to?(handler_name)
+            end
+          end
+        end
       end
     end
   end
@@ -103,6 +114,8 @@ end
 module RuGUI
   class BaseView < BaseObject
     class_inheritable_accessor :configured_glade_usage
+
+    attr_accessor :glade
 
     # Adds a signal handler for all widgets of the given type.
     def add_signal_handler_for_widget_type(widget_type, signal, &block)
@@ -195,15 +208,6 @@ module RuGUI
 
         register_widgets
         autoconnect_signals(self)
-      end
-
-      # Auto connects the signals from the glade file with the signal handlers
-      # present in the given target.
-      def autoconnect_signals(other_target = nil)
-        @glade.signal_autoconnect_full do |source, target, signal_name, handler_name, signal_data, after|
-          target ||= other_target
-          @glade.connect(source, target, signal_name, handler_name, signal_data) if target.respond_to?(handler_name)
-        end
       end
 
       # Registers widgets as attributes of the view class.
