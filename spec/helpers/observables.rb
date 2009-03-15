@@ -1,14 +1,18 @@
 # Defines some observables and custom types used in specs.
 
-class FakeObservable
+class FakeObservable < RuGUI::BaseObject
   attr_accessor :property_changed_message 
-  
+
+  def framework_adapter
+    framework_adapter_for('BaseController')
+  end
+
   def property_changed(property, new_value, old_value)
     self.property_changed_message = "#{property} changed from #{old_value} to #{new_value}"
   end
 end
 
-class AnotherFakeObserver
+class AnotherFakeObserver < RuGUI::BaseObject
   attr_accessor :property_updated_message
   
   def value_to_s(value)
@@ -25,7 +29,7 @@ class AnotherFakeObserver
   end
 end
 
-class AnotherFakeObservable
+class AnotherFakeObservable < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :my_observable_property
@@ -41,7 +45,7 @@ class AnotherFakeObservable
   end
 end
 
-class SomeOtherFakeObservable
+class SomeOtherFakeObservable < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :another_observable_property, :initial_value => "some_other_initial_value"
@@ -53,7 +57,7 @@ class SomeOtherFakeObservable
   end
 end
 
-class CustomTypeFakeObservable
+class CustomTypeFakeObservable < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :custom_type_observable_property, :core => true, :initial_value => AnotherFakeObservable.new
@@ -63,7 +67,7 @@ class CustomTypeFakeObservable
   end
 end
 
-class ResetPreventedFakeObservable
+class ResetPreventedFakeObservable < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :reset_prevented_observable_property, :prevent_reset => true
@@ -74,7 +78,7 @@ class ResetPreventedFakeObservable
   end
 end
 
-class BooleanPropertiesFakeObservable
+class BooleanPropertiesFakeObservable < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :boolean_observable_property, :boolean => true
@@ -85,7 +89,7 @@ class BooleanPropertiesFakeObservable
   end
 end
 
-class ParentFakeObservable
+class ParentFakeObservable < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :my_own_observable_property
@@ -96,7 +100,7 @@ class ParentFakeObservable
   end
 end
 
-class ChildFakeObservable
+class ChildFakeObservable < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :my_observable_property, :core => true
@@ -106,7 +110,7 @@ class ChildFakeObservable
   end
 end
 
-class FakeObservableForPropertyObserverTest
+class FakeObservableForPropertyObserverTest < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :my_observable_property
@@ -116,7 +120,7 @@ class FakeObservableForPropertyObserverTest
   end
 end
 
-class FakeNamedObservableTest
+class FakeNamedObservableTest < RuGUI::BaseObject
   include RuGUI::ObservablePropertySupport
   
   observable_property :my_observable_property
@@ -126,7 +130,7 @@ class FakeNamedObservableTest
   end
 end
 
-class FakeObserverForPropertyObserverTest
+class FakeObserverForPropertyObserverTest < RuGUI::BaseObject
   include RuGUI::PropertyObserver
   
   attr_accessor :property_updated_message
@@ -151,7 +155,11 @@ class FakeObserverForPropertyObserverTest
     
     @property_changed_counter = 0
   end
-  
+
+  def framework_adapter
+    framework_adapter_for('BaseController')
+  end
+
   def value_to_s(value)
     if value.is_a?(Hash)
       value.keys.sort
@@ -177,7 +185,7 @@ class FakeObserverForPropertyObserverTest
   end
 end
 
-class CustomType
+class CustomType < RuGUI::BaseObject
   attr_accessor :custom_property
 
   def custom_method

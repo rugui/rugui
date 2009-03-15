@@ -47,6 +47,19 @@ module RuGUI
           Gtk.main_quit
         end
       end
+
+      class BaseView
+        # Queues the block call, so that it is only gets executed in the main thread.
+        def queue(&block)
+          Gtk.queue(&block)
+        end
+      end
     end
+  end
+end
+
+module RuGUI
+  class BaseView
+    
   end
 end

@@ -30,6 +30,9 @@ module RuGUI
 
       # Adapts the BaseViewHelper methods specific for the framework
       class BaseViewHelper
+        # Queues the block call, so that it is only gets executed in the main thread.
+        def queue(&block)
+        end
       end
     end
   end
