@@ -10,6 +10,10 @@ RuGUI::Initializer.run do |config|
   # -- all .rb files in that directory are automatically loaded.
   # See RuGUI::Configuration for more options.
 
+  # Changes the framework adapter. Currently the only implemented framework
+  # adapters are GTK and Qt4. Defaults to GTK.
+  # config.framework_adapter = 'Qt4'
+
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{APPLICATION_ROOT}/extras )
 

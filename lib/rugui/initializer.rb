@@ -40,11 +40,9 @@ module RuGUI
 
       set_load_path
       set_autoload_paths
-      load_environment
+      load_framework_adapter
 
       load_plugins
-
-      load_framework_adapter
 
       finish_initialization_process_log
      end
