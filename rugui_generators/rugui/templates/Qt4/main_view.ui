@@ -1,0 +1,37 @@
+<ui version="4.0" >
+ <class>main_window</class>
+ <widget class="QWidget" name="main_window" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>120</width>
+    <height>70</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Hello, World!</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <widget class="QLabel" name="message_label" >
+     <property name="text" >
+      <string>Just a simple label</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="hello_button" >
+     <property name="text" >
+      <string>Click Me</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

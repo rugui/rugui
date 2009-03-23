@@ -8,7 +8,7 @@ class ViewGenerator < RubiGen::Base
   attr_reader :name
 
   def initialize(runtime_args, runtime_options = {})
-    @uses_glade = true
+    @uses_builder = true
     super
     usage if args.empty?
     @name = args.shift

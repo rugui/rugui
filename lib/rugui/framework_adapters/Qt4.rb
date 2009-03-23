@@ -129,13 +129,15 @@ end
 module RuGUI
   class BaseView < BaseObject
     # An utility method to connect Qt signals between two Qt::Object.
-    def connect(sender, signal, receiver, slot)
+    #
+    # If receiver is given, it will be used instead of the view itself.
+    def connect(sender, signal, slot, receiver = nil)
       sender = from_widget_or_name(sender)
-      receiver = from_widget_or_name(receiver)
+      receiver = receiver.nil? ? self : from_widget_or_name(receiver)
       if receiver.is_a?(Qt::Object)
         Qt::Object.connect(sender, SIGNAL(signal), receiver, SLOT(slot))
-      else
-        sender.connect(SIGNAL(signal)) { |*args| receiver.send(slot, *args) if respond_to?(slot) }
+      elsif receiver.is_a?(RuGUI::BaseObject)
+        sender.connect(SIGNAL(signal)) { |*args| receiver.send(slot, *args) if receiver.respond_to?(slot) }
       end
     end
   end

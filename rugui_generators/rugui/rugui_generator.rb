@@ -20,6 +20,7 @@ class RuguiGenerator < RubiGen::Base
       # Ensure appropriate folder(s) exists
       m.directory ''
       BASEDIRS.each { |path| m.directory path }
+      FRAMEWORK_SPECIFIC_DIRS[@framework].each { |path| m.directory path }
 
       # Root files
       m.file_copy_each %w(README Rakefile)
@@ -27,23 +28,32 @@ class RuguiGenerator < RubiGen::Base
       m.file "main.rb", "app/main.rb"
       # app/controllers
       %w(main application).each do |file|
-        m.file "#{file}_controller.rb", "app/controllers/#{file}_controller.rb"
+        m.file "#{@framework}/#{file}_controller.rb", "app/controllers/#{file}_controller.rb"
       end
       # app/views
       %w(main application).each do |file|
-        m.file "#{file}_view.rb", "app/views/#{file}_view.rb"
+        m.file "#{@framework}/#{file}_view.rb", "app/views/#{file}_view.rb"
       end
       # app/view/helpers
       %w(main application).each do |file|
-        m.file "#{file}_view_helper.rb", "app/views/helpers/#{file}_view_helper.rb"
+        m.file "#{@framework}/#{file}_view_helper.rb", "app/views/helpers/#{file}_view_helper.rb"
       end
-      # app/resources/glade
-      m.file "main_view.glade", "app/resources/glade/main_view.glade"
-      # app/resources/styles
-      m.file "main.rc", "app/resources/styles/main.rc"
 
-      # config/
-      %w(boot environment).each { |file| m.file "#{file}.rb", "config/#{file}.rb" }
+      case @framework
+      when 'GTK'
+        # app/resources/glade
+        m.file "#{@framework}/main_view.glade", "app/resources/glade/main_view.glade"
+        # app/resources/styles
+        m.file "#{@framework}/main.rc", "app/resources/styles/main.rc"
+      when 'Qt4'
+        # app/resources/ui
+        m.file "#{@framework}/main_view.ui", "app/resources/ui/main_view.ui"
+      end
+
+      # config/boot.rb
+      m.file "boot.rb", "config/boot.rb"
+      # config/environment.rb
+      m.file "#{@framework}/environment.rb", "config/environment.rb"
       # config/environments
       %w(development test production).each do |file|
         m.file "#{file}.rb.sample", "config/environments/#{file}.rb.sample"
@@ -85,12 +95,14 @@ EOS
       opts.separator 'Options:'
       opts.on("-r", "--rspec", "Add RSpec support to the project.") { |o| @test_suite << "rspec"  }
       opts.on("-o", "--only-rspec", "Use RSpec instead of Test::Unit::TestCase.") { |o| @test_suite = ["rspec"]  }
+      opts.on("--qt4", "Use Qt4 templates for this application.") { |o| @framework = 'Qt4' }
       opts.on("-v", "--version", "Show the RuGUI version number and quit.")
     end
 
     # Set initial values.
     def set_initial_values
       @test_suite = ["unit"]
+      @framework = "GTK"
     end
 
     def extract_options
@@ -104,8 +116,6 @@ EOS
       'app/controllers',
       'app/models',
       'app/resources',
-      'app/resources/glade',
-      'app/resources/styles',
       'app/views',
       'app/views/helpers',
       # config directory contains environments configuration, boot file and
@@ -140,4 +150,14 @@ EOS
       'spec/views/helpers',
       'spec/lib'
     ]
+
+    FRAMEWORK_SPECIFIC_DIRS = {
+      'GTK' => [
+        'app/resources/glade',
+        'app/resources/styles',
+      ],
+      'Qt4' => [
+        'app/resources/ui',
+      ]
+    }
 end

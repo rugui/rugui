@@ -8,20 +8,25 @@ module GeneratorsSupport
     # Build view templates.
     def build_view_templates(m)
       # app/views
-      m.template "../../view/templates/view.erb", "app/views/#{@name.underscore}_view.rb", :assigns => { :view_name => @name.camelize, :uses_glade => uses_glade? }
+      m.template "../../view/templates/view.erb", "app/views/#{@name.underscore}_view.rb", :assigns => { :view_name => @name.camelize, :uses_builder => uses_builder? }
       # app/views/helpers
       m.template "../../view/templates/view_helper.erb", "app/views/helpers/#{@name.underscore}_view_helper.rb", :assigns => { :view_name => @name.camelize }
-      # app/resources/glade
-      if uses_glade?
-        m.file glade_template, "app/resources/glade/#{@name.underscore}_view.glade"
+      if uses_builder?
+        if framework_based_on_directory_structure == 'GTK'
+          # app/resources/glade
+          m.file glade_template, "app/resources/glade/#{@name.underscore}_view.glade"
+        else
+          # app/resources/ui
+          m.file ui_template, "app/resources/ui/#{@name.underscore}_view.ui"
+        end
       end
     end
 
     # Implements add_options!(opts) for views.
     def view_add_options!(opts)
       opts.separator ' '
-      opts.on("-x", "--without-glade", "Create the view without a glade.") { |o| @uses_glade = false }
-      opts.on("-e", "--default-glade", "Create the view with a default glade.") { |o| @toplevel = nil }
+      opts.on("-x", "--without-builder", "Create the view without a glade.") { |o| @uses_builder = false }
+      opts.on("-e", "--default-builder", "Create the view with a default builder.") { |o| @toplevel = nil }
       opts.on("-w", "--window", option_phrase_for('window')) { |o| @toplevel = "window" }
       opts.on("-d", "--dialog-box", option_phrase_for('dialog box')) { |o| @toplevel = "dialog_box" }
       opts.on("-a", "--about-dialog", option_phrase_for('about dialog')) { |o| @toplevel = "about_dialog" }
@@ -39,7 +44,7 @@ module GeneratorsSupport
     end
 
     def option_phrase_for(toplevel)
-      "Create the view with a glade using #{toplevel} template as toplevel."
+      "Create the view with a glade file using #{toplevel} template as toplevel (GTK only)."
     end
 
     # Gets the correct glade template.
@@ -48,10 +53,23 @@ module GeneratorsSupport
       return "../../view/templates/toplevels/#{@toplevel}.glade"
     end
 
-    def uses_glade?
-      !!@uses_glade
+    # Gets the correct glade template.
+    def ui_template
+      return "../../view/templates/view.ui"
+    end
+
+    def uses_builder?
+      !!@uses_builder
     end
 
     def extract_options
+    end
+
+    def framework_based_on_directory_structure
+      if File.exist?("app/resources/ui")
+        'Qt4'
+      else
+        'GTK'
+      end
     end
 end

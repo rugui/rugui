@@ -1,5 +1,5 @@
 class MainView < ApplicationView
-  use_glade
+  use_builder
 
   # Add your stuff here.
 
