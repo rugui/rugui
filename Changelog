@@ -1,3 +1,6 @@
+1.1.0
+- Added support to Qt4 as well as GTK as backend GUI frameworks.
+
 1.0.0
 - Created a RuGUI::BaseObject which implements the inspect method for RuGUI related objects.
 - Added some generators (for models, controllers and views with its resources).
