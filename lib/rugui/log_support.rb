@@ -11,6 +11,18 @@ module RuGUI
       @logger.formatter = RuGUI::LogSupport::Formatter.new(self.class.name)
       @logger
     end
+
+    module ClassMethods
+      def logger
+        @@logger ||= RuGUILogger.logger
+        @@logger.formatter = RuGUI::LogSupport::Formatter.new(self.name)
+        @@logger
+      end
+    end
+
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
     
     private
       class Formatter

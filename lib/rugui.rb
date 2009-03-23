@@ -14,7 +14,7 @@ module RuGUI
 
     def root
       if defined?(APPLICATION_ROOT)
-        APPLICATION_ROOT
+        Pathname.new(File.expand_path(APPLICATION_ROOT))
       else
         nil
       end

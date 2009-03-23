@@ -1,8 +1,16 @@
 module RuGUI
   module FrameworkAdapters
     module BaseFrameworkAdapter
+      class Base
+        attr_accessor :adapted_object
+
+        def initialize(adapted_object)
+          self.adapted_object = adapted_object
+        end
+      end
+
       # Adapts the BaseController methods specific for the framework.
-      class BaseController
+      class BaseController < Base
         # Queues the block call, so that it is only gets executed in the main thread.
         def queue(&block)
         end
@@ -20,11 +28,11 @@ module RuGUI
       end
 
       # Adapts the BaseModel methods specific for the framework
-      class BaseModel
+      class BaseModel < Base
       end
 
       # Adapts the BaseView methods specific for the framework
-      class BaseView
+      class BaseView < Base
         # Queues the block call, so that it is only gets executed in the main thread.
         def queue(&block)
         end
@@ -48,6 +56,20 @@ module RuGUI
         # Autoconnects signals handlers for the view. If +other_target+ is given
         # it is used instead of the view itself.
         def autoconnect_signals(view, other_target = nil)
+        end
+
+        # Builds widgets from the given filename, using the proper builder.
+        def build_widgets_from(filename)
+        end
+
+        # Registers widgets as attributes of the view class.
+        def register_widgets
+        end
+
+        class << self
+          # Returns the builder file extension to be used for this view class.
+          def builder_file_extension
+          end
         end
       end
 

@@ -51,7 +51,7 @@ Gtk.load_style_paths
 module RuGUI
   module FrameworkAdapters
     module GTK
-      class BaseController
+      class BaseController < RuGUI::FrameworkAdapters::BaseFrameworkAdapter::BaseController
         def queue(&block)
           Gtk.queue(&block)
         end
@@ -68,7 +68,7 @@ module RuGUI
         end
       end
 
-      class BaseView
+      class BaseView < RuGUI::FrameworkAdapters::BaseFrameworkAdapter::BaseView
         # Queues the block call, so that it is only gets executed in the main thread.
         def queue(&block)
           Gtk.queue(&block)
@@ -98,12 +98,38 @@ module RuGUI
 
         # Autoconnects signals handlers for the view. If +other_target+ is given
         # it is used instead of the view itself.
-        def autoconnect_signals(view, other_target = nil)
-          if view.use_glade
-            view.glade.signal_autoconnect_full do |source, target, signal_name, handler_name, signal_data, after|
+        def autoconnect_signals(other_target = nil)
+          if self.adapted_object.use_builder?
+            self.adapted_object.glade.signal_autoconnect_full do |source, target, signal_name, handler_name, signal_data, after|
               target ||= other_target
-              view.glade.connect(source, target, signal_name, handler_name, signal_data) if target.respond_to?(handler_name)
+              self.adapted_object.glade.connect(source, target, signal_name, handler_name, signal_data) if target.respond_to?(handler_name)
             end
+          end
+        end
+
+        # Builds widgets from the given filename, using the proper builder.
+        def build_widgets_from(filename)
+          self.adapted_object.glade = GladeXML.new(filename, self.adapted_object.root, nil, nil, GladeXML::FILE)
+
+          self.adapted_object.glade.widget_names.each do |widget_name|
+            self.adapted_object.send(:create_attribute_for_widget, widget_name) unless self.adapted_object.glade[widget_name].nil?
+          end
+        end
+
+        # Registers widgets as attributes of the view class.
+        def register_widgets
+          self.adapted_object.glade.widget_names.each do |widget_name|
+            unless self.adapted_object.glade[widget_name].nil?
+              self.adapted_object.send("#{widget_name}=".to_sym, self.adapted_object.glade[widget_name])
+              self.adapted_object.widgets[widget_name] = self.adapted_object.glade[widget_name]
+            end
+          end
+        end
+
+        class << self
+          # Returns the builder file extension to be used for this view class.
+          def builder_file_extension
+            'glade'
           end
         end
       end
@@ -157,67 +183,13 @@ module RuGUI
       widget.style = style
     end
 
-    # Returns true if glade is being used, false otherwise.
-    def use_glade
-      self.configured_glade_usage
-    end
-
-    def build_from_builder_file
-      build_from_glade if use_glade
-    end
-
     class << self
-      # Sets the builder file to use when creating this view.
-      def builder_file(file)
-        self.configured_builder_file = file
-      end
-      
       # Call this method at class level if the view should be built from a glade
       # file.
       def use_glade
-        RuGUI.configuration.builder_files_paths << "#{RuGUI.root}/app/resources/glade" unless RuGUI.configuration.builder_files_paths.include?("#{RuGUI.root}/app/resources/glade")
-        self.configured_builder_file_extension = 'glade'
-        self.configured_glade_usage = true
-      end
-
-      # This turns of the use of glade for this view class.
-      def dont_use_glade
-        self.configured_builder_file_extension = ''
-        self.configured_glade_usage = false
+        self.logger.warn('DEPRECATED - Call use_builder class method instead in your view.')
+        use_builder
       end
     end
-
-    # By default we don't use glade.
-    dont_use_glade
-
-    private
-      # Builds widgets from the specified glade file.
-      def build_from_glade
-        file = get_builder_file
-
-        if file.nil?
-          raise BuilderFileNotFoundError,
-            "Could not find builder file for view #{self.class}. Glade file paths: #{RuGUI.configuration.glade_files_paths.join(', ')}."
-        end
-
-        @glade = GladeXML.new(file, root, nil, nil, GladeXML::FILE)
-
-        @glade.widget_names.each do |widget_name|
-          create_attribute_for_widget(widget_name) unless @glade[widget_name].nil?
-        end
-
-        register_widgets
-        autoconnect_signals(self)
-      end
-
-      # Registers widgets as attributes of the view class.
-      def register_widgets
-        @glade.widget_names.each do |widget_name|
-          unless @glade[widget_name].nil?
-            self.send("#{widget_name}=".to_sym, @glade[widget_name])
-            @widgets[widget_name] = @glade[widget_name]
-          end
-        end
-      end
   end
 end

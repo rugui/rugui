@@ -1,4 +1,5 @@
 require 'Qt4'
+require 'qtuitools'
 
 module Qt
   def Qt.create_application
@@ -15,7 +16,7 @@ Qt.create_application
 module RuGUI
   module FrameworkAdapters
     module Qt4
-      class BaseController
+      class BaseController < RuGUI::FrameworkAdapters::BaseFrameworkAdapter::BaseController
         def queue(&block)
           block.call
         end
@@ -31,7 +32,7 @@ module RuGUI
         end
       end
 
-      class BaseView
+      class BaseView < RuGUI::FrameworkAdapters::BaseFrameworkAdapter::BaseView
         # Queues the block call, so that it is only gets executed in the main thread.
         def queue(&block)
           block.call
@@ -62,7 +63,64 @@ module RuGUI
         # Autoconnects signals handlers for the view. If +other_target+ is given
         # it is used instead of the view itself.
         def autoconnect_signals(view, other_target = nil)
+          # Qt4 doesn't provides a method for autoconnecting signals.
         end
+
+        # Builds widgets from the given filename, using the proper builder.
+        def build_widgets_from(filename)
+          ui_file_root_widget = load_ui_file(filename)
+          @view_root_widget = root_widget_from(ui_file_root_widget)
+          create_attributes_for_widget_and_children(@view_root_widget)
+          @view_root_widget.show
+        end
+
+        # Registers widgets as attributes of the view class.
+        def register_widgets
+          register_widget_and_children(@view_root_widget)
+        end
+
+        class << self
+          # Returns the builder file extension to be used for this view class.
+          def builder_file_extension
+            'ui'
+          end
+        end
+
+        private
+          def load_ui_file(filename)
+            file = Qt::File.new(filename)
+            file.open(Qt::File::ReadOnly)
+            loader = Qt::UiLoader.new
+            loader.load(file, nil)
+          end
+
+          def root_widget_from(ui_file_root_widget)
+            self.adapted_object.root.nil? ? ui_file_root_widget : ui_file_root_widget.find_child(self.adapted_object.root)
+          end
+
+          def create_attributes_for_widget_and_children(widget)
+            self.adapted_object.send(:create_attribute_for_widget, widget.object_name)
+            widget.children.each do |child|
+              create_attributes_for_widget_and_children(child) unless child.object_name.blank?
+            end
+          end
+
+          # Registers widgets as attributes of the view class.
+          def register_widget_and_children(widget)
+            register_widget(widget)
+            widget.children.each do |child|
+              register_widget_and_children(child)
+            end
+          end
+
+          def register_widget(widget)
+            unless widget.object_name.nil?
+              self.adapted_object.send("#{widget.object_name}=", widget)
+              self.adapted_object.widgets[widget.object_name] = widget
+            else
+              self.adapted_object.unnamed_widgets << widget
+            end
+          end
       end
     end
   end

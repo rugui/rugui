@@ -1,12 +1,13 @@
 module RuGUI
   # A base class for views.
   #
-  # To use this class create a subclass, and reimplement #setup_widgets, if you
-  # want to create your interface by hand.
-  # 
-  # If you are using GTK framework adapter (the default) you may call
-  # #builder_file and #use_glade, case you want to have your interface created
-  # by a glade file.
+  # To use this class create a subclass and reimplement #setup_widgets, if you
+  # want to create your interface by hand. If you want to use a builder file
+  # just call #use_builder and, optionally, call #builder_file passing the
+  # filename to use.
+  #
+  # Each adapter may implement additional features, extending this class, look
+  # for it in adapter classes.
   #
   # The view may have ViewHelpers, which works as 'models' for views, i.e., they
   # have observable properties that can be observed by the view. A default
@@ -17,9 +18,9 @@ module RuGUI
   #
   # Example (using GTK framework adapter):
   #   class MyGladeView < RuGUI::BaseView
-  #     builder_file 'my_file.glade'
+  #     builder_file 'my_file.glade' # this is optional, if the glade file was called my_glade_view.glade this wouldn't be needed.
   #     root :top_window
-  #     use_glade
+  #     use_builder
   #   end
   #
   #   class MyHandView < RuGUI::BaseView
@@ -32,9 +33,11 @@ module RuGUI
     include RuGUI::PropertyObserver
 
     attr_accessor :controllers
+    attr_reader :widgets
     attr_reader :unnamed_widgets
     
     class_inheritable_accessor :configured_builder_file
+    class_inheritable_accessor :configured_builder_file_usage
     class_inheritable_accessor :configured_builder_file_extension
     class_inheritable_accessor :configured_root
 
@@ -131,13 +134,24 @@ module RuGUI
       self.configured_builder_file_extension
     end
 
-    # Returns the name of the root widget for this view.
-    def root
-      self.configured_root.to_s unless self.configured_root.nil?
+    # Returns true if builder file is being used for this view.
+    def use_builder?
+      self.configured_builder_file_usage
     end
 
     # Framework adapters should implement this if they support builder files.
     def build_from_builder_file
+      filename = get_builder_file
+      raise BuilderFileNotFoundError, "Could not find builder file for view #{self.class.name}. UI file paths: #{RuGUI.configuration.builder_files_paths.join(', ')}." if filename.nil?
+
+      self.framework_adapter.build_widgets_from(filename)
+      self.framework_adapter.register_widgets
+      autoconnect_signals(self)
+    end
+
+    # Returns the name of the root widget for this view.
+    def root
+      self.configured_root.to_s unless self.configured_root.nil?
     end
 
     class << self
@@ -153,6 +167,24 @@ module RuGUI
       # vertical box in other glade file.
       def root(root_widget_name)
         self.configured_root = root_widget_name
+      end
+
+      # Sets the builder file to use when creating this view.
+      def builder_file(file)
+        self.configured_builder_file = file
+      end
+
+      # Tells whether we should use a builder file when creating this view.
+      def use_builder
+        self.configured_builder_file_usage = true
+
+        self.configured_builder_file_extension = self.framework_adapter_class.builder_file_extension
+        default_builder_file_path = RuGUI.root.join('app', 'resources', "#{self.configured_builder_file_extension}")
+        RuGUI.configuration.builder_files_paths << default_builder_file_path unless RuGUI.configuration.builder_files_paths.include?(default_builder_file_path)
+      end
+
+      def framework_adapter_class
+        class_adapter_for('BaseView')
       end
     end
 
@@ -196,7 +228,7 @@ module RuGUI
       end
 
       def autoconnect_signals(controller)
-        self.framework_adapter.autoconnect_signals(self, controller)
+        self.framework_adapter.autoconnect_signals(controller)
       end
 
     private
