@@ -2,6 +2,7 @@
 - Created a RuGUI::BaseObject which implements the inspect method for RuGUI related objects.
 - Added some generators (for models, controllers and views with its resources).
 - Added support for before/after initialize hooks for Controller, View, ViewHelper and Model base classes.
+- Using Pathname to wrap Configuration#root_path. Now you can use configuration.root_path.join('my_path'), instead of File.join(configuration.root_path, 'my_path')
 
 0.6.0
 - Added a method to quickly get the main controller from any BaseController.

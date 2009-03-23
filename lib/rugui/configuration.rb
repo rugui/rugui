@@ -55,14 +55,14 @@ module RuGUI
     # The path to the current environment's file (<tt>development.rb</tt>, etc.). By
     # default the file is at <tt>config/environments/#{environment}.rb</tt>.
     def environment_path
-      "#{root_path}/config/environments/#{environment}.rb"
+      root_path.join('config', 'environments', "#{environment}.rb")
     end
 
     def set_root_path!
       raise 'APPLICATION_ROOT is not set' unless defined?(::APPLICATION_ROOT)
       raise 'APPLICATION_ROOT is not a directory' unless File.directory?(::APPLICATION_ROOT)
 
-      @root_path = File.expand_path(::APPLICATION_ROOT)
+      @root_path = Pathname.new(File.expand_path(::APPLICATION_ROOT))
     end
 
     private
@@ -81,15 +81,15 @@ module RuGUI
           app/views/helpers
           config
           lib
-        ).map { |dir| "#{root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
+        ).map { |dir| root_path.join(dir) }.select { |dir| File.directory?(dir) }
       end
 
       def default_glade_files_paths
-        ["#{root_path}/app/resources/glade"]
+        [root_path.join('app', 'resources', 'glade')]
       end
 
       def default_styles_paths
-        ["#{root_path}/app/resources/styles"]
+        [root_path.join('app', 'resources', 'styles')]
       end
 
       def default_queue_timeout
