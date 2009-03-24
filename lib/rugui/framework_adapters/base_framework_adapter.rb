@@ -58,6 +58,15 @@ module RuGUI
         def autoconnect_signals(view, other_target = nil)
         end
 
+        # Connects the signal from the widget to the given receiver block.
+        # The block is executed in the context of the receiver.
+        def connect_declared_signal_block(widget, signal, receiver, block)
+        end
+
+        # Connects the signal from the widget to the given receiver method.
+        def connect_declared_signal(widget, signal, receiver, method)
+        end
+
         # Builds widgets from the given filename, using the proper builder.
         def build_widgets_from(filename)
         end

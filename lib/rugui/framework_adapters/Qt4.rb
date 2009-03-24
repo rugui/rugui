@@ -66,6 +66,21 @@ module RuGUI
           # Qt4 doesn't provides a method for autoconnecting signals.
         end
 
+        # Connects the signal from the widget to the given receiver block.
+        # The block is executed in the context of the receiver.
+        def connect_declared_signal_block(widget, signal, receiver, block)
+          widget.connect(SIGNAL(signal)) do |*args|
+            receiver.instance_exec(*args, &block)
+          end
+        end
+
+        # Connects the signal from the widget to the given receiver method.
+        def connect_declared_signal(widget, signal, receiver, method)
+          widget.connect(SIGNAL(signal)) do |*args|
+            receiver.send(method, *args)
+          end
+        end
+
         # Builds widgets from the given filename, using the proper builder.
         def build_widgets_from(filename)
           ui_file_root_widget = load_ui_file(filename)

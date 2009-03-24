@@ -1,6 +1,28 @@
 require 'gtk2'
 require 'libglade2'
 
+# See the discussion here: http://eigenclass.org/hiki.rb?instance_exec
+class Object
+  module InstanceExecHelper; end
+  include InstanceExecHelper
+  def instance_exec(*args, &block)
+    begin
+      old_critical, Thread.critical = Thread.critical, true
+      n = 0
+      n += 1 while respond_to?(mname="__instance_exec#{n}")
+      InstanceExecHelper.module_eval{ define_method(mname, &block) }
+    ensure
+      Thread.critical = old_critical
+    end
+    begin
+      ret = send(mname, *args)
+    ensure
+      InstanceExecHelper.module_eval{ remove_method(mname) } rescue nil
+    end
+    ret
+  end
+end
+
 module Gtk
   GTK_PENDING_BLOCKS = []
   GTK_PENDING_BLOCKS_LOCK = Monitor.new
@@ -104,6 +126,21 @@ module RuGUI
               target ||= other_target
               self.adapted_object.glade.connect(source, target, signal_name, handler_name, signal_data) if target.respond_to?(handler_name)
             end
+          end
+        end
+
+        # Connects the signal from the widget to the given receiver block.
+        # The block is executed in the context of the receiver.
+        def connect_declared_signal_block(widget, signal, receiver, block)
+          widget.signal_connect(signal) do |*args|
+            receiver.instance_exec(*args, &block)
+          end
+        end
+
+        # Connects the signal from the widget to the given receiver method.
+        def connect_declared_signal(widget, signal, receiver, method)
+          widget.signal_connect(signal) do |*args|
+            receiver.send(method, *args)
           end
         end
 

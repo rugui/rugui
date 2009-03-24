@@ -5,6 +5,7 @@ module RuGUI
   class BaseController < BaseObject
     include RuGUI::PropertyObserver
     include RuGUI::LogSupport
+    include RuGUI::SignalSupport
 
     attr_accessor :models
     attr_accessor :views

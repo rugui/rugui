@@ -31,6 +31,7 @@ module RuGUI
   class BaseView < BaseObject
     include RuGUI::LogSupport
     include RuGUI::PropertyObserver
+    include RuGUI::SignalSupport
 
     attr_accessor :controllers
     attr_reader :widgets
@@ -51,6 +52,7 @@ module RuGUI
       setup_view_helpers
       build_from_builder_file
       setup_widgets
+      autoconnect_signals(self)
     end
 
     # This is included here so that the initialize method is properly updated.
@@ -146,7 +148,6 @@ module RuGUI
 
       self.framework_adapter.build_widgets_from(filename)
       self.framework_adapter.register_widgets
-      autoconnect_signals(self)
     end
 
     # Returns the name of the root widget for this view.
@@ -227,8 +228,9 @@ module RuGUI
         end
       end
 
-      def autoconnect_signals(controller)
-        self.framework_adapter.autoconnect_signals(controller)
+      def autoconnect_signals(receiver)
+        receiver.autoconnect_declared_signals(self)
+        self.framework_adapter.autoconnect_signals(receiver)
       end
 
     private
