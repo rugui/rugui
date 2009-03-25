@@ -2,8 +2,8 @@ require 'rake'
 
 Gem::Specification.new do |spec|
   spec.name = %q{rugui}
-  spec.version = "1.0.0"
-  spec.date = %q{2009-01-08}
+  spec.version = "1.1.0"
+  spec.date = %q{2009-03-25}
   spec.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero"]
   spec.email = ["vicente.mundim@intelitiva.com", "felipe.mesquita@intelitiva.com", "claudio.escudero@intelitiva.com"]
   spec.homepage = "http://rugui.org"
