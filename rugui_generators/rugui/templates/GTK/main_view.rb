@@ -3,7 +3,7 @@ class MainView < ApplicationView
 
   # Add your stuff here.
 
-  def on_hello_button_clicked(widget)
+  on :hello_button, 'clicked' do |widget|
     puts "Hello button clicked."
     self.message_label.text = "You clicked me!"
   end

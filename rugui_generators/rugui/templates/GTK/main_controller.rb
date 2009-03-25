@@ -11,7 +11,7 @@ class MainController < RuGUI::BaseMainController
     register_view :main_view
   end
 
-  def on_main_window_delete_event(widget, event)
+  on :main_window, 'delete-event' do |widget, event|
     quit
   end
 end
