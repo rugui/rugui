@@ -5,7 +5,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), 'initialize_hooks_he
 class MyView < RuGUI::BaseView
   include InitializeHooksHelper
 
-  use_glade
+  use_builder
   builder_file File.join(File.dirname(__FILE__), '..', 'resource_files', 'my_view.glade')
   root :top_window
   
@@ -49,7 +49,7 @@ class MyChildView < MyView
 end
 
 class MyOtherView < RuGUI::BaseView
-  use_glade
+  use_builder
   builder_file File.join(File.dirname(__FILE__), '..', 'resource_files', 'my_other_view.glade')
   root :top_window
   
