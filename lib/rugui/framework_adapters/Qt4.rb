@@ -45,13 +45,13 @@ module RuGUI
 
         # Removes a widget from the given container widget.
         def remove_widget_from_container(widget, container_widget)
-          widget.dispose
+          widget.parent = nil
         end
 
         # Removes all children from the given container widget.
         def remove_all_children(container_widget)
           container_widget.children.each do |child|
-            child.dispose
+            child.parent = nil
           end
         end
 
@@ -110,7 +110,7 @@ module RuGUI
           end
 
           def root_widget_from(ui_file_root_widget)
-            self.adapted_object.root.nil? ? ui_file_root_widget : ui_file_root_widget.find_child(self.adapted_object.root)
+            self.adapted_object.root.nil? ? ui_file_root_widget : find_child(ui_file_root_widget, self.adapted_object.root)
           end
 
           def create_attributes_for_widget_and_children(widget)
@@ -134,6 +134,18 @@ module RuGUI
               self.adapted_object.widgets[widget.object_name] = widget
             else
               self.adapted_object.unnamed_widgets << widget
+            end
+          end
+
+          # XXX: Qt's find_child is not working, so we do it ourselves, this is surely not optimal.
+          def find_child(widget, widget_name)
+            for child in widget.children
+              if child.object_name == widget_name
+                return child
+              else
+                child_found = find_child(child, widget_name)
+                return child_found unless child_found.blank?
+              end
             end
           end
       end
