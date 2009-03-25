@@ -151,6 +151,7 @@ module RuGUI
           self.adapted_object.glade.widget_names.each do |widget_name|
             self.adapted_object.send(:create_attribute_for_widget, widget_name) unless self.adapted_object.glade[widget_name].nil?
           end
+          self.adapted_object.root_widget.show if self.adapted_object.display_root? and not self.adapted_object.root_widget.nil?
         end
 
         # Registers widgets as attributes of the view class.

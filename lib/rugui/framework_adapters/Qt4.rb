@@ -86,7 +86,7 @@ module RuGUI
           ui_file_root_widget = load_ui_file(filename)
           @view_root_widget = root_widget_from(ui_file_root_widget)
           create_attributes_for_widget_and_children(@view_root_widget)
-          @view_root_widget.show
+          @view_root_widget.show if self.adapted_object.display_root?
         end
 
         # Registers widgets as attributes of the view class.

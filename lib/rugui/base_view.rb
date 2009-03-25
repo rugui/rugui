@@ -41,6 +41,7 @@ module RuGUI
     class_inheritable_accessor :configured_builder_file_usage
     class_inheritable_accessor :configured_builder_file_extension
     class_inheritable_accessor :configured_root
+    class_inheritable_accessor :configured_display_root
 
     def initialize
       @controllers = {}
@@ -155,6 +156,10 @@ module RuGUI
       self.configured_root.to_s unless self.configured_root.nil?
     end
 
+    def display_root?
+      !!self.configured_display_root
+    end
+
     class << self
       # Sets the name of the root widget for this view.
       #
@@ -176,8 +181,12 @@ module RuGUI
       end
 
       # Tells whether we should use a builder file when creating this view.
-      def use_builder
+      #
+      # By default the root widget will be displayed, but you can pass false to
+      # this method to prevent it for being displayed.
+      def use_builder(display_root = true)
         self.configured_builder_file_usage = true
+        self.configured_display_root = display_root
 
         self.configured_builder_file_extension = self.framework_adapter_class.builder_file_extension
         default_builder_file_path = RuGUI.root.join('app', 'resources', "#{self.configured_builder_file_extension}")
