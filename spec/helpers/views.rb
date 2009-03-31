@@ -67,3 +67,6 @@ class MyOtherView < RuGUI::BaseView
     @message = "#{self.class} top window deleted."
   end
 end
+
+class NoBuilderView < RuGUI::BaseView
+end

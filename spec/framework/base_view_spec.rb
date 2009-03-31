@@ -35,6 +35,14 @@ describe RuGUI::BaseView do
     end
   end
 
+  describe "when creating a view without builder file" do
+    it "should not raise error" do
+      lambda {
+        @no_builder_view_instance = NoBuilderView.new
+      }.should_not raise_error(RuGUI::BuilderFileNotFoundError)
+    end
+  end
+
   describe "when including a child view into a parent view" do
     it "should include the root widget of the child view into the specified widget in the parent view" do
       @my_view.include_view :vertical_container, @my_child_view

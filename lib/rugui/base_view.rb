@@ -51,7 +51,7 @@ module RuGUI
 
       register_default_helper
       setup_view_helpers
-      build_from_builder_file
+      build_from_builder_file if use_builder?
       setup_widgets
       autoconnect_signals(self)
     end
