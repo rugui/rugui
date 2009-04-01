@@ -43,6 +43,14 @@ module RuGUI
 
     # A hash of application specific configurations.
     attr_accessor :application
+
+    # An array of gems that this RuGUI application depends on.  RuGUI will automatically load
+    # these gems during installation, and allow you to install any missing gems with:
+    #
+    #   rake gems:install
+    #
+    # You can add gems with the #gem method.
+    attr_accessor :gems
     
     def initialize
       set_root_path!
@@ -53,6 +61,7 @@ module RuGUI
       self.builder_files_paths = default_builder_files_paths
       self.styles_paths = default_styles_paths
       self.queue_timeout = default_queue_timeout
+      self.gems = default_gems
       self.logger = {}
       self.application = {}
     end
@@ -68,6 +77,21 @@ module RuGUI
       raise 'APPLICATION_ROOT is not a directory' unless File.directory?(::APPLICATION_ROOT)
 
       @root_path = Pathname.new(File.expand_path(::APPLICATION_ROOT))
+    end
+
+    # Adds a single Gem dependency to the RuGUI application. By default, it will require
+    # the library with the same name as the gem. Use :lib to specify a different name.
+    #
+    #   # gem 'aws-s3', '>= 0.4.0'
+    #   # require 'aws/s3'
+    #   config.gem 'aws-s3', :lib => 'aws/s3', :version => '>= 0.4.0', \
+    #     :source => "http://code.whytheluckystiff.net"
+    #
+    # To require a library be installed, but not attempt to load it, pass :lib => false
+    #
+    #   config.gem 'qrp', :version => '0.4.1', :lib => false
+    def gem(name, options = {})
+      @gems << RuGUI::GemDependency.new(name, options)
     end
 
     private
@@ -103,6 +127,10 @@ module RuGUI
 
       def default_queue_timeout
         50
+      end
+
+      def default_gems
+        []
       end
   end
 end

@@ -30,4 +30,10 @@ RuGUI::Initializer.run do |config|
   # See with more details here:
   # http://www.rubybrain.com/api/ruby-1.8.7/doc/index.html?a=M000253&name=strftime
   #config.logger[:format] = "%Y-%m-%d %H:%M:%S"
+
+  # Specify gems that this application depends on.
+  # They can then be installed with "rake gems:install" on new installations.
+  # config.gem "bj"
+  # config.gem "hapricot", :version => '>0.8', :source => "http://code.whytheluckystiff.net"
+  # config.gem "aws-s3", :lib => "aws/s3"
 end

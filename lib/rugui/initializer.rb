@@ -1,4 +1,5 @@
 require 'rugui'
+require 'rugui/gem_dependency'
 
 module RuGUI
   class Initializer
@@ -6,6 +7,9 @@ module RuGUI
 
     # The configuration for this application.
     attr_reader :configuration
+
+    # Whether or not all the gem dependencies have been met
+    attr_reader :gems_dependencies_loaded
 
     @@processed = false
 
@@ -39,10 +43,22 @@ module RuGUI
       start_initialization_process_log
 
       set_load_path
+      add_gem_load_paths
+      
       set_autoload_paths
       load_framework_adapter
 
+      load_gems
       load_plugins
+
+      # pick up any gems that plugins depend on
+      add_gem_load_paths
+      load_gems
+      check_gem_dependencies
+
+      # bail out if gems are missing - note that check_gem_dependencies will have
+      # already called abort() unless $gems_rake_task is set
+      return unless gems_dependencies_loaded
 
       finish_initialization_process_log
      end
@@ -82,16 +98,52 @@ module RuGUI
       plugin_loader.load_plugins
     end
 
+    def add_gem_load_paths
+      RuGUI::GemDependency.add_frozen_gem_path
+      unless @configuration.gems.empty?
+        require "rubygems"
+        @configuration.gems.each { |gem| gem.add_load_paths }
+      end
+    end
+
+    def load_gems
+      unless $gems_build_rake_task
+        @configuration.gems.each { |gem| gem.load }
+      end
+    end
+
+    def check_gem_dependencies
+      unloaded_gems = @configuration.gems.reject { |g| g.loaded? }
+      if unloaded_gems.size > 0
+        @gems_dependencies_loaded = false
+        # don't print if the gems rake tasks are being run
+        unless $gems_rake_task
+          abort <<-end_error
+Missing these required gems:
+  #{unloaded_gems.map { |gem| "#{gem.name}  #{gem.requirement}" } * "\n  "}
+
+You're running:
+  ruby #{Gem.ruby_version} at #{Gem.ruby}
+  rubygems #{Gem::RubyGemsVersion} at #{Gem.path * ', '}
+
+Run `rake gems:install` to install the missing gems.
+          end_error
+        end
+      else
+        @gems_dependencies_loaded = true
+      end
+    end
+
     def load_logger
       RuGUILogger.logger
     end
 
     def start_initialization_process_log
-      logger.info "Starting RuGUI application with #{configuration.environment} environment..." unless @@processed
+      logger.info "Starting RuGUI application with #{configuration.environment} environment..." unless silence_logs?
     end
 
     def finish_initialization_process_log
-      logger.info "RuGUI application configurations loaded." unless @@processed
+      logger.info "RuGUI application configurations loaded." unless silence_logs?
     end
 
     def plugin_loader
@@ -101,5 +153,10 @@ module RuGUI
     def load_framework_adapter
       require "rugui/framework_adapters/#{RuGUI.configuration.framework_adapter}"
     end
+
+    private
+      def silence_logs?
+        @@processed or $gems_build_rake_task or $gems_rake_task
+      end
   end
 end

@@ -43,7 +43,7 @@ namespace :spec do
   desc "Run the specs under vendor/plugins (except RSpec's own)"
   Spec::Rake::SpecTask.new(:plugins) do |t|
     t.spec_opts = ['--options', "\"#{APPLICATION_ROOT}/spec/spec.opts\""]
-    t.spec_files = FileList['vendor/plugins/**/spec/**/*_spec.rb'].exclude('vendor/plugins/rspec/*').exclude("vendor/plugins/rspec-rails/*")
+    t.spec_files = FileList['vendor/plugins/**/spec/**/*_spec.rb'].exclude('vendor/plugins/rspec/*')
   end
 
   # Setup specs for stats
