@@ -1,3 +1,6 @@
+1.1.2
+- Updated README docs
+
 1.1.1
 - Added support to prevent root widgets of views from being displayed by passing false to use_builder class method.
 - Created a find_child in QT adapter since QT's one is not working.

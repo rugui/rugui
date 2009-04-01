@@ -1,8 +1,8 @@
 = RuGUI
 
-RuGUI is a framework which aims to help building desktop applications using the
-great Ruby/GTK API. RuGUI was mostly inspired by the *Ruby on Rails* framework,
-taking most of its features from it.
+RuGUI is a framework which aims to help building desktop applications. RuGUI was
+mostly inspired by the *Ruby on Rails* framework, taking most of its features
+from it.
 
 RuGUI approach is to provide a MVC design for the application, separating
 business logic from application presentation, making it easy to maintain and
@@ -15,6 +15,13 @@ clean when dealing with applications that have multiple data entry points. For
 example, when receiving data from a network one may update a value in a model,
 and the controller will update all needed widgets (progress bars, labels, status
 bar, etc).
+
+The initial framework was based on the great Ruby/GTK API, but RuGUI has evolved
+so that you may use other GUI frameworks with it. Since version 1.1.x it has
+placed all functionality specific for GTK wrapped in a framework adapter. This
+has made it possible to write a QT adapter and now it is possible to use all of
+the RuGUI features together with QT. As the framework evolve other framework
+adapters may be written, enabling the use of RuGUI with any other GUI frameworks.
 
 == Instalation
 
@@ -33,10 +40,16 @@ To check if the installation was successful type in a console:
 
 == Dependencies
 
-RuGUI depends, of course, on Ruby/GTK. It is known to work on Linux and Windows
-plataforms. It also depends on the ActiveSupport gem, which can be installed by:
+RuGUI depends, of course, on the Ruby binding for the GUI framework that you'll
+use. It is known to work on Linux and Windows plataforms. Currently it depends
+on the ActiveSupport gem, which can be installed by:
 
-    gem install activesupport
+  gem install activesupport
+
+To be able to generate applications and controllers/models/views, you will need
+the rubigen gem, which can be installed by:
+
+  gem install rubigen
 
 == Generating an Application
 
@@ -45,24 +58,10 @@ application and type:
 
     rugui <app_name>
 
-You can get help by typing:
+For more options type:
 
     rugui -h
 
-If you want your application to support RSpec you may add '-s' or '--use-spec'
-option, when generating the application:
-
-    rugui -s <app_name>
-
-or
-
-    rugui --use-spec <app_name>
-
-Finally, if you want to create the application in a different directory, pass it
-as a last argument:
-
-    rugui <app_name> <dest_dir>
-
 == More info
 
-http://github.com/intelitiva/rugui
+http://rugui.org
