@@ -12,7 +12,7 @@ config.logger[:output] = :stdout
 
 # The level for logging. You can use :debug, :info, :warn, :error or :fatal
 # That is the sequence of severity. Defaults to :info.
-config.logger[:level] = :info
+config.logger[:level] = :error
 
 # The format of timestamp. See the formatting for Time.strftime
 #
