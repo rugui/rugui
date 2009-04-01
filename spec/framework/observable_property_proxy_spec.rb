@@ -1,8 +1,4 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
-
-require 'rubygems'
-require 'activesupport'
-
 require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'helpers', 'observables')
 
 describe RuGUI::ObservablePropertyProxy do

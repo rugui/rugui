@@ -1,5 +1,3 @@
-require 'rubygems'
-require 'activesupport'
 require 'rugui/observable_property_proxy'
 
 module RuGUI

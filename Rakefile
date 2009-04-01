@@ -7,4 +7,5 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
+require 'rubygems'
 require 'rugui/tasks/rugui_framework'
