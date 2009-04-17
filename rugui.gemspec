@@ -1,5 +1,3 @@
-require 'rake'
-
 Gem::Specification.new do |spec|
   spec.name = %q{rugui}
   spec.version = "1.2.0"
