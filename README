@@ -25,14 +25,9 @@ adapters may be written, enabling the use of RuGUI with any other GUI frameworks
 
 == Instalation
 
-Download the source from:
+Install the gem:
 
-    http://github.com/intelitiva/rugui/tree/master
-
-Next, build and install the gem:
-
-    gem build rugui.gemspec
-    gem install rugui-X.X.X.gem
+    gem install rugui
 
 To check if the installation was successful type in a console:
 
