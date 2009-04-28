@@ -29,6 +29,9 @@ require 'rugui/framework_adapters/framework_adapter_support'
 require 'rugui/base_object'
 require 'rugui/observable_property_support'
 require 'rugui/property_observer'
+
+require 'rugui/property_changed_support'
+
 require 'rugui/initialize_hooks'
 require 'rugui/signal_support'
 require 'rugui/base_controller'

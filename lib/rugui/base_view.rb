@@ -32,11 +32,12 @@ module RuGUI
     include RuGUI::LogSupport
     include RuGUI::PropertyObserver
     include RuGUI::SignalSupport
+    include RuGUI::PropertyChangedSupport
 
     attr_accessor :controllers
     attr_reader :widgets
     attr_reader :unnamed_widgets
-    
+
     class_inheritable_accessor :configured_builder_file
     class_inheritable_accessor :configured_builder_file_usage
     class_inheritable_accessor :configured_builder_file_extension
@@ -67,7 +68,7 @@ module RuGUI
     # Reimplement this method to create widgets by hand.
     def setup_widgets
     end
-    
+
     # Reimplement this method to setup view helpers.
     def setup_view_helpers
     end

@@ -6,6 +6,7 @@ module RuGUI
     include RuGUI::PropertyObserver
     include RuGUI::LogSupport
     include RuGUI::SignalSupport
+    include RuGUI::PropertyChangedSupport
 
     attr_accessor :models
     attr_accessor :views
@@ -149,7 +150,7 @@ module RuGUI
           end
         class_eval
       end
-      
+
       # Navigates through the controllers hierarchy trying to find the main
       # controller (i.e., a class that extends RuGUI::BaseMainController).
       def find_main_controller
