@@ -2,7 +2,6 @@ module RuGUI
   class BaseModel < BaseObject
     include RuGUI::ObservablePropertySupport
     include RuGUI::LogSupport
-    include RuGUI::PropertyChangedSupport
 
     def initialize(observable_properties_values = {})
       initialize_observable_property_support(observable_properties_values)

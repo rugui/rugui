@@ -11,10 +11,11 @@ module RuGUI
       # </tt>
       #
       # Or you can inform the observable:
-      #
+      # <tt>
       # when_property_changed :name, :observable => :rabbit do |observable, new_value, old_value|
       #   puts "Hey! The property 'name' of the 'rabbit' was changed from #{old_value} to #{new_value}."
       # end
+      # </tt>
       #
       def when_property_changed(property, options = {}, &block)
         property_changed_block = RuGUI::PropertyChangedSupport::PropertyChangedBlock.new
@@ -36,17 +37,27 @@ module RuGUI
       attr_accessor :options
       attr_accessor :block
 
+      # Call the block configurated for the property changed if a block exists for the one.
       def call_property_changed_block_if_exists(observable, property, new_value, old_value)
-        if self.options.has_key?(:observable)
-          if same_observable_and_property?(observable, property)
-            self.block.call(new_value, old_value)
-          end
-        elsif same_property?(property)
-          invoke_block(observable, new_value, old_value)
-        end
+        call_property_changed_block(observable, new_value, old_value) if block_exists?(observable, property, new_value, old_value)
       end
 
       protected
+        # Check if a block exists for the property changed
+        def block_exists?(observable, property, new_value, old_value)
+          if self.options.has_key?(:observable)
+            return same_observable_and_property?(observable, property)
+          else
+            return same_property?(property)
+          end
+        end
+
+        # Call the block configurated for the property changed.
+        def call_property_changed_block(observable, new_value, old_value)
+          self.block.call(observable, new_value, old_value)
+        end
+
+      private
         def same_property?(property)
           prepared(self.property) == prepared(property)
         end
@@ -57,10 +68,6 @@ module RuGUI
 
         def same_observable_and_property?(observable, property)
           same_observable?(observable) and same_property?(property)
-        end
-
-        def invoke_block(observable, new_value, old_value)
-          self.block.call(observable, new_value, old_value)
         end
 
         def prepared(param)

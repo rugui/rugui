@@ -33,6 +33,10 @@ module RuGUI
   module PropertyObserver
     include RuGUI::FrameworkAdapters::FrameworkAdapterSupport
 
+    def self.included(base)
+      base.send(:include, RuGUI::PropertyChangedSupport)
+    end
+
     def property_updated(observable, property, new_value, old_value)
       queue_method_call_if_exists("property_#{property}_changed", observable, new_value, old_value)
       queue_method_call_if_exists("property_#{observable.class.name.underscore}_#{property}_changed", observable, new_value, old_value)
@@ -48,7 +52,6 @@ module RuGUI
     private
       def queue_method_call_if_exists(method_name, *args)
         if respond_to?(method_name)
-          logger.warn "This way of listening changed properties is deprecated. Please, take a look at when_property_changed method."
           self.framework_adapter.queue do
             send(method_name, *args)
           end

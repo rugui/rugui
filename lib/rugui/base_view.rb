@@ -32,7 +32,6 @@ module RuGUI
     include RuGUI::LogSupport
     include RuGUI::PropertyObserver
     include RuGUI::SignalSupport
-    include RuGUI::PropertyChangedSupport
 
     attr_accessor :controllers
     attr_reader :widgets

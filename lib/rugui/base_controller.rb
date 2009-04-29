@@ -6,7 +6,6 @@ module RuGUI
     include RuGUI::PropertyObserver
     include RuGUI::LogSupport
     include RuGUI::SignalSupport
-    include RuGUI::PropertyChangedSupport
 
     attr_accessor :models
     attr_accessor :views
