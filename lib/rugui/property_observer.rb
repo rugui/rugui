@@ -41,7 +41,7 @@ module RuGUI
       queue_method_call_if_exists("property_#{property}_changed", observable, new_value, old_value)
       queue_method_call_if_exists("property_#{observable.class.name.underscore}_#{property}_changed", observable, new_value, old_value)
       self.property_changed_blocks.each do |property_changed_block|
-        property_changed_block.call_property_changed_block_if_exists(observable, property, new_value, old_value)
+        property_changed_block.call_property_changed_block_if_exists(self, observable, property, new_value, old_value)
       end
     end
 
