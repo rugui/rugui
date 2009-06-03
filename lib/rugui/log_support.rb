@@ -89,10 +89,12 @@ module RuGUI
       #
       def defined_level
         level = RuGUI.configuration.logger[:level]
-        unless level
-          level = DEFAULT_LEVEL
-        else
+        if level
           level = LEVELS[level]
+        elsif ENV["RUGUI_ENV"] == 'test'
+          level = LEVELS[:fatal] # log nothing at all
+        else
+          level = DEFAULT_LEVEL
         end
         level
       end

@@ -1,5 +1,6 @@
 Next version
 - Added a DSL to detect when observable properties were changed.
+- Silencing logs when running in test environment unless a level is defined in test environment configuration file.
 
 1.3.0
 - Added support to upload RuGUI to rubyforge.
