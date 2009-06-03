@@ -27,6 +27,11 @@ module RuGUI
           Qt.application.exec
         end
 
+        def refresh
+          # TODO: Vicente Mundim - 03/06/2009 - Implement this method for Qt.
+          raise NotImplementedError.new("Sorry, refresh is not implemented for Qt yet!")
+        end
+
         def quit
           Qt.application.exit
         end

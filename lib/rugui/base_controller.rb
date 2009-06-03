@@ -183,6 +183,16 @@ module RuGUI
     end
 
     #
+    # Refreshes the GUI application, running just one event loop.
+    #
+    # This method is mostly useful when writing tests. It shouldn't be used
+    # in normal applications.
+    #
+    def refresh
+      self.framework_adapter.refresh
+    end
+
+    #
     # Exits from the application.
     #
     def quit

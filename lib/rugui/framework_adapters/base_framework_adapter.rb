@@ -22,6 +22,13 @@ module RuGUI
         def run
         end
 
+        # Refreshes the GUI application, running just one event loop.
+        #
+        # This method is mostly useful when writing tests. It shouldn't be used
+        # in normal applications.
+        def refresh
+        end
+
         # Exits the application, freeing any resources used by the framework.
         def quit
         end

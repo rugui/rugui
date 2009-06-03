@@ -85,6 +85,10 @@ module RuGUI
           Gtk.main
         end
 
+        def refresh
+          Gtk.main_iteration_do(false) while Gtk.events_pending?
+        end
+
         def quit
           Gtk.main_quit
         end
