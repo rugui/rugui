@@ -15,6 +15,8 @@ describe RuGUI::BaseController do
       @controller.my_view.should be_an_instance_of(MyView)
       @controller.views[:my_view].should == @controller.my_view
     end
+
+    
   end
   
   describe "with model registering" do

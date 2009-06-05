@@ -19,6 +19,14 @@ describe RuGUI::BaseView do
       @my_view.button_below.should be_an_instance_of(Gtk::Button)
       @my_view.label.should be_an_instance_of(Gtk::Label)
     end
+
+    describe "with conventionally named controllers and views" do
+      it "should automatically register a conventionally named view if it exists" do
+        @conventionally_named_controller = ConventionallyNamedController.new
+        @conventionally_named_controller.respond_to?(:conventionally_named_view).should be_true
+        @conventionally_named_controller.conventionally_named_view.should be_an_instance_of(ConventionallyNamedView)
+      end
+    end
   end
 
   describe "with builder file accessor" do

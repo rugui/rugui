@@ -24,7 +24,10 @@ module RuGUI
       end
 
       setup_models
+
+      register_default_view
       setup_views
+
       setup_controllers
     end
 
@@ -122,6 +125,22 @@ module RuGUI
       end
 
     private
+      def register_default_view
+        default_view_name.camelize.constantize # Check if we can constantize view name, if this fails a NameError exception is thrown.
+        register_view default_view_name
+      rescue NameError
+        # No default view for this controller, nothing to do.
+      end
+
+      def default_view_name
+        "#{controller_name}_view"
+      end
+
+      def controller_name
+        match = self.class.name.underscore.match(/([\w_]*)_controller/)
+        match ? match[1] : self.class.name
+      end
+
       def create_instance(klass_name, *args)
         klass_name.to_s.camelize.constantize.new(*args)
       end

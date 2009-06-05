@@ -70,3 +70,6 @@ end
 
 class NoBuilderView < RuGUI::BaseView
 end
+
+class ConventionallyNamedView < RuGUI::BaseView
+end
