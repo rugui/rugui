@@ -41,6 +41,9 @@ module RuGUI
     # The timeout for queued calls. Useful when performing long tasks.
     attr_accessor :queue_timeout
 
+    # Automatically register conventionally named views. Defaults to true.
+    attr_accessor :automatically_register_conventionally_named_views
+
     # A hash of application specific configurations.
     attr_accessor :application
 
@@ -61,6 +64,7 @@ module RuGUI
       self.builder_files_paths = default_builder_files_paths
       self.styles_paths = default_styles_paths
       self.queue_timeout = default_queue_timeout
+      self.automatically_register_conventionally_named_views = default_automatically_register_conventionally_named_views
       self.gems = default_gems
       self.logger = {}
       self.application = {}
@@ -127,6 +131,10 @@ module RuGUI
 
       def default_queue_timeout
         50
+      end
+
+      def default_automatically_register_conventionally_named_views
+        true
       end
 
       def default_gems

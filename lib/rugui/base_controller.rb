@@ -25,7 +25,7 @@ module RuGUI
 
       setup_models
 
-      register_default_view
+      register_default_view if should_register_default_view?
       setup_views
 
       setup_controllers
@@ -139,6 +139,10 @@ module RuGUI
       def controller_name
         match = self.class.name.underscore.match(/([\w_]*)_controller/)
         match ? match[1] : self.class.name
+      end
+
+      def should_register_default_view?
+        RuGUI.configuration.automatically_register_conventionally_named_views
       end
 
       def create_instance(klass_name, *args)
