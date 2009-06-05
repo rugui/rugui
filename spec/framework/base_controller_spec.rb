@@ -16,7 +16,13 @@ describe RuGUI::BaseController do
       @controller.views[:my_view].should == @controller.my_view
     end
 
-    
+    describe "with conventionally named controllers and views" do
+      it "should automatically register a conventionally named view if it exists" do
+        @conventionally_named_controller = ConventionallyNamedController.new
+        @conventionally_named_controller.respond_to?(:conventionally_named_view).should be_true
+        @conventionally_named_controller.conventionally_named_view.should be_an_instance_of(ConventionallyNamedView)
+      end
+    end
   end
   
   describe "with model registering" do

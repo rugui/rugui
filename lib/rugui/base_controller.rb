@@ -46,13 +46,11 @@ module RuGUI
     # a new instance of the model class will be created.
     #
     def register_model(model, name = nil)
-      model = create_instance(model) if model.is_a?(String) or model.is_a?(Symbol)
-      name ||= model.class.to_s.underscore
-      model.register_observer(self, name)
-      @models[name.to_sym] = model
-      create_model_attribute_reader(name)
-
-      model.post_registration(self)
+      model = register(:model, model, name)
+      unless model.nil?
+        model.register_observer(self, name)
+        model.post_registration(self)
+      end
     end
 
     #
@@ -62,13 +60,11 @@ module RuGUI
     # instance of the view class will be created.
     #
     def register_view(view, name = nil)
-      view = create_instance(view) if view.is_a?(String) or view.is_a?(Symbol)
-      name ||= view.class.to_s.underscore
-      view.register_controller(self)
-      @views[name.to_sym] = view
-      create_view_attribute_reader(name)
-
-      view.post_registration(self)
+      view = register(:view, view, name)
+      unless view.nil?
+        view.register_controller(self, name)
+        view.post_registration(self)
+      end
     end
 
     #
@@ -78,13 +74,11 @@ module RuGUI
     # a new instance of the controller class will be created.
     #
     def register_controller(controller, name = nil)
-      controller = create_instance(controller, self) if controller.is_a?(String) or controller.is_a?(Symbol)
-      name ||= controller.class.to_s.underscore
-      controller.parent_controller = self
-      @controllers[name.to_sym] = controller
-      create_controller_attribute_reader(name)
-
-      controller.post_registration
+      controller = register(:controller, controller, name)
+      unless controller.nil?
+        controller.parent_controller = self
+        controller.post_registration
+      end
     end
 
     #
@@ -125,6 +119,22 @@ module RuGUI
       end
 
     private
+      def register(type, object, name)
+        if object.is_a?(String) or object.is_a?(Symbol)
+          name ||= object.to_s.underscore
+          return if respond_to?(name) and not send(name).nil? # don't register it again
+        else
+          name ||= object.class.to_s.underscore
+          return if respond_to?(name) and not send(name).nil? # don't register it again
+        end
+
+        object = create_instance(object) if object.is_a?(String) or object.is_a?(Symbol)
+        name ||= object.class.to_s.underscore
+        send("#{type}s")[name.to_sym] = object
+        create_attribute_reader(type, name)
+        object
+      end
+
       def register_default_view
         default_view_name.camelize.constantize # Check if we can constantize view name, if this fails a NameError exception is thrown.
         register_view default_view_name
@@ -149,26 +159,11 @@ module RuGUI
         klass_name.to_s.camelize.constantize.new(*args)
       end
 
-      # Creates an attribute reader for the model.
-      def create_model_attribute_reader(name)
-        create_attribute_reader(:models, name)
-      end
-
-      # Creates an attribute reader for the view.
-      def create_view_attribute_reader(name)
-        create_attribute_reader(:views, name)
-      end
-
-      # Creates an attribute reader for the controller.
-      def create_controller_attribute_reader(name)
-        create_attribute_reader(:controllers, name)
-      end
-
       # Creates an attribute reader for the some entity.
-      def create_attribute_reader(entity, name)
+      def create_attribute_reader(type, name)
         self.class.class_eval <<-class_eval
           def #{name}
-            @#{entity}[:#{name}]
+            @#{type}s[:#{name}]
           end
         class_eval
       end

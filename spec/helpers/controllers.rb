@@ -7,10 +7,6 @@ class MyController < RuGUI::BaseController
 
   attr_accessor :message
   
-  def setup_views
-    register_view :my_view
-  end
-  
   def setup_models
     register_model :my_model
     register_model :my_model, :my_other_model_instance
