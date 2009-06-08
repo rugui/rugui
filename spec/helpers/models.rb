@@ -7,3 +7,6 @@ class MyModel < RuGUI::BaseModel
   
   observable_property :my_property
 end
+
+class NewStyleModel < RuGUI::BaseModel
+end

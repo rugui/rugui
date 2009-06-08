@@ -6,14 +6,17 @@ module RuGUI
     include RuGUI::PropertyObserver
     include RuGUI::LogSupport
     include RuGUI::SignalSupport
+    include RuGUI::EntityRegistrationSupport
 
     attr_accessor :models
+    attr_accessor :main_models
     attr_accessor :views
     attr_accessor :controllers
     attr_accessor :parent_controller
 
     def initialize(parent_controller = nil)
       @models = {}
+      @main_models = {}
       @views = {}
       @controllers = {}
 
@@ -23,12 +26,18 @@ module RuGUI
         @parent_controller = parent_controller
       end
 
+      register_all :model
       setup_models
 
       register_default_view if should_register_default_view?
+      register_all :view
       setup_views
 
+      register_all :controller
       setup_controllers
+
+      register_all :main_model
+      setup_main_models
     end
 
     # This is included here so that the initialize method is properly updated.
@@ -46,11 +55,19 @@ module RuGUI
     # a new instance of the model class will be created.
     #
     def register_model(model, name = nil)
-      model = register(:model, model, name)
-      unless model.nil?
-        model.register_observer(self, name)
-        model.post_registration(self)
-      end
+      register(:model, model, name)
+    end
+
+    #
+    # Registers a main model for this controller.
+    #
+    # Only model names (as string or symbol) should be passed. Optionally a
+    # different name may be given. If the main controller doesn't have a model
+    # registered or if this is the main controller a NoMethodError exception
+    # will be raised.
+    #
+    def register_main_model(model_name, name = nil)
+      register(:main_model, model_name, name)
     end
 
     #
@@ -60,11 +77,7 @@ module RuGUI
     # instance of the view class will be created.
     #
     def register_view(view, name = nil)
-      view = register(:view, view, name)
-      unless view.nil?
-        view.register_controller(self, name)
-        view.post_registration(self)
-      end
+      register(:view, view, name)
     end
 
     #
@@ -74,11 +87,7 @@ module RuGUI
     # a new instance of the controller class will be created.
     #
     def register_controller(controller, name = nil)
-      controller = register(:controller, controller, name)
-      unless controller.nil?
-        controller.parent_controller = self
-        controller.post_registration
-      end
+      register(:controller, controller, name)
     end
 
     #
@@ -99,40 +108,75 @@ module RuGUI
       @main_controller ||= find_main_controller
     end
 
+    class << self
+      def models(*names)
+        register(:model, *names)
+      end
+
+      def main_models(*names)
+        register(:main_model, *names)
+      end
+
+      def views(*names)
+        register(:view, *names)
+      end
+
+      def controllers(*names)
+        register(:controller, *names)
+      end
+    end
+
     protected
       #
-      # Subclasses should reimplement this to register models.
+      # Subclasses should reimplement this to register or initialize models.
       #
       def setup_models
       end
 
       #
-      # Subclasses should reimplement this to register views.
+      # Subclasses should reimplement this to register or initialize main models.
+      #
+      def setup_main_models
+      end
+
+      #
+      # Subclasses should reimplement this to register or initialize views.
       #
       def setup_views
       end
 
       #
-      # Subclasses should reimplement this to register controllers.
+      # Subclasses should reimplement this to register or initialize controllers.
       #
       def setup_controllers
       end
 
     private
-      def register(type, object, name)
-        if object.is_a?(String) or object.is_a?(Symbol)
-          name ||= object.to_s.underscore
-          return if respond_to?(name) and not send(name).nil? # don't register it again
-        else
-          name ||= object.class.to_s.underscore
-          return if respond_to?(name) and not send(name).nil? # don't register it again
-        end
+      def after_register_model(model, name)
+        model.register_observer(self, name)
+        model.post_registration(self)
+      end
 
-        object = create_instance(object) if object.is_a?(String) or object.is_a?(Symbol)
-        name ||= object.class.to_s.underscore
-        send("#{type}s")[name.to_sym] = object
-        create_attribute_reader(type, name)
-        object
+      def after_register_main_model(model, name)
+        after_register_model(model, name)
+      end
+
+      def after_register_view(view, name)
+        view.register_controller(self, name)
+        view.post_registration(self)
+      end
+
+      def after_register_controller(controller, name)
+        controller.parent_controller = self
+        controller.post_registration
+      end
+
+      def create_instance_arguments_for_controller
+        [self]
+      end
+
+      def get_instance_for_main_model(name)
+        main_controller.send(name) # should raise an error if main_controller doesn't have that main model.
       end
 
       def register_default_view
@@ -153,19 +197,6 @@ module RuGUI
 
       def should_register_default_view?
         RuGUI.configuration.automatically_register_conventionally_named_views
-      end
-
-      def create_instance(klass_name, *args)
-        klass_name.to_s.camelize.constantize.new(*args)
-      end
-
-      # Creates an attribute reader for the some entity.
-      def create_attribute_reader(type, name)
-        self.class.class_eval <<-class_eval
-          def #{name}
-            @#{type}s[:#{name}]
-          end
-        class_eval
       end
 
       # Navigates through the controllers hierarchy trying to find the main

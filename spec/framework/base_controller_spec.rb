@@ -46,6 +46,83 @@ describe RuGUI::BaseController do
     end
   end
 
+  describe "with new style registering" do
+    before :all do
+      RuGUI.configuration.automatically_register_conventionally_named_views = false
+    end
+
+    after :all do
+      RuGUI.configuration.automatically_register_conventionally_named_views = true
+    end
+
+    describe "of views" do
+      before :each do
+        NewStyleController.views :new_style_view
+        @controller = NewStyleController.new
+      end
+
+      it "should have the new_style_view registered when instantiated" do
+        @controller.views[:new_style_view].should be_an_instance_of(NewStyleView)
+        @controller.new_style_view.should be_an_instance_of(NewStyleView)
+        @controller.views[:new_style_view].should == @controller.new_style_view
+      end
+    end
+
+    describe "of models" do
+      before :each do
+        NewStyleController.models :new_style_model
+        @controller = NewStyleController.new
+      end
+
+      it "should have the new_style_model registered when instantiated" do
+        @controller.models[:new_style_model].should be_an_instance_of(NewStyleModel)
+        @controller.new_style_model.should be_an_instance_of(NewStyleModel)
+        @controller.models[:new_style_model].should == @controller.new_style_model
+      end
+    end
+
+    describe "of main models" do
+      before :each do
+        NewStyleController.main_models :new_style_model
+        
+        @main_controller = RuGUI::BaseMainController.new
+        @main_controller.register_model :new_style_model
+        @main_controller.register_controller :new_style_controller
+
+        @controller = @main_controller.new_style_controller
+      end
+
+      it "should have the new_style_model registered when instantiated" do
+        @controller.main_models[:new_style_model].should be_an_instance_of(NewStyleModel)
+        @controller.new_style_model.should be_an_instance_of(NewStyleModel)
+        @controller.main_models[:new_style_model].should == @controller.new_style_model
+      end
+
+      it "should use the same instance that was registered in the main controller" do
+        @controller.new_style_model.object_id.should == @main_controller.new_style_model.object_id # object ids should be equals here
+      end
+
+      it "should raise an error if we register a main model which aren't register in the main controller" do
+        lambda {
+          @controller.register_main_model(:some_inexistent_model)
+        }.should raise_error(NoMethodError)
+      end
+    end
+
+    describe "of controllers" do
+      before :each do
+        NewStyleController.controllers :new_style_child_controller
+        @controller = NewStyleController.new
+      end
+
+      it "should have the new_style_child_controller registered when instantiated" do
+        @controller.controllers[:new_style_child_controller].should be_an_instance_of(NewStyleChildController)
+        @controller.new_style_child_controller.should be_an_instance_of(NewStyleChildController)
+        @controller.controllers[:new_style_child_controller].should == @controller.new_style_child_controller
+      end
+    end
+  end
+
   describe "with initialization hooks" do
     it "should call before initialize and after initialize methods" do
       controller = MyController.new

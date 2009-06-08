@@ -26,3 +26,9 @@ end
 
 class ConventionallyNamedController < RuGUI::BaseController
 end
+
+class NewStyleController < RuGUI::BaseController
+end
+
+class NewStyleChildController < RuGUI::BaseController
+end

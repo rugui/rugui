@@ -3,7 +3,7 @@
 <!--Generated with glade3 3.4.5 on Thu Aug 28 14:02:01 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="top_window">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <signal name="delete_event" handler="on_top_window_delete_event"/>
     <child>
       <widget class="GtkHBox" id="horizontal_container">

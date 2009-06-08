@@ -73,3 +73,6 @@ end
 
 class ConventionallyNamedView < RuGUI::BaseView
 end
+
+class NewStyleView < RuGUI::BaseView
+end
