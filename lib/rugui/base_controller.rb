@@ -162,7 +162,7 @@ module RuGUI
       end
 
       def after_register_view(view, name)
-        view.register_controller(self, name)
+        view.register_controller(self)
         view.post_registration(self)
       end
 
