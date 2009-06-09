@@ -31,7 +31,7 @@ module RuGUI
 
       def register(entity, object_or_name, name = nil)
         name = register_name_for(object_or_name, name)
-        if name
+        if should_register?(name)
           object = create_or_get_instance_for(entity, object_or_name)
           setup_instance(entity, name, object)
           call_after_register_for(entity, object, name)
@@ -42,16 +42,14 @@ module RuGUI
     private
       def register_name_for(object_or_name, name)
         if object_or_name.is_a?(String) or object_or_name.is_a?(Symbol)
-          name ||= object_or_name.to_s.underscore
+          name || object_or_name.to_s.underscore
         else
-          name ||= object_or_name.class.to_s.underscore
+          name || object_or_name.class.to_s.underscore
         end
+      end
 
-        if respond_to?(name) and not send(name).nil?
-          return nil
-        else
-          return name
-        end
+      def should_register?(name)
+        not respond_to?(name) or send(name).nil?
       end
 
       def create_or_get_instance_for(entity, object_or_name)
