@@ -192,7 +192,7 @@ module RuGUI
       widgets.concat(@unnamed_widgets.select { |widget| widget.kind_of?(widget_type) }) unless @unnamed_widgets.empty?
 
       widgets.each do |widget|
-        widget.signal_connect(signal, &block)
+        widget.signal_connect(signal, &block) unless widget.destroyed?
       end
     end
 
