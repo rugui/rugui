@@ -210,6 +210,12 @@ describe RuGUI::ObservablePropertySupport do
       @parent.my_own_observable_property.should == @another_parent.my_own_observable_property
       @parent.child_observable_property.should_not == @another_parent.child_observable_property
     end
+
+    it "should create an instance of the same class and copy observable properties to it if destination object has a nil observable property while source object doesn't" do
+      @parent.child_observable_property = nil
+      @parent.copy_observable_properties_from(@another_parent)
+      @parent.child_observable_property.should == @another_parent.child_observable_property
+    end
   end
 
   describe "with observable properties mapped for an instance" do

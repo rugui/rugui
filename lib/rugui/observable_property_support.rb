@@ -95,7 +95,10 @@ module RuGUI
         if other_observable.respond_to?(property)
           other_property_value = other_observable.send(property)
           if other_property_value.class.include?(ObservablePropertySupport)
-            send(property).copy_observable_properties_from(other_property_value) if deep
+            if deep
+              send("#{property}=", other_property_value.class.new) if send(property).nil? # Creates an instance of the same class
+              send(property).copy_observable_properties_from(other_property_value)
+            end
           else
             send("#{property}=", other_property_value)
           end
