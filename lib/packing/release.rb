@@ -9,8 +9,8 @@ begin
     gemspec.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero"]
     gemspec.add_dependency(%q<activesupport>, [">= 2.1.1"])
     gemspec.add_dependency(%q<rubigen>, [">= 1.5.1"])
-    gemspec.version = "1.3.0"
-    gemspec.date = %q{2009-04-01}
+    gemspec.version = "1.3.1"
+    gemspec.date = %q{2009-06-16}
     gemspec.rubyforge_project = "rugui"
     gemspec.executables = ['rugui']
     gemspec.files = FileList["bin/*", "lib/**/*", "rugui_generators/**/*", "script/*", "spec/**/*", "Changelog", "LICENSE", "Rakefile", "README"].to_a
