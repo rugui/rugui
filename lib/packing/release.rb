@@ -3,14 +3,14 @@ begin
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "rugui"
     gemspec.summary = "A simple MVC framework for RubyGTK."
-    gemspec.email = ["vicente.mundim@intelitiva.com", "felipe.mesquita@intelitiva.com", "claudio.escudero@intelitiva.com"]
+    gemspec.email = ["vicente.mundim@gmail.com", "fmesquitacunha@gmail.com", "claudioe@gmail.com"]
     gemspec.homepage = "http://rugui.org"
     gemspec.description = "A simple MVC framework for RubyGTK."
     gemspec.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero"]
     gemspec.add_dependency(%q<activesupport>, [">= 2.1.1"])
     gemspec.add_dependency(%q<rubigen>, [">= 1.5.1"])
-    gemspec.version = "1.3.1"
-    gemspec.date = %q{2009-06-16}
+    gemspec.version = "1.3.2"
+    gemspec.date = %q{2009-08-04}
     gemspec.rubyforge_project = "rugui"
     gemspec.executables = ['rugui']
     gemspec.files = FileList["bin/*", "lib/**/*", "rugui_generators/**/*", "script/*", "spec/**/*", "Changelog", "LICENSE", "Rakefile", "README"].to_a
