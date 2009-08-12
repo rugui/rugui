@@ -13,13 +13,11 @@ Gem::Specification.new do |s|
   s.executables = ["rugui"]
   s.extra_rdoc_files = [
     "LICENSE",
-     "README",
      "README.rdoc"
   ]
   s.files = [
     "Changelog",
      "LICENSE",
-     "README",
      "Rakefile",
      "bin/rugui",
      "lib/packing/release.rb",
