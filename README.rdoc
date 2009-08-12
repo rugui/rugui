@@ -57,6 +57,12 @@ For more options type:
 
     rugui -h
 
+== Testing
+
+Your application may use Test::Unit or RSpec as the testing framework. If you
+have RSpec gem installed, 'rake -T' will list RSpec related tasks as well.
+Otherwise only Test::Unit tasks will be displayed.
+
 == More info
 
 http://rugui.org

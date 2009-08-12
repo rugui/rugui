@@ -1,3 +1,10 @@
+1.3.3
+- Fixed loading of RSpec tasks by the application task loader when RSpec gem is not installed.
+- Updated README to explain usage of both testing frameworks, Test::Unit and RSpec.
+
+1.3.2
+- Nothing has changed, version number was bumped just to test RuGUI release procedure.
+
 1.3.1
 - Added a DSL to detect when observable properties were changed.
 - Silencing logs when running in test environment unless a level is defined in test environment configuration file.
