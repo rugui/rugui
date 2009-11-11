@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DIRNAME=`echo \`dirname \$0\``
+RESULT=`echo \`dirname \$0\` | grep ^/`
+
+if [ "${DIRNAME}" = "${RESULT}" ]; then
+  SCRIPT_ROOT=`dirname $0`
+else
+  SCRIPT_ROOT=`echo -n \`pwd\` ;( [ \`dirname \$0\` == '.' ] && echo ) || echo /\`dirname \$0\``
+fi
+
+APPLICATION_ROOT="${SCRIPT_ROOT}/.."
+APPLICATION_EXECUTABLE="${APPLICATION_ROOT}/app/main.rb"
+RUBY_EXECUTABLE=/usr/bin/ruby
+RUGUI_ENV=production
+
+"${RUBY_EXECUTABLE}" "${APPLICATION_EXECUTABLE}"
