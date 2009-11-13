@@ -1,2 +1,2 @@
 # Loading generators
-require File.join(File.dirname(__FILE__), 'generators', 'rugui', 'rugui')
+require File.join(File.dirname(__FILE__), 'rugui', 'generators', 'rugui', 'rugui')

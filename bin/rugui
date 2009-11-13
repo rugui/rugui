@@ -1,2 +1,13 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
+require 'thor'
+require 'rugui/generators'
+
+if %w(-v --version).include? ARGV.first
+  require 'rugui/version'
+  puts "RuGUI #{RuGUI::VERSION::STRING}"
+  exit(0)
+end
+
+Rugui.start
