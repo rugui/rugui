@@ -188,7 +188,7 @@ module RuGUI
             end
 
             def #{property}=(value)
-              old_value = get_old_value(@#{property})
+              old_value = clone_if_possible(@#{property})
               if has_changed?(value, old_value)
                 @#{property} = ObservablePropertyProxy.new(value, self, '#{property}')
                 property_changed('#{property}', value, old_value)
@@ -233,20 +233,12 @@ module RuGUI
         @named_observers = {} if not defined?(@named_observers) or @named_observers.nil?
       end
 
-      def get_old_value(property)
-        begin
-          return property.clone
-        rescue TypeError
-          return property
-        end
-      end
-
       def has_changed?(new_value, old_value)
         !(new_value.kind_of?(old_value.class) && old_value == new_value)
       end
 
       def clone_if_possible(value)
-        value.clone
+        value.clone unless value.nil?
       rescue TypeError
         value
       end
