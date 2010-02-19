@@ -1,8 +1,9 @@
 class Rugui < Thor::Group
   include Thor::Actions
 
-  argument :app_path
   argument :name
+  argument :app_path, :optional => true,
+           :desc => "The path where to generate the application, if not specified it will create the application in a directory with the same name of the application in the current directory."
 
   class_option :framework_adapter, :type => :string, :aliases => 'a', :default => 'gtk',
                 :desc => "Choose which framework adapter to use, must either 'gtk' or 'qt'"
@@ -21,7 +22,7 @@ class Rugui < Thor::Group
   end
 
   def create_root
-    self.destination_root = File.expand_path(app_path, destination_root)
+    self.destination_root = File.expand_path(app_path || name, destination_root)
     empty_directory '.'
 
     FileUtils.cd(destination_root)
