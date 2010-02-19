@@ -1,1 +1,1 @@
-require File.join(File.dirname(__FILE__), 'generators', 'rugui', 'rugui')
+Dir[File.expand_path('generators/**/*_generator.rb', File.dirname(__FILE__))].each { |f| load f }
