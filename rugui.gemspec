@@ -128,14 +128,14 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<active_support>, [">= 2.1.1"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 2.1.1"])
       s.add_runtime_dependency(%q<thor>, [">= 0.13.3"])
     else
-      s.add_dependency(%q<active_support>, [">= 2.1.1"])
+      s.add_dependency(%q<activesupport>, [">= 2.1.1"])
       s.add_dependency(%q<thor>, [">= 0.13.3"])
     end
   else
-    s.add_dependency(%q<active_support>, [">= 2.1.1"])
+    s.add_dependency(%q<activesupport>, [">= 2.1.1"])
     s.add_dependency(%q<thor>, [">= 0.13.3"])
   end
 end

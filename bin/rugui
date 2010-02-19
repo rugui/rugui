@@ -2,7 +2,7 @@
 # -*- mode: ruby -*-
 
 require 'rubygems'
-require 'thor'
+require 'thor/group'
 require 'rugui/generators'
 
 if %w(-v --version).include? ARGV.first
