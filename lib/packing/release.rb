@@ -7,14 +7,14 @@ begin
     gemspec.homepage = "http://rugui.org"
     gemspec.description = "A simple MVC framework for RubyGTK."
     gemspec.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero"]
-    gemspec.add_dependency(%q<activesupport>, [">= 2.1.1"])
-    gemspec.add_dependency(%q<rubigen>, [">= 1.5.1"])
-    gemspec.version = "1.3.2"
-    gemspec.date = %q{2009-08-04}
+    gemspec.add_dependency(%q<active_support>, [">= 2.1.1"])
+    gemspec.add_dependency(%q<thor>, [">= 0.13.3"])
+    gemspec.date = %q{2010-02-19}
     gemspec.rubyforge_project = "rugui"
     gemspec.executables = ['rugui']
-    gemspec.files = FileList["bin/*", "lib/**/*", "rugui_generators/**/*", "script/*", "spec/**/*", "Changelog", "LICENSE", "Rakefile", "README"].to_a
+    gemspec.files = FileList["bin/*", "lib/**/*", "script/*", "Changelog", "LICENSE", "Rakefile", "README"].to_a
+    gemspec.test_files = FileList["spec/**/*"].to_a
   end
 rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler not available. Install it with: sudo gem install jeweler"
 end

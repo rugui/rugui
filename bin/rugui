@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# -*- mode: ruby -*-
 
 require 'rubygems'
 require 'thor'
