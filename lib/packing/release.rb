@@ -15,6 +15,7 @@ begin
     gemspec.files = FileList["bin/*", "lib/**/*", "script/*", "Changelog", "LICENSE", "Rakefile", "README"].to_a
     gemspec.test_files = FileList["spec/**/*"].to_a
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install jeweler"
 end
