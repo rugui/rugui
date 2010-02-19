@@ -7,7 +7,7 @@ begin
     gemspec.homepage = "http://rugui.org"
     gemspec.description = "A simple MVC framework for RubyGTK."
     gemspec.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero"]
-    gemspec.add_dependency(%q<active_support>, [">= 2.1.1"])
+    gemspec.add_dependency(%q<activesupport>, [">= 2.1.1"])
     gemspec.add_dependency(%q<thor>, [">= 0.13.3"])
     gemspec.date = %q{2010-02-19}
     gemspec.rubyforge_project = "rugui"
