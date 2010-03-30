@@ -1,3 +1,6 @@
+1.4.1
+- Small fix in thor generator, which was not creating empty directories.
+
 1.4.0
 - Using thor for generators.
 
