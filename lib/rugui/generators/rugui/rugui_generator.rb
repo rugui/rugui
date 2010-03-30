@@ -1,7 +1,7 @@
 class Rugui < Thor::Group
   include Thor::Actions
 
-  argument :name
+  argument :name, :default => 'test'
   argument :app_path, :optional => true,
            :desc => "The path where to generate the application, if not specified it will create the application in a directory with the same name of the application in the current directory."
 
@@ -58,15 +58,15 @@ class Rugui < Thor::Group
   end
 
   def create_lib_files
-    directory 'lib'
+    empty_directory 'lib'
   end
 
   def create_log_files
-    directory 'log'
+    empty_directory 'log'
   end
 
   def create_vendor_files
-    directory 'vendor'
+    empty_directory 'vendor'
   end
 
   def create_framework_specific_files
