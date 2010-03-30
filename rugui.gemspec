@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero"]
-  s.date = %q{2010-02-19}
+  s.date = %q{2010-03-30}
   s.default_executable = %q{rugui}
   s.description = %q{A simple MVC framework for RubyGTK.}
   s.email = ["vicente.mundim@gmail.com", "fmesquitacunha@gmail.com", "claudioe@gmail.com"]
@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
      "lib/rugui/gem_builder.rb",
      "lib/rugui/gem_dependency.rb",
      "lib/rugui/generators.rb",
-     "lib/rugui/generators/rugui/rugui.rb",
+     "lib/rugui/generators/rugui/rugui_generator.rb",
      "lib/rugui/generators/rugui/templates/README",
      "lib/rugui/generators/rugui/templates/Rakefile",
      "lib/rugui/generators/rugui/templates/app/main.rb",
@@ -99,28 +99,28 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{A simple MVC framework for RubyGTK.}
   s.test_files = [
-    "spec/framework",
-     "spec/framework/base_model_spec.rb",
-     "spec/framework/property_observer_spec.rb",
-     "spec/framework/observable_property_proxy_spec.rb",
-     "spec/framework/observable_property_support_spec.rb",
-     "spec/framework/base_view_spec.rb",
-     "spec/framework/base_view_helper_spec.rb",
-     "spec/framework/log_support_spec.rb",
-     "spec/framework/base_controller_spec.rb",
-     "spec/spec_helper.rb",
-     "spec/helpers",
-     "spec/helpers/initialize_hooks_helper.rb",
-     "spec/helpers/models.rb",
-     "spec/helpers/view_helpers.rb",
-     "spec/helpers/observables.rb",
-     "spec/helpers/controllers.rb",
-     "spec/helpers/views.rb",
-     "spec/spec.opts",
+    "spec/spec.opts",
      "spec/resource_files",
      "spec/resource_files/my_other_view.glade",
      "spec/resource_files/my_view.glade",
-     "spec/rcov.opts"
+     "spec/rcov.opts",
+     "spec/helpers",
+     "spec/helpers/view_helpers.rb",
+     "spec/helpers/initialize_hooks_helper.rb",
+     "spec/helpers/observables.rb",
+     "spec/helpers/controllers.rb",
+     "spec/helpers/models.rb",
+     "spec/helpers/views.rb",
+     "spec/framework",
+     "spec/framework/base_view_spec.rb",
+     "spec/framework/observable_property_proxy_spec.rb",
+     "spec/framework/base_model_spec.rb",
+     "spec/framework/base_controller_spec.rb",
+     "spec/framework/log_support_spec.rb",
+     "spec/framework/base_view_helper_spec.rb",
+     "spec/framework/observable_property_support_spec.rb",
+     "spec/framework/property_observer_spec.rb",
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
