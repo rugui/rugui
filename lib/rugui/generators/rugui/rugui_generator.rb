@@ -33,9 +33,29 @@ class Rugui < Thor::Group
     copy_file 'Rakefile'
   end
 
+  def create_directory_structure
+    directory_structure = [
+      'bin',
+      'app',
+      'app/controllers',
+      'app/models',
+      'app/resources',
+      'app/views',
+      'app/views/view_helpers',
+      'config',
+      'config/environments',
+      'lib',
+      'lib/tasks',
+      'log',
+      'vendor'
+    ]
+
+    directory_structure.each do |directory|
+      empty_directory directory
+    end
+  end
+
   def create_bin_files
-    empty_directory 'bin'
-    
     inside 'bin' do
       copy_file 'main_executable', "#{name}"
       chmod "#{name}", 0755
@@ -46,8 +66,6 @@ class Rugui < Thor::Group
   end
 
   def create_app_files
-    empty_directory 'app'
-
     inside 'app' do
       copy_file 'main.rb'
     end
@@ -57,22 +75,11 @@ class Rugui < Thor::Group
     directory 'config'
   end
 
-  def create_lib_files
-    empty_directory 'lib'
-  end
-
-  def create_log_files
-    empty_directory 'log'
-  end
-
-  def create_vendor_files
-    empty_directory 'vendor'
-  end
-
   def create_framework_specific_files
     directory framework_specific_file('app/controllers'), 'app/controllers'
     directory framework_specific_file('app/views'), 'app/views'
     directory framework_specific_file('app/resources'), 'app/resources'
+    directory framework_specific_file('config'), 'config'
   end
 
   def create_test_files
