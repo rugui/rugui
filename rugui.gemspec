@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero", "Cole Teeter"]
-  s.date = %q{2010-04-04}
+  s.date = %q{2010-03-30}
   s.default_executable = %q{rugui}
   s.description = %q{A simple MVC framework for RubyGTK.}
   s.email = ["vicente.mundim@gmail.com", "fmesquitacunha@gmail.com", "claudioe@gmail.com", "thecatwasnot@gmail.com"]
