@@ -1,4 +1,5 @@
 1.4.3
+- Fixing options in rugui generator
 - Removing dependency on jeweler for gem release
 - Corrected gemspec, now to release rugui use:
   gem build rugui.gemspec

@@ -5,10 +5,10 @@ class Rugui < Thor::Group
   argument :app_path, :optional => true,
            :desc => "The path where to generate the application, if not specified it will create the application in a directory with the same name of the application in the current directory."
 
-  class_option :framework_adapter, :type => :string, :aliases => 'a', :default => 'gtk',
+  class_option :framework_adapter, :type => :string, :aliases => '-a', :default => 'gtk',
                 :desc => "Choose which framework adapter to use, must either 'gtk' or 'qt'"
 
-  class_option :test_framework, :type => :string, :aliases => 't', :default => 'RSpec',
+  class_option :test_framework, :type => :string, :aliases => '-t', :default => 'RSpec',
                 :desc => "Choose which test framework to use, defaults to 'RSpec', but can be set to 'test-unit' also"
 
   class_option :version, :type => :boolean, :aliases => "-v", :group => :rugui,
