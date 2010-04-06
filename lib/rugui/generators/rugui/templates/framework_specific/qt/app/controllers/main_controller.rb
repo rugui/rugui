@@ -6,8 +6,4 @@
 # the main view, but this is entirely up to you.
 class MainController < RuGUI::BaseMainController
   # Add your stuff here.
-
-  def setup_views
-    register_view :main_view
-  end
 end

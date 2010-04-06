@@ -77,6 +77,7 @@ module RuGUI
       setup_event_queue
       setup_screen
       setup_quit_events
+      setup_main_view_screen
     end
 
     def step
@@ -169,6 +170,10 @@ module RuGUI
       def setup_quit_events
         hooks = self.class.quit_hooks.inject({}) { |accumulator, hook| accumulator.merge(hook => :quit) }
         make_magic_hooks hooks
+      end
+
+      def setup_main_view_screen
+        main_view.screen = screen if respond_to?(:main_view) && main_view.respond_to?(:screen=)
       end
 
       def handle_events

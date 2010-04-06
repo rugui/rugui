@@ -6,7 +6,7 @@ class Rugui < Thor::Group
            :desc => "The path where to generate the application, if not specified it will create the application in a directory with the same name of the application in the current directory."
 
   class_option :framework_adapter, :type => :string, :aliases => '-a', :default => 'gtk',
-                :desc => "Choose which framework adapter to use, must either 'gtk' or 'qt'"
+                :desc => "Choose which framework adapter to use, must be one of 'gtk', 'qt' or 'rubygame'"
 
   class_option :test_framework, :type => :string, :aliases => '-t', :default => 'RSpec',
                 :desc => "Choose which test framework to use, defaults to 'RSpec', but can be set to 'test-unit' also"
@@ -68,6 +68,8 @@ class Rugui < Thor::Group
   def create_app_files
     inside 'app' do
       copy_file 'main.rb'
+      directory 'controllers'
+      directory 'views'
     end
   end
 
@@ -79,12 +81,23 @@ class Rugui < Thor::Group
     directory framework_specific_file('app/controllers'), 'app/controllers'
     directory framework_specific_file('app/views'), 'app/views'
     directory framework_specific_file('app/resources'), 'app/resources'
-    directory framework_specific_file('config'), 'config'
   end
 
   def create_test_files
     directory test_framework_dir
   end
+
+  protected
+    def framework_adapter_name
+      case options[:framework_adapter]
+      when 'gtk'
+        'GTK'
+      when 'qt'
+        'Qt4'
+      when 'rubygame'
+        'Rubygame'
+      end
+    end
 
   private
     def framework_specific_file(path)

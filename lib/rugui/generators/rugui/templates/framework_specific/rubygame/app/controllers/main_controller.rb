@@ -7,7 +7,7 @@
 class MainController < RuGUI::BaseMainController
   # Add your stuff here.
 
-  on :main_window, 'delete-event' do |widget, event|
-    quit
+  def update
+    main_view.update_screen
   end
 end
