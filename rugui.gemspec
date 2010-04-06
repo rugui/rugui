@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.email = ["vicente.mundim@gmail.com", "fmesquitacunha@gmail.com", "claudioe@gmail.com", "thecatwasnot@gmail.com"]
   s.homepage = %q{http://rugui.org}
   s.rubyforge_project = %q{rugui}
-  s.license = ["GNU LGPL"]
+  s.licenses = ["GNU LGPL"]
   
-  s.executable = %w(rugui)
+  s.executables = %w(rugui)
 
   s.extra_rdoc_files = %w(LICENSE README.rdoc)
   s.files = Dir.glob("{bin,lib}/**/*") + %w(LICENSE README.rdoc Rakefile Changelog Thorfile)
