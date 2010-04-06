@@ -77,6 +77,7 @@ module RuGUI
       setup_event_queue
       setup_screen
       setup_quit_events
+      setup_autoload_resources
       setup_main_view_screen
     end
 
@@ -176,10 +177,28 @@ module RuGUI
         main_view.screen = screen if respond_to?(:main_view) && main_view.respond_to?(:screen=)
       end
 
+      def setup_autoload_resources
+        Rubygame::Surface.autoload_dirs << images_dir if File.exist?(images_dir)
+        Rubygame::Sound.autoload_dirs << sound_dir if File.exist?(sound_dir)
+        Rubygame::Music.autoload_dirs << music_dir if File.exist?(music_dir)
+      end
+
       def handle_events
         event_queue.each do |event|
           handle event
         end
+      end
+
+      def images_dir
+        RuGUI.root.join('app', 'resources', 'images')
+      end
+
+      def sound_dir
+        RuGUI.root.join('app', 'resources', 'sfx')
+      end
+
+      def music_dir
+        RuGUI.root.join('app', 'resources', 'music')
       end
   end
 end
@@ -194,6 +213,21 @@ module Rubygame
         @groups = []
         @depth = 0
       end
+    end
+  end
+end
+
+module RuGUI
+  class BaseImageSprite
+    include Rubygame::Sprites::Sprite
+
+    def initialize(name)
+      @groups = []
+      @depth = 0
+
+      @image = Rubygame::Surface[name]
+      @image.set_colorkey(@image.get_at([0, 0]))
+      @rect = @image.make_rect
     end
   end
 end
