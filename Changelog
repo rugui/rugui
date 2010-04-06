@@ -1,3 +1,6 @@
+1.5.0
+- Added basic support for Rubygame as a framework adapter.
+
 1.4.3
 - Fixing options in rugui generator
 - Removing dependency on jeweler for gem release

@@ -23,6 +23,12 @@ has made it possible to write a QT adapter and now it is possible to use all of
 the RuGUI features together with QT. As the framework evolve other framework
 adapters may be written, enabling the use of RuGUI with any other GUI frameworks.
 
+A basic support for building Rubygame applications was also added. It is still
+missing some functionality like signal connections and widget creation but it is
+usable. By using RuGUI you will gain a template directory structure as well some
+of the features of RuGUI, like configuration, a shell script for running your
+game, support for rspec and test-unit, etc.
+
 == Instalation
 
 Install the gem:
@@ -41,10 +47,12 @@ on the ActiveSupport gem, which can be installed by:
 
   gem install activesupport
 
-To be able to generate applications and controllers/models/views, you will need
-the rubigen gem, which can be installed by:
+Also the rugui generator uses thor, so you will also need to install it:
 
-  gem install rubigen
+  gem install thor
+
+Both gems should be installed when installing rugui gem, so you probably won't
+need to do this.
 
 == Generating an Application
 
