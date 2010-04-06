@@ -1,7 +1,7 @@
 class Rugui < Thor::Group
   include Thor::Actions
 
-  argument :name, :default => 'test'
+  argument :name
   argument :app_path, :optional => true,
            :desc => "The path where to generate the application, if not specified it will create the application in a directory with the same name of the application in the current directory."
 
