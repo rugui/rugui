@@ -179,3 +179,16 @@ module RuGUI
   end
 end
 
+module Rubygame
+  module Sprites
+    module Sprite
+      # Makes it call super
+      def initialize
+        super
+
+        @groups = []
+        @depth = 0
+      end
+    end
+  end
+end
