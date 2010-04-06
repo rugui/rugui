@@ -1,3 +1,9 @@
+1.4.3
+- Removing dependency on jeweler for gem release
+- Corrected gemspec, now to release rugui use:
+  gem build rugui.gemspec
+  gem push rugui-X-X-X.gem
+
 1.4.2
 - Fixing thor generator again, some directories were not being created.
 
