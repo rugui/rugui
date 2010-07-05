@@ -59,9 +59,6 @@ class Rugui < Thor::Group
     inside 'bin' do
       copy_file 'main_executable', "#{name}"
       chmod "#{name}", 0755
-
-      template 'main_executable.bat', "#{name}.bat"
-      chmod "#{name}.bat", 0755
     end
   end
 
