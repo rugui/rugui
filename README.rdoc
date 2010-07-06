@@ -71,6 +71,13 @@ Your application may use Test::Unit or RSpec as the testing framework. If you
 have RSpec gem installed, 'rake -T' will list RSpec related tasks as well.
 Otherwise only Test::Unit tasks will be displayed.
 
+== Using Active Support 3.0
+
+When using with Active Support 3.0 you'll need to install two gems that are
+needed by it: 
+
+  sudo gem install tzinfo i18n
+
 == More info
 
 http://rugui.org
