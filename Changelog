@@ -1,3 +1,6 @@
+1.5.4
+- Fixed a bug where {ROOT_PATH} was not properly substituted in style files
+
 1.5.3
 - Fixed compatibility issues with ActiveSupport 3.0
 

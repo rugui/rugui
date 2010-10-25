@@ -66,7 +66,7 @@ module Gtk
   end
 
   def Gtk.get_style_file_contents(path, filename)
-    IO.read(File.join(path, filename)).sub('{ROOT_PATH}', RuGUI.configuration.root_path.to_s)
+    IO.read(File.join(path, filename)).gsub('{ROOT_PATH}', RuGUI.configuration.root_path.to_s)
   end
 end
 
