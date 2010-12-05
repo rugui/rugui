@@ -44,7 +44,7 @@ module RuGUI
 
       set_load_path
       add_gem_load_paths
-      
+
       set_autoload_paths
       load_framework_adapter
 
@@ -73,7 +73,7 @@ module RuGUI
 
     # Set the paths from which RuGUI will automatically load source files.
     def set_autoload_paths
-      ActiveSupport::Dependencies.load_paths = configuration.load_paths.uniq
+      ActiveSupport::Dependencies.autoload_paths = configuration.load_paths.uniq
     end
 
     # Loads the environment specified by Configuration#environment_path, which
@@ -160,3 +160,4 @@ Run `rake gems:install` to install the missing gems.
       end
   end
 end
+
