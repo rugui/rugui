@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.summary = %q{A rails like MVC framework for building desktop applications with GUI frameworks.}
   s.description = %q(RuGUI is a framework which aims to help building desktop applications. RuGUI was mostly inspired by the *Ruby on Rails* framework, taking most of its features from it.)
 
-  s.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero", "Cole Teeter"]
-  s.email = ["vicente.mundim@gmail.com", "fmesquitacunha@gmail.com", "claudioe@gmail.com", "thecatwasnot@gmail.com"]
+  s.authors = ["Vicente Mundim", "Felipe Mesquita", "Claudio Escudero", "Cole Teeter", "Sebastien Nicouleaud"]
+  s.email = ["vicente.mundim@gmail.com", "fmesquitacunha@gmail.com", "claudioe@gmail.com", "thecatwasnot@gmail.com", "sebastien.nicouleaud@gmail.com"]
   s.homepage = %q{http://rugui.org}
   s.rubyforge_project = %q{rugui}
   s.licenses = ["GNU LGPL"]
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   
   s.required_rubygems_version = ">= 1.3.5"
   
-  s.add_runtime_dependency(%q<activesupport>, [">= 2.1.1"])
+  s.add_runtime_dependency(%q<activesupport>, [">= 2.3.9"])
   s.add_runtime_dependency(%q<thor>, [">= 0.13.3"])
 end
 
