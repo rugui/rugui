@@ -37,11 +37,11 @@ module RuGUI
     attr_reader :widgets
     attr_reader :unnamed_widgets
 
-    class_inheritable_accessor :configured_builder_file
-    class_inheritable_accessor :configured_builder_file_usage
-    class_inheritable_accessor :configured_builder_file_extension
-    class_inheritable_accessor :configured_root
-    class_inheritable_accessor :configured_display_root
+    class_attribute :configured_builder_file
+    class_attribute :configured_builder_file_usage
+    class_attribute :configured_builder_file_extension
+    class_attribute :configured_root
+    class_attribute :configured_display_root
 
     def initialize
       @controllers = {}

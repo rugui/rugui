@@ -1,5 +1,5 @@
 require 'gtk2'
-require 'libglade2'
+#require 'libglade2'
 
 unless Object.respond_to?(:instance_exec) # Ruby 1.9 does already has Object#instance_exec
   # See the discussion here: http://eigenclass.org/hiki.rb?instance_exec
@@ -183,7 +183,7 @@ end
 
 module RuGUI
   class BaseView < BaseObject
-    class_inheritable_accessor :configured_glade_usage
+    class_attribute :configured_glade_usage
 
     attr_accessor :glade
 

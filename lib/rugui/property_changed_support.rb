@@ -46,7 +46,7 @@ module RuGUI
     end
 
     def self.included(base)
-      base.class_inheritable_accessor :property_changed_blocks
+      base.class_attribute :property_changed_blocks
       base.property_changed_blocks = []
       base.extend(ClassMethods)
     end

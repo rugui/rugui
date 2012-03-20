@@ -119,7 +119,7 @@ module RuGUI
     module ClassMethods
       # Creates the necessary class inheritable attributes an initializes them.
       def create_class_inheritable_attributes
-        self.class_inheritable_accessor :observable_properties_options
+        self.class_attribute :observable_properties_options
 
         self.observable_properties_options = {}
       end

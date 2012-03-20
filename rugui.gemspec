@@ -24,7 +24,10 @@ Gem::Specification.new do |s|
   
   s.required_rubygems_version = ">= 1.3.5"
   
-  s.add_runtime_dependency(%q<activesupport>, [">= 2.3.9"])
+  s.add_runtime_dependency(%q<rake>, [">= 0.9.2.2"])
+  s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0"])
   s.add_runtime_dependency(%q<thor>, [">= 0.13.3"])
+
+  s.add_development_dependency(%q<rspec>, [">= 2.6.0"])
 end
 

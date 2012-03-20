@@ -1,5 +1,6 @@
-require 'rubygems'
-require 'spec'
+require 'bundler/setup'
+
+Bundler.require(:default, :test)
 
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 

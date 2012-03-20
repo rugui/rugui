@@ -41,7 +41,7 @@ module RuGUI
     end
 
     def self.included(base)
-      base.class_inheritable_accessor :signal_connections
+      base.class_attribute :signal_connections
       base.signal_connections = []
       base.extend(ClassMethods)
     end

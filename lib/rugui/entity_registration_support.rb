@@ -15,7 +15,7 @@ module RuGUI
     end
 
     def self.included(base)
-      base.class_inheritable_accessor :entity_registrations
+      base.class_attribute :entity_registrations
       base.entity_registrations = {}
       base.extend(ClassMethods)
     end
