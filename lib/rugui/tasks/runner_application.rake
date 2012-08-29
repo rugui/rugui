@@ -1,4 +1,4 @@
 desc 'Runs the application.'
 task :run do
-  require 'main'
+  require APPLICATION_ROOT + '/app/main'
 end
