@@ -10,7 +10,7 @@ require 'rugui/generators'
 
 if %w(-v --version).include? ARGV.first
   require 'rugui/version'
-  puts "RuGUI #{RuGUI::VERSION::STRING}"
+  puts "RuGUI #{RuGUI::VERSION}"
   exit(0)
 end
 

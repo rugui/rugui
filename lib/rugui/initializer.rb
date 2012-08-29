@@ -1,5 +1,4 @@
 require 'rugui'
-require 'rugui/gem_dependency'
 
 module RuGUI
   class Initializer

@@ -26,7 +26,6 @@ end
 
 require 'rugui/configuration'
 require 'rugui/log_support'
-require 'rugui/plugin/loader'
 require 'rugui/framework_adapters/framework_adapter_support'
 require 'rugui/base_object'
 require 'rugui/property_changed_support'
