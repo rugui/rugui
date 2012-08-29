@@ -171,7 +171,7 @@ module RuGUI
         class << self
           # Returns the builder file extension to be used for this view class.
           def builder_file_extension
-            '.xml'
+            'xml'
           end
         end
       end
