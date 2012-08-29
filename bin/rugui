@@ -3,6 +3,9 @@
 
 require 'rubygems'
 require 'thor/group'
+
+$:.unshift File.join(File.dirname(__FILE__),'..','lib')
+
 require 'rugui/generators'
 
 if %w(-v --version).include? ARGV.first

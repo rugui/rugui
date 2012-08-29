@@ -1,0 +1,3 @@
+source "http://rubygems.org"
+
+gem 'rugui', :git => "/Users/vicentemundim/Projects/rugui/.git", :branch => "upgrades"

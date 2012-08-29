@@ -8,12 +8,9 @@ class Rugui < Thor::Group
   class_option :framework_adapter, :type => :string, :aliases => '-a', :default => 'gtk',
                 :desc => "Choose which framework adapter to use, must be one of 'gtk', 'qt' or 'rubygame'"
 
-  class_option :test_framework, :type => :string, :aliases => '-t', :default => 'RSpec',
-                :desc => "Choose which test framework to use, defaults to 'RSpec', but can be set to 'test-unit' also"
-
   class_option :version, :type => :boolean, :aliases => "-v", :group => :rugui,
                            :desc => "Show RuGUI version number and quit"
- 
+
   class_option :help, :type => :boolean, :aliases => "-h", :group => :rugui,
                       :desc => "Show this help message and quit"
 
@@ -31,6 +28,7 @@ class Rugui < Thor::Group
   def create_root_files
     copy_file 'README'
     copy_file 'Rakefile'
+    copy_file 'Gemfile'
   end
 
   def create_directory_structure
@@ -81,7 +79,7 @@ class Rugui < Thor::Group
   end
 
   def create_test_files
-    directory test_framework_dir
+    directory 'spec'
   end
 
   protected
@@ -99,9 +97,5 @@ class Rugui < Thor::Group
   private
     def framework_specific_file(path)
       File.join('framework_specific', options[:framework_adapter], path)
-    end
-
-    def test_framework_dir
-      options[:test_framework] == 'RSpec' ? 'spec' : 'test'
     end
 end
