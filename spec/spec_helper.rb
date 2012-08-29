@@ -11,6 +11,6 @@ APPLICATION_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(APPLICATION_RO
 
 RuGUI::Initializer.run { |config| config.logger[:level] = :error }
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   # No configuration here yet.
 end

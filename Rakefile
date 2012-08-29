@@ -1,3 +1,4 @@
 require 'bundler/gem_tasks'
-require 'lib/rugui/tasks/rugui_framework'
+require File.expand_path('../lib/rugui/tasks/rugui_framework', __FILE__)
 
+task :default => :spec
