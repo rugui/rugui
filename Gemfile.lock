@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rugui (2.0.0)
+    rugui (2.0.0.beta1)
       activesupport (>= 3.2.0)
       gtk2 (>= 1.1.5)
       rake (>= 0.9.2.2)

@@ -1,9 +1,3 @@
 module RuGUI
-  module VERSION #:nodoc:
-    MAJOR = 2
-    MINOR = 0
-    TINY  = 0
-
-    STRING = [MAJOR, MINOR, TINY].join('.')
-  end
+  VERSION = "2.0.0.beta1"
 end

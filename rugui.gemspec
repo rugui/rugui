@@ -4,7 +4,7 @@ require File.expand_path(File.join('lib', 'rugui', 'version'))
 
 Gem::Specification.new do |s|
   s.name = %q{rugui}
-  s.version = RuGUI::VERSION::STRING
+  s.version = RuGUI::VERSION
   s.summary = %q{A rails like MVC framework for building desktop applications with GUI frameworks.}
   s.description = %q(
     RuGUI is a framework which aims to help building desktop applications.
