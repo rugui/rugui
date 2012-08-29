@@ -11,6 +11,11 @@ APPLICATION_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(APPLICATION_RO
 
 RuGUI::Initializer.run { |config| config.logger[:level] = :error }
 
+Dir["spec/helpers/**/*.rb"].each { |file| load file }
+
 RSpec.configure do |config|
   # No configuration here yet.
+  config.before(:each) do
+    HelperManager.clear!
+  end
 end

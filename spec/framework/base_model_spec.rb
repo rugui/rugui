@@ -1,6 +1,4 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
-
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'helpers', 'models')
+require 'spec_helper'
 
 describe RuGUI::BaseModel do
   describe "with initialization hooks" do

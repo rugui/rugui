@@ -1,6 +1,4 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
-
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'helpers', 'observables')
+require 'spec_helper'
 
 describe RuGUI::ObservablePropertySupport do
   before(:each) do
@@ -12,30 +10,30 @@ describe RuGUI::ObservablePropertySupport do
   describe "with notification" do
     it "should notify the observer when setting a new value in a observable property" do
       @observable.my_observable_property = "something"
-      @observer.property_updated_message.should == "AnotherFakeObservable property my_observable_property changed from  to something"
+      @observer.property_updated_message.should == 'AnotherFakeObservable property my_observable_property changed from nil to "something"'
 
       @observable.my_observable_property = 1
-      @observer.property_updated_message.should == "AnotherFakeObservable property my_observable_property changed from something to 1"
+      @observer.property_updated_message.should == 'AnotherFakeObservable property my_observable_property changed from "something" to 1'
 
       @observable.my_observable_property = ["somearray"]
-      @observer.property_updated_message.should == "AnotherFakeObservable property my_observable_property changed from 1 to somearray"
+      @observer.property_updated_message.should == 'AnotherFakeObservable property my_observable_property changed from 1 to ["somearray"]'
 
       @observable.my_observable_property = {'key' => "value"}
-      @observer.property_updated_message.should == "AnotherFakeObservable property my_observable_property changed from somearray to key"
+      @observer.property_updated_message.should == 'AnotherFakeObservable property my_observable_property changed from ["somearray"] to {"key"=>"value"}'
     end
 
     it "should notify the observer when changing the value of a observable property" do
       @observable.my_observable_property = "something"
       @observable.my_observable_property << "_else"
-      @observer.property_updated_message.should == "AnotherFakeObservable property my_observable_property changed from something to something_else"
+      @observer.property_updated_message.should == 'AnotherFakeObservable property my_observable_property changed from "something" to "something_else"'
 
       @observable.my_observable_property = ["somearray"]
       @observable.my_observable_property << "another_value"
-      @observer.property_updated_message.should == "AnotherFakeObservable property my_observable_property changed from somearray to somearrayanother_value"
+      @observer.property_updated_message.should == 'AnotherFakeObservable property my_observable_property changed from ["somearray"] to ["somearray", "another_value"]'
 
       @observable.my_observable_property = {'key' => "value"}
       @observable.my_observable_property['another_key'] = "another_value"
-      @observer.property_updated_message.should == "AnotherFakeObservable property my_observable_property changed from key to another_keykey"
+      @observer.property_updated_message.should == 'AnotherFakeObservable property my_observable_property changed from {"key"=>"value"} to {"key"=>"value", "another_key"=>"another_value"}'
     end
 
     it "should not notify the observer when setting the same value in a observable property" do

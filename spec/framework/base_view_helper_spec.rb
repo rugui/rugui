@@ -1,6 +1,4 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
-
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'helpers', 'view_helpers')
+require 'spec_helper'
 
 describe RuGUI::BaseViewHelper do
   describe "with initialization hooks" do

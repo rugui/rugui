@@ -7,6 +7,16 @@ module RuGUI
         end
       end
 
+      def clear_all_registries
+        self.entity_registrations.keys.each do |entity|
+          clear_registry(entity)
+        end
+      end
+
+      def clear_registry(entity)
+        self.entity_registrations[entity] = []
+      end
+
       private
         def register_entity(entity, name)
           self.entity_registrations[entity] ||= []
@@ -17,6 +27,11 @@ module RuGUI
     def self.included(base)
       base.class_attribute :entity_registrations
       base.entity_registrations = {}
+
+      def base.inherited(base)
+        base.entity_registrations = {}
+      end
+
       base.extend(ClassMethods)
     end
 

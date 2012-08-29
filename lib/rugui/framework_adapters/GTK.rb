@@ -1,5 +1,4 @@
 require 'gtk2'
-#require 'libglade2'
 
 unless Object.respond_to?(:instance_exec) # Ruby 1.9 does already has Object#instance_exec
   # See the discussion here: http://eigenclass.org/hiki.rb?instance_exec
@@ -104,6 +103,7 @@ module RuGUI
 
         # Adds a widget to the given container widget.
         def add_widget_to_container(widget, container_widget)
+          widget.parent.remove(widget) if widget.parent && widget.parent != container_widget
           container_widget.add(widget)
         end
 
@@ -128,9 +128,9 @@ module RuGUI
         # it is used instead of the view itself.
         def autoconnect_signals(other_target = nil)
           if self.adapted_object.use_builder?
-            self.adapted_object.glade.signal_autoconnect_full do |source, target, signal_name, handler_name, signal_data, after|
-              target ||= other_target
-              self.adapted_object.glade.connect(source, target, signal_name, handler_name, signal_data) if target.respond_to?(handler_name)
+            self.adapted_object.builder_instance.connect_signals do |name|
+              target = other_target || self.adapted_object
+              target.method(name) if target.respond_to?(name)
             end
           end
         end
@@ -152,28 +152,26 @@ module RuGUI
 
         # Builds widgets from the given filename, using the proper builder.
         def build_widgets_from(filename)
-          self.adapted_object.glade = GladeXML.new(filename, self.adapted_object.root, nil, nil, GladeXML::FILE)
+          self.adapted_object.builder_instance ||= Gtk::Builder.new
+          self.adapted_object.builder_instance.add_from_file(filename)
 
-          self.adapted_object.glade.widget_names.each do |widget_name|
-            self.adapted_object.send(:create_attribute_for_widget, widget_name) unless self.adapted_object.glade[widget_name].nil?
+          self.adapted_object.builder_instance.objects.each do |widget|
+            self.adapted_object.send(:create_attribute_for_widget, widget.builder_name)
           end
-          self.adapted_object.root_widget.show if self.adapted_object.display_root? and not self.adapted_object.root_widget.nil?
         end
 
         # Registers widgets as attributes of the view class.
         def register_widgets
-          self.adapted_object.glade.widget_names.each do |widget_name|
-            unless self.adapted_object.glade[widget_name].nil?
-              self.adapted_object.send("#{widget_name}=".to_sym, self.adapted_object.glade[widget_name])
-              self.adapted_object.widgets[widget_name] = self.adapted_object.glade[widget_name]
-            end
+          self.adapted_object.builder_instance.objects.each do |widget|
+            self.adapted_object.send("#{widget.builder_name}=", widget)
+            self.adapted_object.widgets[widget.builder_name] = widget
           end
         end
 
         class << self
           # Returns the builder file extension to be used for this view class.
           def builder_file_extension
-            'glade'
+            '.xml'
           end
         end
       end
@@ -183,9 +181,7 @@ end
 
 module RuGUI
   class BaseView < BaseObject
-    class_attribute :configured_glade_usage
-
-    attr_accessor :glade
+    attr_accessor :builder_instance
 
     # Adds a signal handler for all widgets of the given type.
     def add_signal_handler_for_widget_type(widget_type, signal, &block)
@@ -218,22 +214,9 @@ module RuGUI
     # definition doesn't need to point to an existing widget we can use this
     # to simplify the widget styling here.
     def change_widget_style(widget_or_name, widget_path_style)
-      if widget_or_name.is_a?(Gtk::Widget)
-        widget = widget_or_name
-      else
-        widget = @glade[widget_or_name.to_s]
-      end
+      widget = widget_or_name.is_a?(Gtk::Widget) ? widget_or_name : self.builder_instance.get_object(widget_or_name)
       style = Gtk::RC.get_style_by_paths(Gtk::Settings.default, widget_path_style.to_s, nil, nil)
       widget.style = style
-    end
-
-    class << self
-      # Call this method at class level if the view should be built from a glade
-      # file.
-      def use_glade
-        self.logger.warn('DEPRECATED - Call use_builder class method instead in your view.')
-        use_builder
-      end
     end
   end
 end

@@ -225,6 +225,10 @@ module RuGUI
     def self.included(base)
       base.extend(ClassMethods)
       base.create_class_inheritable_attributes
+
+      def base.inherited(base)
+        base.create_class_inheritable_attributes
+      end
     end
 
     private

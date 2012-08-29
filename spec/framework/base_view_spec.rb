@@ -1,7 +1,4 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
-
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'helpers', 'views')
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'helpers', 'view_helpers')
+require 'spec_helper'
 
 describe RuGUI::BaseView do
   before(:each) do
@@ -75,7 +72,7 @@ describe RuGUI::BaseView do
       @my_view.helper.message = "another message"
       @my_view.message.should == "MyViewHelper property message changed from Some label in the middle to another message"
     end
-    
+
     it "should be notified using named observable property change calls" do
       @my_view.my_other_view_helper_instance.message = "foo"
       @my_view.message.should == "Property message of my_other_view_helper_instance changed from Some label in the middle to foo"
