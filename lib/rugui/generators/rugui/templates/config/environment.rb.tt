@@ -1,11 +1,14 @@
 # Uncomment below to force the RuGUI application into production mode
 # ENV['RUGUI_ENV'] ||= 'production'
+ENV['RUGUI_ENV'] ||= 'development'
 
 # Bootstrap the RuGUI environment, and default configuration
 require File.expand_path('../boot', __FILE__)
 
 # require gems
-Bundler.require(:default, :assets, Rails.env)
+Bundler.require(:default, ENV['RUGUI_ENV'])
+
+require 'rugui/initializer'
 
 RuGUI::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
