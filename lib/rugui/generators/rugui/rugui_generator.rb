@@ -28,7 +28,7 @@ class Rugui < Thor::Group
   def create_root_files
     copy_file 'README'
     copy_file 'Rakefile'
-    copy_file 'Gemfile'
+    template 'Gemfile.tt'
   end
 
   def create_directory_structure

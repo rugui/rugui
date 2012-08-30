@@ -27,9 +27,37 @@ A basic support for building Rubygame applications was also added. It is still
 missing some functionality like signal connections and widget creation but it is
 usable. By using RuGUI you will gain a template directory structure as well some
 of the features of RuGUI, like configuration, a shell script for running your
-game, support for rspec and test-unit, etc.
+game, support for Rspec, etc.
 
-== Instalation
+== Dependencies
+
+RuGUI depends, of course, on the Ruby binding for the GUI framework that you'll
+use. When generating an application you may choose which framework you'll want
+to use. By default it will use GTK.
+
+Here are the recommended way to install the bindings for each platform:
+
+=== Mac OS X
+
+We recommend that you use brew:
+
+    brew install gtk+   # for GTK
+    brew install qt     # for Qt4
+    brew install sdl    # for Rubygame
+
+For Rubygame you may also want to install some other SDL related libraries:
+
+    brew install sdl_gfx sdl_image sdl_mixer sdl_net sdl_rtf sdl_sound sdl_ttf
+
+=== Linux
+
+TODO: Describe linux installation instructions for GTK, Qt4 and Rubygame
+
+=== Windows
+
+TODO: Describe windows installation instructions for GTK, Qt4 and Rubygame
+
+== Installation
 
 Install the gem:
 
@@ -39,21 +67,6 @@ To check if the installation was successful type in a console:
 
     rugui -v
 
-== Dependencies
-
-RuGUI depends, of course, on the Ruby binding for the GUI framework that you'll
-use. It is known to work on Linux and Windows plataforms. Currently it depends
-on the ActiveSupport gem, which can be installed by:
-
-  gem install activesupport
-
-Also the rugui generator uses thor, so you will also need to install it:
-
-  gem install thor
-
-Both gems should be installed when installing rugui gem, so you probably won't
-need to do this.
-
 == Generating an Application
 
 To generate an application, go to the directory where you want to create the
@@ -61,22 +74,34 @@ application and type:
 
     rugui <app_name>
 
-For more options type:
+For more options type (including changing GUI framework):
 
     rugui -h
 
+Next cd into your application and run:
+
+    bundle install
+
+You'll surely want to use RVM[http://rvm.io].
+
+After all gems are installed you can run your application by:
+
+    rake run
+
 == Testing
 
-Your application may use Test::Unit or RSpec as the testing framework. If you
-have RSpec gem installed, 'rake -T' will list RSpec related tasks as well.
-Otherwise only Test::Unit tasks will be displayed.
+RuGUI ships with support for RSpec, just add specs to spec/ dir and you're ready
+to go!
 
-== Using Active Support 3.0
+== Contributing
 
-When using with Active Support 3.0 you'll need to install two gems that are
-needed by it: 
+In order to run RuGUI framework specs, you just need to fork the repository, clone
+it to your machine, then after installing all dependencies, run:
 
-  sudo gem install tzinfo i18n
+    bundle install
+    rake spec
+
+If all specs pass, then you're good to go and contribute by sending a pull request!
 
 == More info
 

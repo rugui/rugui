@@ -1,0 +1,20 @@
+source "http://rubygems.org"
+
+# RuGUI gem
+gem 'rugui', :git => "/Users/vicentemundim/Projects/rugui/.git", :branch => "upgrades"
+
+# GTK ruby bindings
+<%= '#' unless framework_adapter_name == 'GTK' %>gem 'gtk2'
+
+# Qt ruby bindings
+<%= '#' unless framework_adapter_name == 'Qt4' %>gem 'qtbindings'
+
+# Rubygame
+<%= '#' unless framework_adapter_name == 'Rubygame' %>gem 'rubygame'
+
+# Uncomment this if you want to debug applications
+# gem 'debugger'
+
+group :test do
+  gem 'rspec', '>= 2.11.0'
+end

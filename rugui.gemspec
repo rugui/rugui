@@ -31,7 +31,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<rake>, [">= 0.9.2.2"])
   s.add_runtime_dependency(%q<activesupport>, [">= 3.2.0"])
   s.add_runtime_dependency(%q<thor>, [">= 0.14.6"])
-  s.add_runtime_dependency(%q<gtk2>, [">= 1.1.5"])
 
   s.add_development_dependency(%q<rspec>, [">= 2.11.0"])
 end
