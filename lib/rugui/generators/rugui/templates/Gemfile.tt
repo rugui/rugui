@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 # RuGUI gem
-gem 'rugui', :git => "/Users/vicentemundim/Projects/rugui/.git", :branch => "upgrades"
+gem 'rugui', '~> 2.0.0.beta'
 
 # GTK ruby bindings
 <%= '#' unless framework_adapter_name == 'GTK' %>gem 'gtk2'
