@@ -43,8 +43,8 @@ module RuGUI
 
       set_load_path
 
-      set_autoload_paths
       load_framework_adapter
+      set_autoload_paths
 
       finish_initialization_process_log
      end
@@ -59,6 +59,7 @@ module RuGUI
 
     # Set the paths from which RuGUI will automatically load source files.
     def set_autoload_paths
+      require 'active_support/dependencies'
       ActiveSupport::Dependencies.autoload_paths = configuration.load_paths.uniq
     end
 

@@ -13,6 +13,21 @@ end
 
 Qt.create_application
 
+# This is a monkey patch needed because ActiveSupport::Depndencies define a load
+# method that conflicts with Qt::UiLoader#load method. We save the old load method,
+# require ActiveSupport::Depndencies, the revert the load method back again.
+class Qt::UiLoader
+  alias old_qt_load load
+end
+
+require 'active_support/dependencies'
+
+class Qt::UiLoader
+  alias load old_qt_load
+end
+
+### End of Qt::UiLoader monkey patch
+
 module RuGUI
   module FrameworkAdapters
     module Qt4
@@ -108,10 +123,14 @@ module RuGUI
 
         private
           def load_ui_file(filename)
-            file = Qt::File.new(filename)
-            file.open(Qt::File::ReadOnly)
+            file = Qt::File.new(filename) do
+              open(Qt::File::ReadOnly)
+            end
+
             loader = Qt::UiLoader.new
-            loader.load(file, nil)
+            loader.load file
+          ensure
+            file.close if file.present?
           end
 
           def root_widget_from(ui_file_root_widget)
