@@ -59,9 +59,9 @@ TODO: Describe windows installation instructions for GTK, Qt4 and Rubygame
 
 == Installation
 
-Install the gem:
+Install the gem (still in beta):
 
-    gem install rugui
+    gem install rugui -v 2.0.0.beta2
 
 To check if the installation was successful type in a console:
 
