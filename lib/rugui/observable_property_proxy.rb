@@ -27,12 +27,12 @@ module RuGUI
     end
 
     private
-      NON_DELEGATABLE_METHODS = ['__id__', '__send__']
+      NON_DELEGATABLE_METHODS = ['__id__', '__send__', 'object_id']
 
       # Delegating Object's methods to context. Since none of these methods
       # really change the object we just send them to the context.
       self.methods.each do |method_name|
-        unless NON_DELEGATABLE_METHODS.include?(method_name)
+        unless NON_DELEGATABLE_METHODS.include?(method_name.to_s)
           self.class_eval <<-class_eval
             def #{method_name}(*args)
               @context.send(:#{method_name}, *args)

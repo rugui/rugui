@@ -35,15 +35,23 @@ RuGUI depends, of course, on the Ruby binding for the GUI framework that you'll
 use. When generating an application you may choose which framework you'll want
 to use. By default it will use GTK.
 
+It also requires Ruby >= 1.9.3. When using RVM, you'll need to add `--enable-shared` flag when installing it. Just run:
+
+    rvm install 1.9.3 -C --enable-shared
+
+Or, if you already have it installed:
+
+    rvm reinstall 1.9.3 -C --enable-shared
+
 Here are the recommended way to install the bindings for each platform:
 
 === Mac OS X
 
 We recommend that you use brew:
 
-    brew install gtk+   # for GTK
-    brew install qt     # for Qt4
-    brew install sdl    # for Rubygame
+    brew install gtk+         # for GTK
+    brew install cmake qt     # for Qt4
+    brew install sdl          # for Rubygame
 
 For Rubygame you may also want to install some other SDL related libraries:
 
@@ -61,7 +69,7 @@ TODO: Describe windows installation instructions for GTK, Qt4 and Rubygame
 
 Install the gem (still in beta):
 
-    gem install rugui -v 2.0.0.beta2
+    gem install rugui -v 2.0.0.beta3
 
 To check if the installation was successful type in a console:
 
