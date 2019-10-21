@@ -10,4 +10,4 @@ gem 'gtk2'
 gem 'qtbindings'
 gem 'rubygame'
 
-gem 'ffi', '1.1.5'
+gem 'ffi', '1.11.1'
