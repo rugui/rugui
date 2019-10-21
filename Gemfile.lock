@@ -24,7 +24,7 @@ GEM
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.0)
     diff-lcs (1.2.4)
-    ffi (1.1.5)
+    ffi (1.11.1)
     gdk_pixbuf2 (2.0.0)
       glib2 (>= 2.0.0)
     glib2 (2.0.0)
@@ -66,7 +66,7 @@ PLATFORMS
 
 DEPENDENCIES
   debugger
-  ffi (= 1.1.5)
+  ffi (= 1.11.1)
   gtk2
   qtbindings
   rdoc
