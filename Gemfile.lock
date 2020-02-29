@@ -43,7 +43,7 @@ GEM
       glib2 (>= 2.0.0)
     pkg-config (1.1.4)
     qtbindings (4.8.3.0)
-    rake (10.0.4)
+    rake (13.0.1)
     rdoc (4.0.1)
       json (~> 1.4)
     rspec (2.13.0)
